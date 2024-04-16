@@ -1,0 +1,5 @@
+key store password : saath@2020
+key alias : key0
+key password : saath@2020
+
+id app.saath@gmail.com

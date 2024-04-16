@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "5391848345",
+    "project_id": "saath-app",
+    "storage_bucket": "saath-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5391848345:android:c9f7290c9bf549bba53908",
+        "android_client_info": {
+          "package_name": "saath.com.businessgym"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5391848345-270l7r1d9bup8go75lkob6eqpt3u1fb8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE2hmmbxnqI2RROoqUI7szrT9OzA1-MIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5391848345-270l7r1d9bup8go75lkob6eqpt3u1fb8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

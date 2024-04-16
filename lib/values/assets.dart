@@ -1,0 +1,140 @@
+// ignore_for_file: non_constant_identifier_names
+
+class AppImages {
+  static String APP_TEXTLOGO = 'assets/images/icons/app_textLogo.png';
+  static String APP_SMALLTLOGO = 'assets/images/icons/smalllogo.png';
+  static String success = 'assets/images/icons/success.gif';
+  static String successnot = 'assets/images/icons/successnot.gif';
+  static String APP_LOGO = 'assets/images/icons/app_logo.png';
+  //static String GIVE_SERVICE = 'assets/images/icons/give.png';
+ // static String GET_SERVIVE = 'assets/images/icons/getservice.png';
+ // static String SUPPLIER = 'assets/images/icons/supplyer.png';
+  // static String DOCUMENTS = 'assets/images/icons/document.png';
+ // static String APP_BG = 'assets/images/images/bgimg.png';
+  static String APP_SPLASH = 'assets/images/images/splash.png';
+
+  //-----------------------------------bottom app bar assets---------------------------------
+ // static String BAPP_HOME = 'assets/images/icons_new/home.png';
+ // static String BAPP_QUERY = 'assets/images/icons/query.png';
+ // static String BAPP_USER = 'assets/images/icons_new/profile.png';
+ // static String BAPP_VIDEO = 'assets/images/icons_new/video.png';
+
+  // static String BAPP_HOME_BLUE = 'assets/images/icons/home_blue.png';
+  // static String BAPP_QUERY_BLUE = 'assets/images/icons/query_blue.png';
+  // static String BAPP_USER_BLUE = 'assets/images/icons/user_blue.png';
+  // static String BAPP_VIDEO_BLUE = 'assets/images/icons/videolesson_blue.png';
+
+  //----------------------------------- Home Page assets---------------------------------
+ // static String HOME_ENTITLEMENTS = 'assets/images/icons_new/entitlements.png';
+ // static String HOME_SUPPLIER = 'assets/images/icons_new/findsupplier.png';
+ // static String HOME_LOAN = 'assets/images/icons_new/loan.png';
+ // static String HOME_MYBOOKINGS = 'assets/images/icons_new/bookings.png'; //
+ // static String HOME_FINANCE = 'assets/images/icons_new/finance.png'; //---
+  //static String HOME_MYSERVICE = 'assets/images/icons/myservice.png';
+  //static String HOME_SEARCH = 'assets/images/icons/search.png';
+ // static String ICON_ADD = 'assets/images/icons_new/addservices.png'; //-------------
+ // static String ICON_NOTIFICATION = 'assets/images/icons_new/notifications.png'; //-------
+ // static String ICON_WALLET = 'assets/images/icons_new/wallet.png'; //----
+ // static String ICON_DOWNLOAD = 'assets/images/icons/download.png';
+ // static String HOME_SORT = 'assets/images/icons_new/lines.png'; //--------
+ // static String FILTERS = 'assets/images/icons/filters.png';
+ // static String ADD_EXPANDATURE = 'assets/images/icons/addexpandature.png';
+ // static String ADD_INCOME = 'assets/images/icons/addincome.png'; //
+ // static String RESEARCH = 'assets/images/icons/research.png'; //
+  //---------------------------------------------------Entitlements icons------------------------------------
+ // static String PERSONAL_ENTITLEMENT = 'assets/images/icons/personalentitlements.png';
+ // static String INTERNET = 'assets/images/icons/internet.png';
+ // static String BUSINESS_ENTITLEMENT = 'assets/images/icons/businessentitlements.png';
+ // static String SCHEMES_ENTITLEMENT = 'assets/images/icons/schemesentitlements.png';
+  //---------------------------------------------------Profile icons------------------------------------
+  static String P_OCCUPATION = 'assets/images/profile/occupation.png';
+  static String P_CALL = 'assets/images/profile/call.png';
+  static String P_MAIL = 'assets/images/profile/mail.png';
+  static String P_MENU = 'assets/images/profile/menu.png';
+
+  static String logo="assets/images/logo.png";
+ // static String aboutus="assets/images/aboutus.png";
+  static String walkfirst="assets/images/walkfirst.png";
+  static String walksecond="assets/images/walkscond.png";
+  static String walkthree="assets/images/walkthree.png";
+  //static String diwali="assets/images/diwali.png";
+  static String namelogo="assets/images/namelogo.png";
+  static String backarrow="assets/images/backarrow.svg";
+  static String suppier="assets/images/icons/supplier.svg";
+  static String microenterprinute="assets/images/icons/microenterpinute.svg";
+  static String customer="assets/images/icons/customer.svg";
+  static String home="assets/images/icons/home.svg";
+  static String infeed="assets/images/icons/infofeed.svg";
+  static String marcum="assets/images/icons/marcum.svg";
+  static String crm="assets/images/icons/crm.svg";
+  static String profile="assets/images/icons/profile.svg";
+  static String rating="assets/images/icons/rating.svg";
+  static String crown="assets/images/icons/crown.svg";
+  static String edit="assets/images/icons/edit.svg";
+  static String altarroe="assets/images/icons/altarrow.svg";
+  static String product="assets/images/icons/product.svg";
+  static String document="assets/images/icons/notes.svg";
+  static String wallt="assets/images/icons/wallet.svg";
+  static String language="assets/images/icons/langua.svg";
+  static String help="assets/images/icons/help.svg";
+  static String feedback="assets/images/icons/fedback.svg";
+  static String hand="assets/images/icons/hand.svg";
+  static String about="assets/images/icons/about.svg";
+  static String logout="assets/images/icons/logout.svg";
+  static String upload="assets/images/icons/upload.svg";
+  static String male="assets/images/icons/male.svg";
+  static String female="assets/images/icons/female.svg";
+  static String map="assets/images/icons/map.svg";
+  static String mappoint="assets/images/icons/mappoint.svg";
+  static String copy="assets/images/icons/copy.svg";
+  static String altdown="assets/images/icons/altdown.svg";
+  static String adhar="assets/images/icons/addhar.svg";
+  static String pan="assets/images/icons/pan.svg";
+  static String voter="assets/images/icons/voter.svg";
+  static String fassai="assets/images/icons/fassai.svg";
+  static String gst="assets/images/icons/gst.svg";
+  static String verify="assets/images/icons/verify.svg";
+  static String roundleft="assets/images/icons/roundleft.svg";
+  static String roundright="assets/images/icons/roundright.svg";
+  static String loanapply="assets/images/icons/loanapplied.svg";
+  static String nav="assets/images/icons/nav.svg";
+  static String userhelp="assets/images/icons/userhelp.svg";
+  static String view="assets/images/icons/view.svg";
+  static String download="assets/images/icons/downlod.svg";
+  static String share="assets/images/icons/share.svg";
+  static String call="assets/images/icons/call.svg";
+  static String whatsapp="assets/images/icons/whatsapp.svg";
+  static String search="assets/images/icons/search.svg";
+  static String Case="assets/images/icons/case.svg";
+  static String shop="assets/images/icons/shop.svg";
+  static String roundaltarroe="assets/images/icons/roundaltarrow.svg";
+  static String wallet1="assets/images/icons/wallet1.svg";
+  static String wallet2="assets/images/icons/wallet2.svg";
+  static String loan="assets/images/icons/loan.svg";
+  static String filter="assets/images/icons/filter.svg";
+  static String rightarrow="assets/images/icons/rightarrow.svg";
+  static String downarrow="assets/images/icons/downarrow.svg";
+  static String uparrow="assets/images/icons/uparow.svg";
+  static String right="assets/images/icons/right.svg";
+  static String round="assets/images/icons/round.svg";
+  static String activehome="assets/images/icons/activehome.svg";
+  static String activefeed="assets/images/icons/activefeed.svg";
+  static String activecrm="assets/images/icons/activecrm.svg";
+  static String activeprofile="assets/images/icons/activeprofile.svg";
+  static String homemfi="assets/images/icons/homemfi.svg";
+  static String like="assets/images/icons/like.svg";
+  static String comment="assets/images/icons/comment.svg";
+  static String time="assets/images/icons/time.svg";
+  static String location="assets/images/icons/location.svg";
+  static String shareprofile="assets/images/icons/shareprofile.svg";
+  static String elips="assets/images/icons/elips.svg";
+  static String gellary="assets/images/icons/pic.svg";
+  static String lock="assets/images/icons/lock.svg";
+  static String cross="assets/images/icons/cross.svg";
+  static String mapmarker="assets/images/icons/map.png";
+  static String listmember="assets/images/icons/listmember.svg";
+  static String send="assets/images/icons/send.svg";
+  static String nofound="assets/images/icons/nodatafound.svg";
+  static String notification= "assets/images/icons/notification.svg";
+}
+

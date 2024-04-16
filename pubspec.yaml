@@ -78,7 +78,6 @@ dependencies:
   google_maps_webservice: ^0.0.16
   lottie: ^2.6.0
   flutter_cache_manager:
-
   # Maps
   geolocator: ^9.0.2
   geocoding: ^2.0.5

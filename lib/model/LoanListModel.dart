@@ -115,6 +115,12 @@ class LoanListModelData {
 
 
 
+// To parse this JSON data, do
+//
+//     final appliedLoanListModel = appliedLoanListModelFromJson(jsonString);
+
+
+
 AppliedLoanListModel appliedLoanListModelFromJson(String str) => AppliedLoanListModel.fromJson(json.decode(str));
 
 String appliedLoanListModelToJson(AppliedLoanListModel data) => json.encode(data.toJson());
@@ -152,7 +158,7 @@ class AppliedLoanListModeldata {
   int approved;
   int mfiId;
   String purpose;
-  String mfiName;
+  dynamic mfiName;
   int loanAmount;
   DateTime applyDate;
   dynamic approvedDate;

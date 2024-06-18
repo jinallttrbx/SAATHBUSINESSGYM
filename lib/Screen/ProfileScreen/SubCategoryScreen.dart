@@ -133,15 +133,15 @@ class SubCategoryScreenState extends State<SubCategoryScreen> {
               ),
               Row(
                 children: [
-                  Container(
-                    padding: EdgeInsets.only(left: 15,right: 15),
-                    decoration: BoxDecoration(
+                Expanded(flex:2,child:   Container(
+                  padding: EdgeInsets.only(left: 15,right: 15),
+                  decoration: BoxDecoration(
                       border: Border.all(color: AppColors.primary),
                       borderRadius: BorderRadius.all(Radius.circular(20))
-                    ),
-                    height: 35,
-                    width: 100,
-                    child: Center(
+                  ),
+                  height: 35,
+                  width: 100,
+                  child: Center(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -151,12 +151,12 @@ class SubCategoryScreenState extends State<SubCategoryScreen> {
                           Text("Filter",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,fontFamily: "OpenSans",),)
                         ],
                       )
-                    ),
                   ),
-                  SizedBox(width: 5,),
-                  Expanded(child: Text("2 filters apply",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,fontFamily: "OpenSans",),),),
-                  Text("Clear All",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600
-                      ,fontFamily: "OpenSans",color: AppColors.primary),)
+                ),),
+                  Expanded(flex:3,child:  SizedBox(width: 5,),),
+                //  Expanded(child: Text("2 filters apply",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,fontFamily: "OpenSans",),),),
+                Expanded(child:   Text("Clear All",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600
+                    ,fontFamily: "OpenSans",color: AppColors.primary),))
 
                 ],
               ),
@@ -193,7 +193,7 @@ class SubCategoryScreenState extends State<SubCategoryScreen> {
                                                 .contains(searchText))
                                     ? GestureDetector(
                                   onTap: (){
-                                    CommonBottomSheet.show(context,snapshot.data!.data![index].providerId.toString(),snapshot.data!.data![index].serviceId.toString(),"service");
+                                    CommonBottomSheet.show(context,snapshot.data!.data![index].providerId.toString(),snapshot.data!.data![index].serviceId.toString(),"service","");
 
 
                                   },

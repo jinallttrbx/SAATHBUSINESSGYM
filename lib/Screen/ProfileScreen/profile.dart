@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:businessgym/Controller/profileController.dart';
 import 'package:businessgym/Controller/userprofilecontroller.dart';
+import 'package:businessgym/Screen/CRM%20Screens/customer_Crm.dart';
 import 'package:businessgym/Screen/ProfileScreen/AboutUsScreen.dart';
 import 'package:businessgym/Screen/ProfileScreen/EditProfilescreen.dart';
 import 'package:businessgym/Screen/ProfileScreen/feedbackScreen.dart';
@@ -111,7 +112,7 @@ workcontroller.viewWorkprofilelist();
                                         print("GO TO EDIT PROFILE SCREEN ");
                                         Get.to(
                                               () => EditUserProfileScreen(image: userprofile.productprofilelist!.profileImage!,
-                                            fname: userprofile.productprofilelist!.username!,mobile:userprofile.productprofilelist!.contactNumber!,gender:userprofile.productprofilelist!.gender! ,email:userprofile.productprofilelist!.email!   ),
+                                            fname: userprofile.productprofilelist!.username!,mobile:userprofile.productprofilelist!.contactNumber!,gender:userprofile.productprofilelist!.gender??"" ,email:userprofile.productprofilelist!.email!   ),
                                         );
                                       },
                                       child: SvgPicture.asset(AppImages.edit),
@@ -321,7 +322,34 @@ workcontroller.viewWorkprofilelist();
                       const SizedBox(
                         height: 20,
                       ),
-                      UserType=="user"?SizedBox.shrink(): GestureDetector(
+                      UserType=="user"?GestureDetector(
+                        onTap: () {
+                          Get.to(
+                             CustomerCRMScreen(),
+                          );
+                          print("Services");
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(AppImages.product),
+                              const SizedBox(
+                                width: 12,
+                              ),
+                              Expanded(
+                                child: boldtext(
+                                  AppColors.black,
+                                  14,
+                                  "History",
+                                ),
+                              ),
+                              SvgPicture.asset(AppImages.altarroe)
+                            ],
+                          ),
+                        ),
+                      ):
+                      GestureDetector(
                         onTap: () {
                           Get.to(
                             const MyServices(),
@@ -348,7 +376,7 @@ workcontroller.viewWorkprofilelist();
                           ),
                         ),
                       ),
-                      UserType=="user"?SizedBox.shrink():   const SizedBox(
+                      UserType=="user"?SizedBox(height: 20,):   const SizedBox(
                         height: 20,
                       ),
                       GestureDetector(

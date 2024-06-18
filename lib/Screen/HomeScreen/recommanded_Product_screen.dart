@@ -94,14 +94,14 @@ class RecomandedProductState extends State<RecomandedProductScreen> {
           title: "Recommended Product",
         ),
         backgroundColor: AppColors.BGColor,
-        body:ListView.builder(
+        body:getrecommandedproductdata!.isEmpty?Center(child: Text("No Recommended Product Found"),):ListView.builder(
           padding: EdgeInsets.zero,
           shrinkWrap: true,
           itemCount: getrecommandedproductdata!.length,
           itemBuilder: (BuildContext context, int i) {
             return GestureDetector(
               onTap: (){
-                CommonBottomSheet.show(context,getrecommandedproductdata![i].userId.toString(),getrecommandedproductdata![i].id.toString(),"product");
+                CommonBottomSheet.show(context,getrecommandedproductdata![i].userId.toString(),getrecommandedproductdata![i].id.toString(),"product","");
               },
               child:Container(
                   margin: const EdgeInsets.all(10),
@@ -175,7 +175,7 @@ class RecomandedProductState extends State<RecomandedProductScreen> {
                                             AppImages.rating),
                                   ),
                                   boldtext(const Color(0xff656565),
-                                      12, '    ${getrecommandedproductdata![i].averageRating==null?0:getrecommandedproductdata![i].averageRating} Rating')
+                                      12, '    ${getrecommandedproductdata![i].averageRating==null?0:getrecommandedproductdata![i].averageRating.toStringAsFixed(1)} Rating')
                                 ],
                               ),
                             ),

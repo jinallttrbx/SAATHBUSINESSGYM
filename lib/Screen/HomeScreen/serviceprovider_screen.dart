@@ -630,17 +630,10 @@ class _serviceproviderScreenState extends State<serviceproviderScreen> {
         Uri.parse(ApiUrl.getserviceprovider),
         headers: {"Authorization": USERTOKKEN.toString()},
       );
-
       print("response data my news ================="+response.body);
       //  Map<String, dynamic> map = json.decode(response.body);
-
-
-
       if (response.statusCode == 200) {
-
         hideLoader();
-
-
         ServiceProviderList? viewNewsModel = ServiceProviderList.fromJson(jsonDecode(response.body));
         serviceproviderdata = viewNewsModel.data;
         setState(() {
@@ -768,63 +761,66 @@ class _serviceproviderScreenState extends State<serviceproviderScreen> {
               Row(
                 children: [
                   Container(
-                    padding: EdgeInsets.only(left: 15,right: 15),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.primary),
-                        borderRadius: BorderRadius.all(Radius.circular(20))
-                    ),
-                    height: 35,
-                    width: 100,
-                    child: Center(
-                        child: GestureDetector(
-                          onTap: ()async {
+                   padding: EdgeInsets.only(left: 15,right: 15),
+                   decoration: BoxDecoration(
+                       border: Border.all(color: AppColors.primary),
+                       borderRadius: BorderRadius.all(Radius.circular(20))
+                   ),
+                   height: 35,
+                   width: 100,
+                   child: Center(
+                       child: GestureDetector(
+                         onTap: ()async {
 
-                              final result = await Get.to(
-                                    () => filterscreen(
-                                  catType: catType,
-                                  categoryList: categoryIdList,
-                                  rating: ratingValue,
-                                  lat: lat.toString(),
-                                  lng: lng.toString(),
-                                  openAt: openAt,
-                                  closeAt: closeAt,
-                                  min: startPrice,
-                                  max: endPrice,
-                                ),
-                              );
-                              if (result != null) {
-                                catType = result['type'];
-                                categoryIdList = result['category_id'];
-                                ratingValue = result['rating'];
-                                lat = result['lat'];
-                                lng = result['lng'];
-                                openAt = result['open_at'];
-                                closeAt = result['close_at'];
-                                startPrice = result['min_price'];
-                                endPrice = result['max_price'];
-                              }
+                           final result = await Get.to(
+                                 () => filterscreen(
+                               catType: catType,
+                               categoryList: categoryIdList,
+                               rating: ratingValue,
+                               lat: lat.toString(),
+                               lng: lng.toString(),
+                               openAt: openAt,
+                               closeAt: closeAt,
+                               min: startPrice,
+                               max: endPrice,
+                             ),
+                           );
+                           if (result != null) {
+                             catType = result['type'];
+                             categoryIdList = result['category_id'];
+                             ratingValue = result['rating'];
+                             lat = result['lat'];
+                             lng = result['lng'];
+                             openAt = result['open_at'];
+                             closeAt = result['close_at'];
+                             startPrice = result['min_price'];
+                             endPrice = result['max_price'];
+                           }
 
                            // Navigator.push(context, MaterialPageRoute(builder: (context)=>filterscreen()));
                            // Get.to(const filterscreen());
 
-                          },
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(AppImages.filter),
-                              SizedBox(width: 5,),
-                              Text("Filter",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,fontFamily: "OpenSans",),)
-                            ],
-                          ),
-                        )
-                    ),
-                  ),
-                  SizedBox(width: 5,),
-                  Expanded(child: Text("2 filters apply",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,fontFamily: "OpenSans",),),),
+                         },
+                         child: Row(
+                           crossAxisAlignment: CrossAxisAlignment.center,
+                           mainAxisAlignment: MainAxisAlignment.center,
+                           children: [
+                             SvgPicture.asset(AppImages.filter),
+                             SizedBox(width: 5,),
+                             Text("Filter",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,fontFamily: "OpenSans",),)
+                           ],
+                         ),
+                       )
+                   ),
+                 ),
+                 Expanded(
+                   flex:3,child:  SizedBox(width: 5,),),
+               //   Expanded(child: Text("2 filters apply",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,fontFamily: "OpenSans",),),),
                  GestureDetector(
                    onTap: (){
                      search.clear();
+                     print("searchsearchsearchsearchsearchsearchsearch");
+                   getuserType();
                    },
 
                    child:  Text("Clear All",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600
@@ -835,14 +831,14 @@ class _serviceproviderScreenState extends State<serviceproviderScreen> {
               ),
 
               SizedBox(height: 15,),
-             widget.title=="Service Provider"? searchlist.isEmpty?ListView.builder(
+             widget.title=="Service Provider"? searchlist.isEmpty || search.text.isEmpty?ListView.builder(
                  shrinkWrap: true,
                  itemCount: serviceproviderdata.length,
                  physics: const NeverScrollableScrollPhysics(),
                  itemBuilder: (BuildContext context, int index) {
                    return GestureDetector(
                      onTap: (){
-                       CommonBottomSheet.show(context,serviceproviderdata![index].userId.toString(),serviceproviderdata![index].userId.toString(),"service");
+                       CommonBottomSheet.show(context,serviceproviderdata![index].userId.toString(),serviceproviderdata![index].userId.toString(),"service","");
 
 
                      },
@@ -875,7 +871,7 @@ class _serviceproviderScreenState extends State<serviceproviderScreen> {
                                      ),
                                      StarsView(
                                          total:  5,
-                                         colored: serviceproviderdata?[index].averageRating??0,
+                                         colored: serviceproviderdata?[index].averageRating.toInt(),
 
                                          ontap: () {
                                            // Get.to(() =>
@@ -908,7 +904,7 @@ class _serviceproviderScreenState extends State<serviceproviderScreen> {
                  itemBuilder: (BuildContext context, int index) {
                    return GestureDetector(
                      onTap: (){
-                       CommonBottomSheet.show(context,searchlist![index].userid.toString(),searchlist![index].userid.toString(),"service");
+                       CommonBottomSheet.show(context,searchlist![index].userid.toString(),searchlist![index].userid.toString(),"service","");
 
 
                      },
@@ -941,7 +937,7 @@ class _serviceproviderScreenState extends State<serviceproviderScreen> {
                                      ),
                                      StarsView(
                                          total:  5,
-                                         colored: searchlist?[index].rating??0,
+                                         colored: searchlist?[index].rating!.toInt(),
 
                                          ontap: () {
                                            // Get.to(() =>
@@ -967,14 +963,14 @@ class _serviceproviderScreenState extends State<serviceproviderScreen> {
                    ) ;
 
                  }):
-             searchlist!.isEmpty?ListView.builder(
+     search.text.isEmpty||   searchlist!.isEmpty?ListView.builder(
                  shrinkWrap: true,
                  itemCount: productsellerdata!.length,
                  physics: const NeverScrollableScrollPhysics(),
                  itemBuilder: (BuildContext context, int index) {
                    return GestureDetector(
                      onTap: (){
-                       CommonBottomSheet.show(context,productsellerdata![index].userId.toString(),productsellerdata![index].userId.toString(),"product");
+                       CommonBottomSheet.show(context,productsellerdata![index].userId.toString(),productsellerdata![index].userId.toString(),"product","");
 
 
                      },
@@ -1040,7 +1036,7 @@ class _serviceproviderScreenState extends State<serviceproviderScreen> {
                  itemBuilder: (BuildContext context, int index) {
                    return GestureDetector(
                      onTap: (){
-                       CommonBottomSheet.show(context,searchlist![index].userid.toString(),searchlist![index].userid.toString(),"product");
+                       CommonBottomSheet.show(context,searchlist![index].userid.toString(),searchlist![index].userid.toString(),"product","");
 
                      },
                      child: Container(

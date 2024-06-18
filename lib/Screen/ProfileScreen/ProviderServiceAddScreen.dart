@@ -694,8 +694,7 @@ class ProviderServiceAddScreenState extends State<ProviderServiceAddScreen> {
 
 
                   onTap: () {
-                    bool emailaddress = RegExp(r'\b.*[a-zA-Z]+.*\b')
-                        .hasMatch(serviceController.text);
+                    bool servicename = RegExp(r'\b.*[a-zA-Z]+.*\b').hasMatch(serviceController.text);
 
                     if (categotyid == null) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -717,7 +716,7 @@ class ProviderServiceAddScreenState extends State<ProviderServiceAddScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text("Please Enter Name"),
                       ));
-                    } else if (emailaddress == false) {
+                    } else if (servicename == false) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text("Please Enter Proper Name!"),
                       ));

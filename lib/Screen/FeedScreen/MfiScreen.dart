@@ -42,11 +42,13 @@ class MfiScreenState extends State<MfiScreen> {
   final myaddressController = TextEditingController();
 
   Future<List<MfilistModelData>?>? providerdatalist;
- // Future<AppliedLoanModel?>? providerdatalist1;
+
+  // Future<AppliedLoanModel?>? providerdatalist1;
   List<MfilistModelData>? providerdata = [];
-  String Mfid="";
+  String Mfid = "";
   AppliedLoanListModel? addCallModel;
- // AppliedLoanModel? addCallModel1;
+
+  // AppliedLoanModel? addCallModel1;
   bool status = false;
   String waitappliy = "no";
   String loanFilter = "Applied";
@@ -67,15 +69,17 @@ class MfiScreenState extends State<MfiScreen> {
     setState(() {
       providerdatalist = getserviceList(UserId);
       appliedloanlist = addloanmmodeloges(UserId!);
-     // providerdatalist1 = addLoanModeloges(UserId!);
+      // providerdatalist1 = addLoanModeloges(UserId!);
     });
   }
+
   Future<AppliedLoanListModel?> addloanmmodeloges(String userId) async {
+    print("print userid is equal to provicer id $userId");
     showLoader(context);
     try {
       Map<String, String> requestBody = <String, String>{
         'provider_id': "" + userId,
-        'status':"0",
+        'status': "0",
       };
       print("USerId1 == supplier_id" + userId);
       final response = await http.post(
@@ -92,10 +96,10 @@ class MfiScreenState extends State<MfiScreen> {
         waitappliy = addCallModel!.loanapply!;
         setState(() {});
         List<AppliedLoanListModeldata> loanList = addCallModel?.data
-            ?.where((element) => loanFilter == 'Applied'
-            ? element.mfiName == null
-            : element.mfiName != null)
-            .toList() ??
+                ?.where((element) => loanFilter == 'Applied'
+                    ? element.mfiName == null
+                    : element.mfiName != null)
+                .toList() ??
             [];
         print(addCallModel);
         return addCallModel;
@@ -109,6 +113,7 @@ class MfiScreenState extends State<MfiScreen> {
       print("data==1=$e");
     }
   }
+
   Future<List<MfilistModelData>?>? getserviceList(String userid) async {
     try {
       showLoader(context);
@@ -178,204 +183,262 @@ class MfiScreenState extends State<MfiScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.BGColor,
-      appBar: APPBar(title: "Loan"),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-           Container(
-             margin: EdgeInsets.all(10),
-             decoration: BoxDecoration(
-                 color: Colors.white,
-               borderRadius: BorderRadius.all(Radius.circular(16))
-             ),
-             child:  Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
-               children: [
+        backgroundColor: AppColors.BGColor,
+        appBar: APPBar(title: "Loan"),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                margin: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(16))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FutureBuilder<AppliedLoanListModel?>(
+                        future: appliedloanlist,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            if (snapshot.hasError) {
+                              return Center(
+                                child: Text(
+                                  '${snapshot.error} occurred',
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                              );
+                            } else if (snapshot.hasData) {
+                              List<AppliedLoanListModeldata> loanList =
+                                  addCallModel
+                                          ?.data
+                                          ?.where((element) =>
+                                              loanFilter == 'Applied'
+                                                  ? element.mfiName == null
+                                                  : element.mfiName != null)
+                                          .toList() ??
+                                      [];
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      itemCount: loanList.length,
+                                      itemBuilder: (context, position) {
+                                        return Container(
+                                          padding: EdgeInsets.only(
+                                              top: 20,
+                                              bottom: 20,
+                                              left: 16,
+                                              right: 16),
+                                          margin: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                              color: Color(0xffF9F9F9),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(12))),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 3,
+                                                    child: boldtext(
+                                                        AppColors.black,
+                                                        16,
+                                                        "${"Loan request sent..."}"),
+                                                  ),
+                                                  Expanded(
+                                                      child: SvgPicture.asset(
+                                                    AppImages.loanapply,
+                                                  ))
+                                                ],
+                                              ),
+                                              boldtext(AppColors.hint, 14,
+                                                  "Status: ${loanList[position].approved == 0 ? "Applied" : "Reject" ?? ""}"),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Divider(
+                                                height: 1,
+                                                thickness: 1,
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        regulartext(
+                                                            AppColors.hint,
+                                                            12,
+                                                            "Requested amount"),
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        boldtext(
+                                                            AppColors.black,
+                                                            14,
+                                                            "₹${loanList[position].loanAmount ?? ""}"),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        //  regulartext(AppColors.hint,12,"Installment"),
+                                                        //  SizedBox(height: 5,),
+                                                        // boldtext(AppColors.black,14,"₹${loanList[position].installmentAmount??""}"),
+                                                        // SizedBox(height: 15,),
+                                                        //  regulartext(AppColors.hint,12,"Interest rate"),
+                                                        //  SizedBox(height: 5,),
+                                                        // boldtext(AppColors.black,14,"${loanList[position].intrestRate}%")
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        regulartext(
+                                                            AppColors.hint,
+                                                            12,
+                                                            "Loan type"),
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        boldtext(
+                                                            AppColors.black,
+                                                            14,
+                                                            "${loanList[position].loanType}"),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        //  regulartext(AppColors.hint,12,"Issue date"),
+                                                        // SizedBox(height: 5,),
+                                                        // boldtext(AppColors.black,14,"${DateFormat("dd/MM/yyyy").format(loanList[position].applyDate)}"),
+                                                        // SizedBox(height: 15,),
+                                                        // regulartext(AppColors.hint,12,"MFI Score"),
+                                                        //  SizedBox(height: 5,),
+                                                        // boldtext(AppColors.black,14,"${loanList[position].scoreCount}/100"),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              Divider(
+                                                height: 1,
+                                                thickness: 1,
+                                              ),
+                                              boldtext(AppColors.hint, 12,
+                                                  "Purpose"),
+                                              regulartext(AppColors.black, 14,
+                                                  "${loanList[position].purpose}")
+                                            ],
+                                          ),
+                                        );
+                                      })
+                                ],
+                              );
+                            }
+                          }
 
+                          // Displaying LoadingSpinner to indicate waiting state
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: boldtext(AppColors.black, 16, "List of MFIs"),
+                    ),
+                    FutureBuilder<List<MfilistModelData?>?>(
+                        future: providerdatalist,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            if (snapshot.hasError) {
+                              return Center(
+                                child: Text(
+                                  '${snapshot.error} occurred',
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                              );
+                            } else if (snapshot.hasData) {
+                              return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: snapshot.data!.length,
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          // Mfid=snapshot.data![index]!.mfiId.toString();
+                                          print(snapshot.data![index]!.mfiId
+                                              .toString());
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: AppColors.BGColor,
+                                        ),
+                                        padding: EdgeInsets.all(20),
+                                        margin: EdgeInsets.all(10),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              height: 50,
+                                              width: 50,
+                                              child: Image.network(
+                                                snapshot.data![index]!.image!,
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                            Expanded(
+                                                child: regulartext(
+                                                    AppColors.black,
+                                                    14,
+                                                    snapshot.data![index]!
+                                                        .userName!))
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            }
+                          }
 
-               FutureBuilder<AppliedLoanListModel?>(
-                     future: appliedloanlist,
-                     builder: (context, snapshot) {
-                       if (snapshot.connectionState ==
-                           ConnectionState.done) {
-                         if (snapshot.hasError) {
-                           return Center(
-                             child: Text(
-                               '${snapshot.error} occurred',
-                               style: const TextStyle(fontSize: 18),
-                             ),
-                           );
-                         } else if (snapshot.hasData) {
-                           List<AppliedLoanListModeldata> loanList = addCallModel
-                               ?.data
-                               ?.where((element) =>
-                           loanFilter != 'Applied'
-                               ? element.mfiName == null
-                               : element.mfiName != null)
-                               .toList() ??
-                               [];
-                           return Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                             children: [
-
-
-                               ListView.builder(
-                                   padding: EdgeInsets.zero,
-                                   shrinkWrap: true,
-                                   itemCount:loanList.length,
-                                   itemBuilder: (context,position){
-                                     return Container(
-                                       padding: EdgeInsets.only(top: 20,bottom: 20,left: 16,right: 16),
-                                       margin: EdgeInsets.all(10),
-                                       decoration: BoxDecoration(
-                                           color: Color(0xffF9F9F9),
-                                           borderRadius: BorderRadius.all(Radius.circular(12))
-                                       ),
-                                       child: Column(
-                                         crossAxisAlignment:CrossAxisAlignment.start,
-                                         children: [
-                                           Row(
-                                             children: [
-                                               Expanded(flex:3,child: boldtext(AppColors.black,16,"${"Loan request sent..."}"),),
-                                               Expanded(child: SvgPicture.asset(AppImages.loanapply,)
-                                               )
-                                             ],
-                                           ),
-                                           boldtext(AppColors.hint,14,"Status: ${loanList[position].approved==0?"Applied":""??""}"),
-                                           SizedBox(height: 15,),
-                                           Divider(height: 1,thickness: 1,),
-                                           SizedBox(height: 15,),
-                                           Row(
-                                             children: [
-                                               Expanded(child:  Column(
-                                                 crossAxisAlignment:CrossAxisAlignment.start,
-                                                 children: [
-                                                   regulartext(AppColors.hint,12,"Requested amount"),
-                                                   SizedBox(height: 5,),
-                                                   boldtext(AppColors.black,14,"₹${loanList[position].loanAmount??""}"),
-                                                     SizedBox(height: 10,),
-                                                   //  regulartext(AppColors.hint,12,"Installment"),
-                                                   //  SizedBox(height: 5,),
-                                                   // boldtext(AppColors.black,14,"₹${loanList[position].installmentAmount??""}"),
-                                                   // SizedBox(height: 15,),
-                                                   //  regulartext(AppColors.hint,12,"Interest rate"),
-                                                   //  SizedBox(height: 5,),
-                                                   // boldtext(AppColors.black,14,"${loanList[position].intrestRate}%")
-                                                 ],
-                                               ),),
-                                               Expanded(child: Column(
-                                                 crossAxisAlignment:CrossAxisAlignment.start,
-                                                 children: [
-                                                   regulartext(AppColors.hint,12,"Loan type"),
-                                                   SizedBox(height: 5,),
-                                                   boldtext(AppColors.black,14,"${loanList[position].loanType}"),
-                                                    SizedBox(height: 10,),
-                                                   //  regulartext(AppColors.hint,12,"Issue date"),
-                                                   // SizedBox(height: 5,),
-                                                   // boldtext(AppColors.black,14,"${DateFormat("dd/MM/yyyy").format(loanList[position].applyDate)}"),
-                                                   // SizedBox(height: 15,),
-                                                   // regulartext(AppColors.hint,12,"MFI Score"),
-                                                   //  SizedBox(height: 5,),
-                                                   // boldtext(AppColors.black,14,"${loanList[position].scoreCount}/100"),
-                                                 ],
-                                               ),)
-
-                                             ],
-                                           ),
-                                           Divider(height: 1,thickness: 1,),
-                                           boldtext(AppColors.hint, 12, "Purpose"),
-                                           regulartext(AppColors.black, 14, "${loanList[position].purpose}")
-                                         ],
-                                       ),
-                                     );
-                                   })
-
-
-                             ],
-                           );
-                         }
-                       }
-
-                       // Displaying LoadingSpinner to indicate waiting state
-                       return const Center(
-                         child: CircularProgressIndicator(),
-                       );
-                     }),
-                 Padding(padding: EdgeInsets.only(left: 20),child:  boldtext(AppColors.black, 16, "List of MFIs"),),
-
-                 FutureBuilder<List<MfilistModelData?>?>(
-                     future: providerdatalist,
-                     builder: (context, snapshot) {
-                       if (snapshot.connectionState == ConnectionState.done) {
-                         if (snapshot.hasError) {
-                           return Center(
-                             child: Text(
-                               '${snapshot.error} occurred',
-                               style: const TextStyle(fontSize: 18),
-                             ),
-                           );
-                         } else if (snapshot.hasData) {
-                           return ListView.builder(
-                               shrinkWrap: true,
-                               physics: const NeverScrollableScrollPhysics(),
-                               itemCount: snapshot.data!.length,
-                               scrollDirection: Axis.vertical,
-                               itemBuilder: (BuildContext context, int index) {
-                                 return GestureDetector(
-                                   onTap: (){
-                                     setState(() {
-                                      // Mfid=snapshot.data![index]!.mfiId.toString();
-                                       print(snapshot.data![index]!.mfiId.toString());
-                                     });
-                                   },
-                                   child: Container(
-                                     decoration: BoxDecoration(
-                                       borderRadius: BorderRadius.circular(5),
-                                       color:  AppColors.BGColor,
-                                     ),
-                                     padding: EdgeInsets.all(20),
-                                     margin: EdgeInsets.all(10),
-                                     child: Row(
-                                       children: [
-                                         Container(
-                                           height:50,
-                                           width: 50,
-                                           child:  Image.network(snapshot.data![index]!.image!,fit: BoxFit.contain,),
-                                         ),
-                                         Expanded(child: regulartext(AppColors.black,14,snapshot.data![index]!.userName!))
-                                       ],
-                                     ),
-                                   ),
-                                 );
-                               });
-                         }
-                       }
-
-                       // Displaying LoadingSpinner to indicate waiting state
-                       return const Center(
-                         child: CircularProgressIndicator(),
-                       );
-                     }),
-
-                 const SizedBox(
-                   height: 150,
-                 )
-
-
-               ],
-             ),
-           )
-          ],
+                          // Displaying LoadingSpinner to indicate waiting state
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }),
+                    const SizedBox(
+                      height: 150,
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
-      ),
         bottomNavigationBar: Container(
           color: AppColors.white,
           child: Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: SizedBox(
               height: 50,
               width: double.infinity,
@@ -386,18 +449,16 @@ class MfiScreenState extends State<MfiScreen> {
                     ),
                     backgroundColor: AppColors.primary,
                   ),
-                  onPressed: (){
-                    Get.to( LoneScreens(Mfid));
-
-
+                  onPressed: () {
+                    Get.to(LoneScreens(Mfid));
                   },
-                  child:  boldtext(AppColors.white,18,
+                  child: boldtext(
+                    AppColors.white,
+                    18,
                     'Apply for loan',
                   )),
             ),
           ),
-        )
-    );
-
+        ));
   }
 }

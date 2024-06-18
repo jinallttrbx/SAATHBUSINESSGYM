@@ -196,15 +196,16 @@ class MyServicesScreensState extends State<MyServicesScreens> {
               );
             },
                                       child:  Container(
-                                        width: 50,
+                                        width: 70,
+                                        height: 30,
                                         padding: EdgeInsets.all(5),
 
                                                      decoration: BoxDecoration(
                                                          color: Colors.white,
                                                          borderRadius: BorderRadius.all(Radius.circular(50))
                                                      ),
-                                        child: boldtext(AppColors.black,14,serviceproviderdata[index].subData![index1].name!,
-                                        ),
+                                        child:Center(child:  boldtext(AppColors.black,14,serviceproviderdata[index].subData![index1].name!,
+                                        ),)
                                       ),
                                     );
                                   })
@@ -255,15 +256,16 @@ class MyServicesScreensState extends State<MyServicesScreens> {
                                         );
                                       },
                                       child:  Container(
-                                        width: 50,
+                                        width: 70,
+                                        height: 30,
                                         padding: EdgeInsets.all(5),
 
                                         decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius: BorderRadius.all(Radius.circular(50))
                                         ),
-                                        child: boldtext(AppColors.black,14,productsellerdata![index].subData![index1].name!,
-                                        ),
+                                        child: Center(child: boldtext(AppColors.black,14,productsellerdata![index].subData![index1].name!,
+                                        ),)
                                       ),
                                     );
                                   })

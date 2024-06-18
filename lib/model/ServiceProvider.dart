@@ -27,7 +27,7 @@ class ServiceProviderList {
 class ServiceProviderdata {
   int id;
   int providerId;
-  dynamic type;
+  String? type;
   int duration;
   DateTime createdAt;
   DateTime updatedAt;
@@ -38,7 +38,7 @@ class ServiceProviderdata {
   dynamic mobile;
   dynamic email;
   int totalRating;
-  int averageRating;
+  double averageRating;
   int categoryId;
   String categoryName;
   String username;
@@ -101,7 +101,7 @@ class ServiceProviderdata {
     mobile: json["mobile"],
     email: json["email"],
     totalRating: json["total_rating"],
-    averageRating: json["average_rating"],
+    averageRating: json["average_rating"]?.toDouble(),
     categoryId: json["category_id"],
     categoryName: json["category_name"],
     username: json["username"],

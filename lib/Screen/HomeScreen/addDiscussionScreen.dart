@@ -222,13 +222,13 @@ class _AddDiscussionScreenState extends State<AddDiscussionScreen> {
                             isDense: true,
                             border: const OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Color.fromARGB(255, 74, 137, 92),
+                                color: AppColors.primary,
                                 width: 3.0,
                               ),
                             ),
                             focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Color.fromARGB(255, 74, 137, 92),
+                                color: AppColors.primary,
                                 width: 3.0,
                               ),
                             ),
@@ -319,7 +319,7 @@ class _AddDiscussionScreenState extends State<AddDiscussionScreen> {
               content: Text(
                   "Please Enter Description"),
             ));
-          }else if(_controller.textEditingController!.text.isEmpty){
+          }else if(_controller.hasTags==false){
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(
               content: Text(

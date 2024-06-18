@@ -41,13 +41,13 @@ class ProviderServiceScreenState extends State<ProviderServiceScreen> {
             itemCount: servicecontroller.serviceprofilelist!.length,
             itemBuilder: (BuildContext context, int index) =>
                 Container(
-                    margin: EdgeInsets.only(left: 10,right: 10,top: 02),
+                    margin: EdgeInsets.only(left: 10,right: 10,top: 5),
                     decoration:BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(16))
                     ),
                     child:  GestureDetector(
-                      child: _buildListservice(servicecontroller.serviceprofilelist[index]),
+                      child: servicecontroller.serviceprofilelist[index].subCategory.isEmpty?SizedBox.shrink():_buildListservice(servicecontroller.serviceprofilelist[index]),
                       //Text(categorydata![index].data[index].subCategory.length.toString())
 
                     )
@@ -86,7 +86,7 @@ class ProviderServiceScreenState extends State<ProviderServiceScreen> {
   }
   Widget _buildListservice(ServiceCategory list) {
     if (list.subCategory.isNotEmpty)
-      return ExpansionTile(
+      return list.subCategory.isEmpty?SizedBox.shrink():ExpansionTile(
         // leading: Icon(list.icon),
         title: Row(
           children: [
@@ -109,12 +109,12 @@ class ProviderServiceScreenState extends State<ProviderServiceScreen> {
         ),
         children: [
           ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.zero,
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
               shrinkWrap: true,
               itemCount: list.subCategory.length,
               itemBuilder: (context,position){
-              print(list.subCategory.length.toString());
+                print(list.subCategory.length.toString());
                 return GestureDetector(
                   onTap: (){
                     Get.to(editproviderservicepcreen(title: 'Service',list:list,list1: list.subCategory[position],));

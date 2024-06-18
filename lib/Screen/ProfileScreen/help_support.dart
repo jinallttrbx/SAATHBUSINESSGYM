@@ -219,7 +219,7 @@ class Help_supportScreenState extends State<Help_supportScreen> {
                           ));
                         }else if(description.text.isEmpty){
                           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text("Please Enter Discription!"),
+                            content: Text("Please Enter Description!"),
                           ));
                         }else{
                           sendhelpsupport(
@@ -304,6 +304,7 @@ class Help_supportScreenState extends State<Help_supportScreen> {
     String url = ApiUrl.addhelpsupport;
     showLoader(context);
     print(url);
+    print(userid);
 
     try {
       var request = http.MultipartRequest("POST", Uri.parse(url));
@@ -316,7 +317,7 @@ class Help_supportScreenState extends State<Help_supportScreen> {
         String result = await value.stream.bytesToString();
         print("result  $result");
         hideLoader();
-        await Methods1.orderSuccessAlert(context, 'Help Suppoer Message Send Successfully');
+        await Methods1.orderSuccessAlert(context, 'Help Support Message Send Successfully');
         hideLoader();
       });
     } catch (e) {

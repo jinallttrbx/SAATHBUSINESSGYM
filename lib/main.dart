@@ -37,6 +37,7 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
   static void setLocale(BuildContext context, Locale newlocale) {
+    print(newlocale);
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
     state?.setLocale(newlocale);
   }
@@ -100,22 +101,22 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     trans.onInit();
-    getNotification();
+   // getNotification();
     Timer(const Duration(seconds: 5), () => getScreen());
   }
 
-  getNotification() {
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
-      if (message != null) {
-        RemoteNotification? notification = message.notification;
-        AndroidNotification? android = message.notification?.android;
-        if (notification != null && android != null) {
-          //dailog logic
-          print(notification);
-        }
-      }
-    });
-  }
+  // getNotification() {
+  //   FirebaseMessaging.instance.getInitialMessage().then((message) {
+  //     if (message != null) {
+  //       RemoteNotification? notification = message.notification;
+  //       AndroidNotification? android = message.notification?.android;
+  //       if (notification != null && android != null) {
+  //         //dailog logic
+  //         print(notification);
+  //       }
+  //     }
+  //   });
+  // }
 
   getScreen() async {
 

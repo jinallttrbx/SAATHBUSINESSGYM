@@ -14,6 +14,7 @@ import 'package:businessgym/values/const_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,14 +23,15 @@ class CommonBottomSheet extends StatefulWidget {
   String userid;
   String firstid;
   String type;
+  String view;
 
-  CommonBottomSheet(this.userid, this.firstid, this.type);
+  CommonBottomSheet(this.userid, this.firstid, this.type,this.view);
 
   @override
   _CommonBottomSheetState createState() => _CommonBottomSheetState();
 
   static void show(
-      BuildContext context, String userid, String firstid, String type) {
+      BuildContext context, String userid, String firstid, String type,String view) {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -42,25 +44,25 @@ class CommonBottomSheet extends StatefulWidget {
         builder: (BuildContext bc) {
           return StatefulBuilder(builder: (BuildContext context,
               StateSetter setState /*You can rename this!*/) {
-            return CommonBottomSheet(userid, firstid, type);
+            return CommonBottomSheet(userid, firstid, type,view);
           });
         });
   }
 }
 
 class _CommonBottomSheetState extends State<CommonBottomSheet> {
-  String name = "";
-  String address = "";
+  String name = "-";
+  String address = "-";
   double ratingstart = 0.0;
   int listToShow = 0;
-  String contactnmber = "";
-  String email = "";
-  String gstnumber = "";
-  String fassainumber = "";
-  String openat = "";
-  String closeat = "";
-  String image = "";
-  String UserId = "";
+  String contactnmber = "-";
+  String email = "-";
+  String gstnumber = "-";
+  String fassainumber = "-";
+  String openat = "-";
+  String closeat = "-";
+  String image = "-";
+  String UserId = "-";
   Future<List<Getservicebyuseriddata?>?>? servicebyid;
   List<Getservicebyuseriddata>? servicebyiddata = [];
   Future<List<GetproductbyuseridData?>?>? productbyid;
@@ -92,9 +94,10 @@ class _CommonBottomSheetState extends State<CommonBottomSheet> {
       getuserdata(widget.userid);
       print(UserId);
       print(widget.userid);
-      UserId == widget.userid
-          ? print("same user id")
-          : addprofile(widget.userid);
+      addprofile(widget.userid);
+      // UserId == widget.userid
+      //     ? print("same user id")
+      //     : addprofile(widget.userid);
     });
   }
 
@@ -141,7 +144,7 @@ class _CommonBottomSheetState extends State<CommonBottomSheet> {
                           Container(
                             margin:
                                 EdgeInsets.only(left: 100, right: 100, top: 10),
-                            padding: EdgeInsets.all(11),
+                            padding: EdgeInsets.all(8),
                             height: 45,
                             decoration: BoxDecoration(
                                 color: Color(0xffF1FAFF),
@@ -161,8 +164,8 @@ class _CommonBottomSheetState extends State<CommonBottomSheet> {
                                     itemBuilder: (context, _) =>
                                         SvgPicture.asset(AppImages.rating),
                                   ),
-                                  boldtext(Color(0xff656565), 12,
-                                      "${ratingstart==0.0?0:ratingstart} Rating")
+                                  boldtext(Color(0xff656565), 10,
+                                      "${ratingstart==0.0?0:ratingstart.toStringAsFixed(1)} Rating")
                                 ],
                               ),
                             ),
@@ -426,11 +429,12 @@ class _CommonBottomSheetState extends State<CommonBottomSheet> {
                                                                   onPressed:
                                                                       () async {
                                                                     // ontap();
-                                                                    addlead(
+                                                                        print(widget.view);
+                                                                    widget.view!="ViewProfile"?addlead(
                                                                         widget
                                                                             .userid,
                                                                         widget
-                                                                            .firstid);
+                                                                            .firstid):print("View PRofile");
                                                                     var url =
                                                                         'https://api.whatsapp.com/send?phone=+91${contactnmber!.substring(3, 13)}&text';
                                                                     await launch(
@@ -484,6 +488,12 @@ class _CommonBottomSheetState extends State<CommonBottomSheet> {
                                                                               .primary),
                                                                   onPressed:
                                                                       () {
+                                                                    print(widget.view);
+                                                                        widget.view!="ViewProfile"? addlead(
+                                                                            widget
+                                                                                .userid,
+                                                                            widget
+                                                                                .firstid):print("Profile View");
                                                                     final data = Uri(
                                                                         scheme:
                                                                             'tel',
@@ -843,7 +853,7 @@ class _CommonBottomSheetState extends State<CommonBottomSheet> {
         print(userdata!.data.contactNumber);
         print(userdata!.data.email);
         print(userdata!.data.username);
-        print(userdata!.data.address);
+        print(userdata!.data.businessAddress);
         print(userdata!.data.gstNumber);
         print(userdata!.data.fssaiNumber);
 
@@ -851,17 +861,17 @@ class _CommonBottomSheetState extends State<CommonBottomSheet> {
           contactnmber = userdata!.data.contactNumber;
           name = userdata!.data.username;
           address =
-              userdata!.data.address == null ? "-" : userdata!.data.address;
-          email = userdata!.data.email == null ? "-" : userdata!.data.email;
+              userdata!.data.businessAddress == null ||userdata!.data.businessAddress == ""? "-" : userdata!.data.businessAddress;
+          email = userdata!.data.email == null||userdata!.data.email=="" ? "-" : userdata!.data.email;
           gstnumber =
-              userdata!.data.gstNumber == null ? "-" : userdata!.data.gstNumber;
-          fassainumber = userdata!.data.fssaiNumber == null
+              userdata!.data.gstNumber == null||userdata!.data.gstNumber =="" ? "-" : userdata!.data.gstNumber;
+          fassainumber = userdata!.data.fssaiNumber == null||userdata!.data.fssaiNumber==""
               ? "-"
               : userdata!.data.fssaiNumber;
-          openat = userdata!.data.openTime==null?"-":userdata!.data.openTime.toString();
+          openat = userdata!.data.openTime.toString();
           closeat = userdata!.data.closeTime==null?"-":userdata!.data.closeTime.toString();
           ratingstart = userdata!.data.rating == null
-              ? 0.0
+              ? 0
               : userdata!.data.rating.toDouble();
           image = userdata!.data.profileImage;
         });
@@ -937,22 +947,4 @@ class _CommonBottomSheetState extends State<CommonBottomSheet> {
   }
 }
 
-// Example of opening the bottom sheet from another page
-class AnotherPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Another Page'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            CommonBottomSheet.show(context, "5", "8", "service");
-          },
-          child: Text('Open Bottom Sheet'),
-        ),
-      ),
-    );
-  }
-}
+

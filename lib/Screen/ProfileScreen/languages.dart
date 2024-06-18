@@ -24,7 +24,7 @@ class _LanguagesState extends State<Languages> {
   List<LanguageModel>? list;
   Locale sharedLocale = const Locale('en', 'gu');
   int? selectedIndex;
-  final String apiKey = 'AIzaSyC-YuBjaE5a6htqora99l1P2bk4JmnpH6E'; // Replace with your API key
+  final String apiKey = 'AIzaSyAFj2efLrrgZ0wB83uV6ZVPPaf_JXpyPcE'; // Replace with your API key
   final String apiUrl = 'https://translation.googleapis.com/language/translate/v2';
 
   String sourceText = 'Hello';
@@ -51,8 +51,9 @@ class _LanguagesState extends State<Languages> {
         'key': apiKey,
       }),
     );
-
+    print(response.body);
     if (response.statusCode == 200) {
+
       final data = jsonDecode(response.body);
       setState(() {
         translatedText = data['data']['translations'][0]['translatedText'];

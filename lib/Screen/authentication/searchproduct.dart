@@ -45,7 +45,7 @@ class ProviderproductearchScreenState extends State<ProviderproductsearchScreen>
             itemBuilder: (BuildContext context, int index) {
               return widget.type==searchlist[index].type?GestureDetector(
                 onTap: (){
-                  CommonBottomSheet.show(context,searchlist![index].userid.toString(),searchlist![index].userid.toString(),"service");
+                  CommonBottomSheet.show(context,searchlist![index].userid.toString(),searchlist![index].userid.toString(),"service","");
 
 
                 },
@@ -84,8 +84,7 @@ class ProviderproductearchScreenState extends State<ProviderproductsearchScreen>
                                 ),
                                 StarsView(
                                     total:  5,
-                                    colored: searchlist?[index].rating??0,
-
+                                    colored: searchlist?[index].rating.toInt(),
                                     ontap: () {
                                       // Get.to(() =>
                                       //     RatingandReviewByUserScreens(

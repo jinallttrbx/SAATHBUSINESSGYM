@@ -98,8 +98,7 @@ Widget regulartext(
       fontFamily: "OpenSans",
       fontWeight: FontWeight.w500,
     ),
-  );
-      //.translate();
+  );//.translate();
 }
 Widget regulartext1(
     Color tcolor,
@@ -115,8 +114,7 @@ Widget regulartext1(
       fontFamily: "OpenSans",
       fontWeight: FontWeight.w600,
     ),
-  );
-      //.translate();
+  );//.translate();
 }
 Widget boldtext(
   Color tcolor,
@@ -132,8 +130,7 @@ Widget boldtext(
       fontFamily: "OpenSans",
       fontWeight: FontWeight.w600,
     ),
-  );
-      //.translate();
+  );//.translate();
 }
 
 Widget bottomtexttitle(
@@ -163,7 +160,7 @@ Widget bottomtextdesc(
         fontWeight: FontWeight.w600,
         fontFamily: "OpenSans",
       ));
-      //.translate();
+     // .translate();
 }
 
 class CustomStyle {

@@ -48,12 +48,12 @@ class ProviderServiceScreenState extends State<ProductServices> {
             itemCount: productcontroller.productprofilelist!.length,
             itemBuilder: (BuildContext context, int index) =>
                 Container(
-                  margin: EdgeInsets.only(left: 10,right: 10,top: 10),
+                  margin: EdgeInsets.only(left: 10,right: 10,top: 5),
                   decoration:BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(16))
                   ),
-                  child:  _buildListproduct(productcontroller.productprofilelist![index]),
+                  child:  productcontroller.productprofilelist[index].subCategory.isEmpty?SizedBox.shrink(): _buildListproduct(productcontroller.productprofilelist![index]),
                 )
         ),
         bottomNavigationBar: Padding(
@@ -86,95 +86,88 @@ class ProviderServiceScreenState extends State<ProductServices> {
     );
   }
   Widget _buildListproduct(ProductCategory list) {
-
-    if (list.subCategory.isEmpty)
-      return Builder(
-
-
-          builder: (context) {
-            return SizedBox.shrink();
-          }
-      );
-    return ExpansionTile(
-
-      // leading: Icon(list.icon),
-      title: Row(
-        children: [
-          boldtext(Colors.black,16,
-            list.categoryName,
-          ),
-          Container(
-              padding: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
-              decoration: BoxDecoration(
-                  color: list.type.name!="PROVIDER"?AppColors.primary.withOpacity(0.05):AppColors.LightGreens,
-                  borderRadius: BorderRadius.all(Radius.circular(9))
-              ),
-              child: list.type.name=="PROVIDER"?boldtext(AppColors.Green,10,
-                "ME",
-              ):boldtext(AppColors.primary,10,
-                "Supplier",
-              )
-          ),
-        ],
-      ),
-      children: [
-         ListView.builder(
-           physics: NeverScrollableScrollPhysics(),
-
-            shrinkWrap: true,
-            itemCount: list.subCategory.length,
-            itemBuilder: (context,position){
-              return GestureDetector(
-                onTap: (){
-                  Get.to(editproviderproductpcreen(title: 'Product',list:list,list1: list.subCategory[position],));
-                },
-                child: Container(
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.all(10),
-                          child: Row(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                                ),
-                                height: 60,
-                                width: 60,
-                                child:  ClipRRect(
-                                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                                  child:  Image.network(list.subCategory[position].productImage??"",fit: BoxFit.fill,),
-                                ),
-                              ),
-                              SizedBox(width: 10,),
-                              Expanded(child:  Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  regulartext(AppColors.hint,12,list.subCategory[position].productName??""),
-                                  list.subCategory[position].subCategoriesName!=""? boldtext(AppColors.black,14,list.subCategory[position].subCategoriesName??""):boldtext(AppColors.black,14,list.subCategory[position].subCategoriesName??""),
-                                ],
-                              ),),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  regulartext(AppColors.hint,12,"Price range"),
-                                  boldtext(AppColors.black,14,"${list.subCategory[position].minPrice.toString()} to ${list.subCategory[position].maxPrice.toString()}"),
-                                ],
-                              )
-
-
-                            ],
-                          ),
-                        )
-
-
-                      ],
-                    )
+    if (list.subCategory.isNotEmpty)
+      return ExpansionTile(
+        // leading: Icon(list.icon),
+        title: Row(
+          children: [
+            boldtext(Colors.black,16,
+              list.categoryName,
+            ),
+            Container(
+                padding: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
+                decoration: BoxDecoration(
+                    color: list.type.name!="PROVIDER"?AppColors.primary.withOpacity(0.05):AppColors.LightGreens,
+                    borderRadius: BorderRadius.all(Radius.circular(9))
                 ),
-              );
-            })
-      ],
-    );
+                child: list.type.name=="PROVIDER"?boldtext(AppColors.Green,10,
+                  "ME",
+                ):boldtext(AppColors.primary,10,
+                  "Supplier",
+                )
+            ),
+          ],
+        ),
+        children: [
+          ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              itemCount: list.subCategory.length,
+              itemBuilder: (context,position){
+                print(list.subCategory.length.toString());
+                return GestureDetector(
+                  onTap: (){
+                    Get.to(editproviderproductpcreen(title: 'Service',list:list,list1: list.subCategory[position],));
+                  },
+                  child: Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                                  ),
+                                  height: 60,
+                                  width: 60,
+                                  child:  ClipRRect(
+                                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                                    child:  Image.network(list.subCategory[position].productImage,fit: BoxFit.fill,),
+                                  ),
+                                ),
+                                SizedBox(width: 10,),
+                                Expanded(child:  Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    regulartext(AppColors.hint,12,list.subCategory[position].productName),
+                                    list.subCategory[position].subCategoriesName!=null? boldtext(AppColors.black,14,list.subCategory[position].subCategoriesName!):boldtext(AppColors.black,14,list.subCategory[position].subCategoriesName!),
+                                  ],
+                                ),),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    regulartext(AppColors.hint,12,"Price range"),
+                                    boldtext(AppColors.black,14,"${list.subCategory[position].minPrice.toString()} to ${list.subCategory[position].maxPrice.toString()}"),
+                                  ],
+                                )
+
+
+                              ],
+                            ),
+                          )
+
+
+                        ],
+                      )
+                  ),
+                );
+              })
+        ],
+      );
+    return SizedBox.shrink();
   }
 
 

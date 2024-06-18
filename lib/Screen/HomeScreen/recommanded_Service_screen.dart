@@ -107,7 +107,7 @@ class RecomandedServiceState extends State<RecomandedServiceScreen> {
             return GestureDetector(
               onTap: (){
 
-                CommonBottomSheet.show(context,getrecommandedservicedata![i].userId.toString(),getrecommandedservicedata![i].id.toString(),"service");
+                CommonBottomSheet.show(context,getrecommandedservicedata![i].userId.toString(),getrecommandedservicedata![i].id.toString(),"service","");
 
               },
               child:Container(
@@ -182,7 +182,7 @@ class RecomandedServiceState extends State<RecomandedServiceScreen> {
                                             AppImages.rating),
                                   ),
                                   boldtext(const Color(0xff656565),
-                                      12, '    ${getrecommandedservicedata![i].averageRating==null?0:getrecommandedservicedata![i].averageRating} Rating')
+                                      12, '    ${getrecommandedservicedata![i].averageRating==null?0:getrecommandedservicedata![i].averageRating.toStringAsFixed(1)} Rating')
                                 ],
                               ),
                             ),

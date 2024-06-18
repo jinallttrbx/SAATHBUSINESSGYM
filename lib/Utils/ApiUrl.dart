@@ -4,9 +4,13 @@
 
 class ApiUrl {
   //http://admin.businessgym.in/api/
-  //static var baseurl = "http://admin.businessgym.in/api/";
-  static var BASEURL="https://saath.lttrbx.in/";
-  static var baseurl="https://saath.lttrbx.in/api/";
+  // static var baseurl = "http://admin.businessgym.in/api/";
+  static var BASEURL="https://admin.businessgym.in/";
+  static var  baseurl="https://admin.businessgym.in/api/";
+ //  static var BASEURL="https://devbusinessgym.lttrbx.in";
+ // static var  baseurl="https://devbusinessgym.lttrbx.in/api/";
+ //  static var BASEURL="https://saath.lttrbx.in/";
+ //  static var baseurl="https://saath.lttrbx.in/api/";
   static var loginApiUrl = "${baseurl}login_new";
   static var RegisterApiUrl = "${baseurl}register_new";
   static var organizationlist="${baseurl}organization_list";
@@ -105,7 +109,8 @@ class ApiUrl {
   static var addleadrating="${baseurl}add_lead_rating";
   static var adduserrating="${baseurl}add_user_rating";
   static var searchFilterUrl = "${baseurl}search";
-  static var getuerdetailsbyid="${baseurl}UserDataByID?id=";
+  static var getuerdetailsbyid="${baseurl}UserDataByID?id=";//user table avarage rating show
+  static var getuerdetailsbyuserid="${baseurl}CustomerDataByID?id=";//user table avarage rating show
   static var addhelpsupport="${baseurl}add-support-request";
   static var addfeedback="${baseurl}addFeedback";
 }

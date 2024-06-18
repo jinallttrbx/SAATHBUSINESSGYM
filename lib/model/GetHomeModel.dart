@@ -11,12 +11,12 @@ String getHomeModelToJson(GetHomeModel data) => json.encode(data.toJson());
 class GetHomeModel {
   bool status;
   String message;
-  int profilecompleted;
-  int avrageRating;
-  double overallMfiScore;
-  int serviceCount;
-  int productCount;
-  int loanCount;
+  dynamic profilecompleted;
+  dynamic avrageRating;
+  dynamic overallMfiScore;
+  dynamic serviceCount;
+  dynamic productCount;
+  dynamic loanCount;
   List<ProductListElement> serviceList;
   List<ProductListElement> productList;
   List<DocumentList> documentList;
@@ -40,7 +40,7 @@ class GetHomeModel {
     message: json["message"],
     profilecompleted: json["profilecompleted"],
     avrageRating: json["avrage_rating"],
-    overallMfiScore: json["overall_mfi_score"]?.toDouble(),
+    overallMfiScore: json["overall_mfi_score"],
     serviceCount: json["service_count"],
     productCount: json["product_count"],
     loanCount: json["loan_count"],
@@ -65,19 +65,19 @@ class GetHomeModel {
 }
 
 class DocumentList {
-  int id;
-  int categoryId;
-  CategoryName categoryName;
-  String name;
-  String supportNumber;
-  String usefullLink;
-  int status;
-  String isRequired;
-  String isSubmitted;
-  String isVerified;
-  String providerDocument;
-  String uploadedDocument;
-  ProviderExtension providerExtension;
+  dynamic id;
+  dynamic categoryId;
+  dynamic categoryName;
+  dynamic name;
+  dynamic supportNumber;
+  dynamic usefullLink;
+  dynamic status;
+  dynamic isRequired;
+  dynamic isSubmitted;
+  dynamic isVerified;
+  dynamic providerDocument;
+  dynamic uploadedDocument;
+  dynamic providerExtension;
 
   DocumentList({
     required this.id,
@@ -98,7 +98,7 @@ class DocumentList {
   factory DocumentList.fromJson(Map<String, dynamic> json) => DocumentList(
     id: json["id"],
     categoryId: json["category_id"],
-    categoryName: categoryNameValues.map[json["category_name"]]!,
+    categoryName: json["category_name"],
     name: json["name"],
     supportNumber: json["support_number"],
     usefullLink: json["usefull_link"],
@@ -108,13 +108,13 @@ class DocumentList {
     isVerified: json["is_verified"],
     providerDocument: json["provider_document"],
     uploadedDocument: json["uploaded_document"],
-    providerExtension: providerExtensionValues.map[json["provider_extension"]]!,
+    providerExtension: json["provider_extension"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "category_id": categoryId,
-    "category_name": categoryNameValues.reverse[categoryName],
+    "category_name": categoryName,
     "name": name,
     "support_number": supportNumber,
     "usefull_link": usefullLink,
@@ -124,67 +124,49 @@ class DocumentList {
     "is_verified": isVerified,
     "provider_document": providerDocument,
     "uploaded_document": uploadedDocument,
-    "provider_extension": providerExtensionValues.reverse[providerExtension],
+    "provider_extension": providerExtension,
   };
 }
 
-enum CategoryName {
-  EMPTY,
-  HOUSEHOLD_SERVICES
-}
 
-final categoryNameValues = EnumValues({
-  "": CategoryName.EMPTY,
-  "Household Services": CategoryName.HOUSEHOLD_SERVICES
-});
-
-enum ProviderExtension {
-  GIF,
-  PNG
-}
-
-final providerExtensionValues = EnumValues({
-  "gif": ProviderExtension.GIF,
-  "png": ProviderExtension.PNG
-});
 
 class ProductListElement {
-  int id;
-  String name;
-  int categoryId;
-  int providerId;
-  int price;
-  int minPrice;
-  int maxPrice;
-  String? type;
+  dynamic id;
+  dynamic name;
+  dynamic categoryId;
+  dynamic providerId;
+  dynamic price;
+  dynamic minPrice;
+  dynamic maxPrice;
+  dynamic type;
   dynamic discount;
-  int status;
-  String description;
-  int isFeatured;
+  dynamic status;
+  dynamic description;
+  dynamic isFeatured;
   dynamic addedBy;
   dynamic deletedAt;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int subcategoryId;
+  dynamic createdAt;
+  dynamic updatedAt;
+  dynamic subcategoryId;
   dynamic occupationId;
-  int workProfileId;
+  dynamic workProfileId;
   dynamic city;
   dynamic address;
   dynamic mapLink;
   dynamic mobile;
   dynamic email;
   dynamic productType;
-  int totalRating;
-  int averageRating;
-  int duration;
-  String contactNumber;
-  double distance;
-  String username;
-  String profileImage;
-  String tag;
+  dynamic totalRating;
+  dynamic averageRating;
+  dynamic duration;
+  dynamic contactNumber;
+  dynamic distance;
+  dynamic username;
+  dynamic profileImage;
+  dynamic tag;
   dynamic gstNumber;
   dynamic fassaiNumber;
-  String? serviceType;
+  dynamic serviceType;
 
   ProductListElement({
     required this.id,
@@ -252,7 +234,7 @@ class ProductListElement {
     email: json["email"],
     productType: json["product_type"],
     totalRating: json["total_rating"],
-    averageRating: json["average_rating"],
+    averageRating: json["average_rating"]?.toDouble(),
     duration: json["duration"],
     contactNumber: json["contact_number"],
     distance: json["distance"]?.toDouble(),
@@ -304,14 +286,4 @@ class ProductListElement {
   };
 }
 
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
 
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
-}

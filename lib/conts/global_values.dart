@@ -6,7 +6,7 @@ import '../values/Colors.dart';
 final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
 class Global {
 
-  static String Google_Api_Key = "AIzaSyC-YuBjaE5a6htqora99l1P2bk4JmnpH6E";
+  static String Google_Api_Key = "AIzaSyAFj2efLrrgZ0wB83uV6ZVPPaf_JXpyPcE";
   static String map_api_key='AIzaSyDol_h12uYHFgBzADFmC5MfFVkk9tivq-o';
 }
 

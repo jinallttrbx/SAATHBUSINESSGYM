@@ -589,6 +589,7 @@ class AddEditBusinessProfileScreenState
                                   BorderRadius.all(Radius.circular(12))),
                               backgroundColor: AppColors.primary),
                           onPressed: () {
+                            bool workprofilename = RegExp(r'\b.*[a-zA-Z]+.*\b').hasMatch(nameOfBusineesController.text);
                             String patttern =
                                 r"^\d{2}[A-Z]{5}\d{4}[A-Z]{1}\d[Z]{1}[A-Z\d]{1}$";
                             RegExp regExp = new RegExp(patttern);
@@ -602,6 +603,10 @@ class AddEditBusinessProfileScreenState
                                   const SnackBar(
                                       content:
                                       Text('Please Enter Business Name')));
+                            } else if (workprofilename == false) {
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                content: Text("Please Enter Proper Name!"),
+                              ));
                             } else if (modelOfBusiness == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(

@@ -58,7 +58,7 @@ class GetClientModeldata {
   String senderCloseAt;
   String name;
   dynamic callLogRatingsId;
-  int rating;
+  double? rating;
   dynamic review;
   String image;
   String tag;
@@ -131,7 +131,7 @@ class GetClientModeldata {
     senderCloseAt: json["sender_close_at"],
     name: json["name"],
     callLogRatingsId: json["call_log_ratings_id"],
-    rating: json["rating"],
+    rating: json["rating"]?.toDouble(),
     review: json["review"],
     image: json["image"],
     tag: json["tag"],

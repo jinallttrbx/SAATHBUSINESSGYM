@@ -41,6 +41,7 @@ class UserProfileController extends GetxController {
       productprofilelist;
       productprofilelist2 ;
       if (data['status'] == true) {
+
         final data = ProfileModel.fromJson(jsonDecode(response.body));
         productprofilelist2 = data!.data;
         productprofilelist = data.data;

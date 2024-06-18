@@ -11,7 +11,7 @@ String getratingClassToJson(GetratingClass data) => json.encode(data.toJson());
 class GetratingClass {
   bool status;
   String message;
-  List<Datum> data;
+  List<GetratingClassdata> data;
   double totalRating;
   double avgStar;
   int totalReview;
@@ -28,7 +28,7 @@ class GetratingClass {
   factory GetratingClass.fromJson(Map<String, dynamic> json) => GetratingClass(
     status: json["status"],
     message: json["message"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<GetratingClassdata>.from(json["data"].map((x) => GetratingClassdata.fromJson(x))),
     totalRating: json["total_rating"]?.toDouble(),
     avgStar: json["avg_star"]?.toDouble(),
     totalReview: json["total_review"],
@@ -44,70 +44,76 @@ class GetratingClass {
   };
 }
 
-class Datum {
-  int id;
-  int userId;
-  int callLogId;
-  int customerId;
-  double rating;
-  String review;
-  dynamic description;
-  int serviceId;
-  int productId;
-  DateTime createdAt;
-  DateTime updatedAt;
+class GetratingClassdata {
+  dynamic id;
+  dynamic callLogId;
+  dynamic serviceId;
+  dynamic productId;
+  dynamic customerId;
+  dynamic rating;
+  dynamic review;
+  dynamic createdAt;
+  dynamic updatedAt;
   dynamic deletedAt;
-  String customerName;
-  String profileImage;
+  dynamic type;
+  dynamic customerName;
+  dynamic profileImage;
+  dynamic userId;
+  dynamic description;
 
-  Datum({
+  GetratingClassdata({
     required this.id,
-    required this.userId,
     required this.callLogId,
+    required this.serviceId,
+    required this.productId,
     required this.customerId,
     required this.rating,
     required this.review,
-    required this.description,
-    required this.serviceId,
-    required this.productId,
     required this.createdAt,
     required this.updatedAt,
     required this.deletedAt,
+    this.type,
     required this.customerName,
     required this.profileImage,
+    this.userId,
+    this.description,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory GetratingClassdata.fromJson(Map<String, dynamic> json) => GetratingClassdata(
     id: json["id"],
-    userId: json["user_id"],
     callLogId: json["call_log_id"],
+    serviceId: json["service_id"],
+    productId: json["product_id"],
     customerId: json["customer_id"],
     rating: json["rating"]?.toDouble(),
     review: json["review"],
-    description: json["description"],
-    serviceId: json["service_id"],
-    productId: json["product_id"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
     deletedAt: json["deleted_at"],
+    type: json["type"],
     customerName: json["customer_name"],
     profileImage: json["profile_image"],
+    userId: json["user_id"],
+    description: json["description"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "user_id": userId,
     "call_log_id": callLogId,
+    "service_id": serviceId,
+    "product_id": productId,
     "customer_id": customerId,
     "rating": rating,
     "review": review,
-    "description": description,
-    "service_id": serviceId,
-    "product_id": productId,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
     "deleted_at": deletedAt,
+    "type": type,
     "customer_name": customerName,
     "profile_image": profileImage,
+    "user_id": userId,
+    "description": description,
   };
 }
+
+

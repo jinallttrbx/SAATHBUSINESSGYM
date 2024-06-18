@@ -34,7 +34,7 @@ class ViewprofileModel {
 
 class ViewprofileModeldata {
   int id;
-  String fullName;
+  String username;
   String firstName;
   dynamic lastName;
   dynamic occupationId;
@@ -45,7 +45,7 @@ class ViewprofileModeldata {
 
   ViewprofileModeldata({
     required this.id,
-    required this.fullName,
+    required this.username,
     required this.firstName,
     required this.lastName,
     required this.occupationId,
@@ -57,7 +57,7 @@ class ViewprofileModeldata {
 
   factory ViewprofileModeldata.fromJson(Map<String, dynamic> json) => ViewprofileModeldata(
     id: json["id"],
-    fullName: json["full_name"],
+    username: json["username"],
     firstName: json["first_name"],
     lastName: json["last_name"],
     occupationId: json["occupation_id"],
@@ -69,7 +69,7 @@ class ViewprofileModeldata {
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "full_name": fullName,
+    "username": username,
     "first_name": firstName,
     "last_name": lastName,
     "occupation_id": occupationId,
@@ -86,15 +86,15 @@ class Viewed {
   int profileId;
   DateTime createdAt;
   DateTime updatedAt;
-  String fullName;
+  String username;
   String firstName;
   dynamic lastName;
   String userType;
   int isSupplier;
-  dynamic occupationId;
-  dynamic occupation;
+  int? occupationId;
+  String? occupation;
   String profileImage;
-  String type;
+  String? type;
   int totalRating;
 
   Viewed({
@@ -103,7 +103,7 @@ class Viewed {
     required this.profileId,
     required this.createdAt,
     required this.updatedAt,
-    required this.fullName,
+    required this.username,
     required this.firstName,
     required this.lastName,
     required this.userType,
@@ -111,7 +111,7 @@ class Viewed {
     required this.occupationId,
     required this.occupation,
     required this.profileImage,
-    required this.type,
+    this.type,
     required this.totalRating,
   });
 
@@ -121,7 +121,7 @@ class Viewed {
     profileId: json["profile_id"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
-    fullName: json["full_name"],
+    username: json["username"],
     firstName: json["first_name"],
     lastName: json["last_name"],
     userType: json["user_type"],
@@ -139,7 +139,7 @@ class Viewed {
     "profile_id": profileId,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
-    "full_name": fullName,
+    "username": username,
     "first_name": firstName,
     "last_name": lastName,
     "user_type": userType,

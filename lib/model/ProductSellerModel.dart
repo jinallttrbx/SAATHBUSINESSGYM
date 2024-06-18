@@ -27,7 +27,7 @@ class ProductSellerList {
 class ProductSellerdata {
   int id;
   int providerId;
-  Type type;
+  String type;
   int duration;
   DateTime createdAt;
   DateTime updatedAt;
@@ -38,7 +38,7 @@ class ProductSellerdata {
   dynamic mobile;
   dynamic email;
   int totalRating;
-  int averageRating;
+  double averageRating;
   int categoryId;
   String categoryName;
   String username;
@@ -46,11 +46,11 @@ class ProductSellerdata {
   String contactNumber;
   dynamic gstNumber;
   dynamic fassaiNumber;
-  String location;
+  String? location;
   double latitude;
   double longitude;
-  OpenAt openAt;
-  CloseAt closeAt;
+  String openAt;
+  String closeAt;
   String profileImage;
   String productImage;
   int workingHour;
@@ -90,7 +90,7 @@ class ProductSellerdata {
   factory ProductSellerdata.fromJson(Map<String, dynamic> json) => ProductSellerdata(
     id: json["id"],
     providerId: json["provider_id"],
-    type: typeValues.map[json["type"]]!,
+    type: json["type"],
     duration: json["duration"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
@@ -101,7 +101,7 @@ class ProductSellerdata {
     mobile: json["mobile"],
     email: json["email"],
     totalRating: json["total_rating"],
-    averageRating: json["average_rating"],
+    averageRating: json["average_rating"]?.toDouble(),
     categoryId: json["category_id"],
     categoryName: json["category_name"],
     username: json["username"],
@@ -112,8 +112,8 @@ class ProductSellerdata {
     location: json["location"],
     latitude: json["latitude"]?.toDouble(),
     longitude: json["longitude"]?.toDouble(),
-    openAt: openAtValues.map[json["open_at"]]!,
-    closeAt: closeAtValues.map[json["close_at"]]!,
+    openAt: json["open_at"],
+    closeAt: json["close_at"],
     profileImage: json["profile_image"],
     productImage: json["product_image"],
     workingHour: json["working_hour"],
@@ -122,7 +122,7 @@ class ProductSellerdata {
   Map<String, dynamic> toJson() => {
     "id": id,
     "provider_id": providerId,
-    "type": typeValues.reverse[type],
+    "type": type,
     "duration": duration,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
@@ -144,68 +144,10 @@ class ProductSellerdata {
     "location": location,
     "latitude": latitude,
     "longitude": longitude,
-    "open_at": openAtValues.reverse[openAt],
-    "close_at": closeAtValues.reverse[closeAt],
+    "open_at": openAt,
+    "close_at": closeAt,
     "profile_image": profileImage,
     "product_image": productImage,
     "working_hour": workingHour,
   };
-}
-
-enum CategoryName {
-  MISCELLANEOUS,
-  PERSONAL_PRODUCT
-}
-
-final categoryNameValues = EnumValues({
-  "Miscellaneous": CategoryName.MISCELLANEOUS,
-  "Personal Product": CategoryName.PERSONAL_PRODUCT
-});
-
-enum CloseAt {
-  THE_1000_PM,
-  THE_1100_PM,
-  THE_200_PM,
-  THE_900_PM
-}
-
-final closeAtValues = EnumValues({
-  "10:00 PM": CloseAt.THE_1000_PM,
-  "11:00 PM": CloseAt.THE_1100_PM,
-  "2:00 PM": CloseAt.THE_200_PM,
-  "9:00 PM": CloseAt.THE_900_PM
-});
-
-enum OpenAt {
-  THE_1000_AM,
-  THE_800_AM,
-  THE_900_AM
-}
-
-final openAtValues = EnumValues({
-  "10:00 AM": OpenAt.THE_1000_AM,
-  "8:00 AM": OpenAt.THE_800_AM,
-  "9:00 AM": OpenAt.THE_900_AM
-});
-
-enum Type {
-  PROVIDER,
-  SUPPLIER
-}
-
-final typeValues = EnumValues({
-  "provider": Type.PROVIDER,
-  "supplier": Type.SUPPLIER
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

@@ -56,47 +56,57 @@ class _ToMapScreenState extends State<ToMapScreen> {
         .buffer
         .asUint8List();
   }
-
   Future<String> getAddress(double? lat, double? lang) async {
-    if (lat == null || lang == null) {
-
-
-
-      try {
-        GeoCode geoCode = GeoCode();
-        Address address =
-        await geoCode.reverseGeocoding(latitude: lat!, longitude: lang!);
-        print('address');
-        return "${address.city}, ${address.streetAddress}, ${address.countryName}, ${address.postal}";
-      } catch (e) {
-        return '';
+    try {
+      if (lat == null || lang == null) {
+        throw Exception('Latitude or longitude is null');
       }
-    }
-    else {
-      GeoCode geoCode = GeoCode();
-      try {
-        Address address =
-        await geoCode.reverseGeocoding(latitude: lat, longitude: lang);
-        print('address');
-        print(address);
-        return "${address.city}, ${address.streetAddress}, ${address.countryName}, ${address.postal}";
-      } catch (e) {
-      }
-      try {
-        List<Placemark> value = await placemarkFromCoordinates(
-          lat,
-          lang,
-        );
-        print(value);
 
-        return '${value.first.name}, ${value.first.subLocality}, ${value.first.locality}, ${value.first.administrativeArea}-${value.first.postalCode}';
-      } catch (e) {
-        print(e);
-
-        return '';
-      }
+      List<Placemark> value = await placemarkFromCoordinates(lat, lang);
+      return '${value.first.name}, ${value.first.subLocality}, ${value.first.locality}, ${value.first.administrativeArea}-${value.first.postalCode}';
+    } catch (e) {
+      print('Error getting address: $e');
+      return 'Error: Failed to get address. Please try again later.';
     }
   }
+
+  // Future<String> getAddress(double? lat, double? lang) async {
+  //   if (lat == null || lang == null) {
+  //     try {
+  //       GeoCode geoCode = GeoCode();
+  //       Address address =
+  //       await geoCode.reverseGeocoding(latitude: lat!, longitude: lang!);
+  //       print('address');
+  //       return "${address.city}, ${address.streetAddress}, ${address.countryName}, ${address.postal}";
+  //     } catch (e) {
+  //       return '';
+  //     }
+  //   }
+  //   else {
+  //     GeoCode geoCode = GeoCode();
+  //     try {
+  //       Address address =
+  //       await geoCode.reverseGeocoding(latitude: lat, longitude: lang);
+  //       print('address');
+  //       print(address);
+  //       return "${address.city}, ${address.streetAddress}, ${address.countryName}, ${address.postal}";
+  //     } catch (e) {
+  //     }
+  //     try {
+  //       List<Placemark> value = await placemarkFromCoordinates(
+  //         lat,
+  //         lang,
+  //       );
+  //       print(value);
+  //
+  //       return '${value.first.name}, ${value.first.subLocality}, ${value.first.locality}, ${value.first.administrativeArea}-${value.first.postalCode}';
+  //     } catch (e) {
+  //       print(e);
+  //
+  //       return '';
+  //     }
+  //   }
+  // }
 
   Set<Marker> myMarker(LatLng position) {
     _markers.add(Marker(

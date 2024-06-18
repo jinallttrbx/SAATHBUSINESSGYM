@@ -543,7 +543,7 @@ class _FilterScreenState extends State<filterscreen> {
                                         child: DropdownButtonHideUnderline(
                                           child: DropdownButton(
                                             elevation: 0,
-                                            hint:  regulartext(AppColors.black,16,'Select Time'),
+                                            hint:  regulartext(AppColors.black,14,'Select Time'),
                                             value: dropdownvalue1,
                                             icon: const Icon(
                                                 Icons.keyboard_arrow_down),
@@ -591,7 +591,7 @@ class _FilterScreenState extends State<filterscreen> {
                                         child: DropdownButtonHideUnderline(
                                           child: DropdownButton(
                                             elevation: 0,
-                                            hint:  regulartext(AppColors.black,16,'Select Time'),
+                                            hint:  regulartext(AppColors.black,14,'Select Time'),
                                             value: dropdownvalue2,
                                             icon: const Icon(
                                                 Icons.keyboard_arrow_down),

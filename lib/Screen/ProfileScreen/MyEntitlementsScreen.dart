@@ -232,7 +232,7 @@ class MyEntitlementsScreenState extends State<MyEntitlementsScreen> {
 
                               },
                               child: Container(
-                                padding: EdgeInsets.all(10),
+                                padding: EdgeInsets.all(5),
                                 height: 40,
                                 child: Row(
                                   children: [
@@ -265,7 +265,7 @@ class MyEntitlementsScreenState extends State<MyEntitlementsScreen> {
                                 },
 
                                 child: Container(
-                                  padding: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(5),
                                   child: Row(
                                     children: [
                                       SvgPicture.asset(AppImages.download,color: AppColors.primary,),
@@ -288,7 +288,7 @@ class MyEntitlementsScreenState extends State<MyEntitlementsScreen> {
                                   },
 
                                 child: Container(
-                                  padding: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(5),
                                   child: Row(
                                     children: [
                                       SvgPicture.asset(AppImages.share),
@@ -332,46 +332,39 @@ class MyEntitlementsScreenState extends State<MyEntitlementsScreen> {
   Future<void> usetId() async {
     UserId = await _sharedPreference.isUsetId();
     print("Ashish" + UserId!);
-    AllDocument = getdocument();
+    getdocument();
+   // AllDocument = getdocument();
   }
 
-  Future<List<AllDocumentListdata?>?> getdocument() async {
-    print(ApiUrl.getDocumentCategories);
+  Future<List<AllDocumentListdata?>?>? getdocument() async {
     try {
+      print(ApiUrl.getDocumentCategories);
       showLoader(context);
-
       final response = await http.post(
         Uri.parse(ApiUrl.getDocumentCategories),
-        headers: {"Authorization": "$USERTOKKEN"},
+
+        headers: {"Authorization": USERTOKKEN.toString()},
       );
-
-      print("response data my booking =================" + response.body);
-      Map<String, dynamic> map = json.decode(response.body);
-
+      print("response data my news ================="+response.body);
+      print("response data my news ================="+response.statusCode.toString());
+      //  Map<String, dynamic> map = json.decode(response.body);
       if (response.statusCode == 200) {
         hideLoader();
-
-
-        AllDocumentList catrgortModel1 =
-        AllDocumentList.fromJson(jsonDecode(response.body));
-        for (int i = 0; i < catrgortModel1.data!.length; i++) {
-          AllDocumentListdata categoryModelData = AllDocumentListdata(
-            id: catrgortModel1.data![i].id, catName: catrgortModel1.data![i].catName,
-            documents: catrgortModel1.data![i].documents,
-            image: catrgortModel1.data![i].image,
-            );
-          Documentlist!.add(categoryModelData);
-        }
-        setState(() {});
+        AllDocumentList? viewNewsModel = AllDocumentList.fromJson(jsonDecode(response.body));
+        Documentlist = viewNewsModel.data!;
+        setState(() {
+        });
 
         print("Success");
-
-        return Documentlist;
+        return viewNewsModel.data;
       } else {
+        hideLoader();
         print("Something went wronge");
       }
     } catch (e) {
+
       print("data==1=$e");
+
     }
   }
 
@@ -529,7 +522,7 @@ class MyEntitlementsScreenState extends State<MyEntitlementsScreen> {
       _image = image;
     });
     uploaddocument(id);
-    Navigator.of(context).pop();
+   // Navigator.of(context).pop();
 
 
   }
@@ -543,7 +536,7 @@ class MyEntitlementsScreenState extends State<MyEntitlementsScreen> {
     });
     print(_image);
     uploaddocument(id);
-    Navigator.of(context).pop();
+   // Navigator.of(context).pop();
   }
 
 
@@ -576,11 +569,13 @@ class MyEntitlementsScreenState extends State<MyEntitlementsScreen> {
       print("UPDATE PROFILE RESPONSE OF API ${request.fields}");
       print(response);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+         SnackBar(
           content: Text('Update Successfully'),
+          duration: Duration(microseconds: 5),
         ),
       );
       Navigator.of(context).pop();
+      getdocument();
     } else {
       hideLoader();
       ScaffoldMessenger.of(context).showSnackBar(

@@ -1,12 +1,13 @@
+
 // To parse this JSON data, do
 //
-//     final getRecommendedProduct = getRecommendedProductFromJson(jsonString);
+//     final getRecommendedService = getRecommendedServiceFromJson(jsonString);
 
 import 'dart:convert';
 
-GetRecommendedProduct getRecommendedProductFromJson(String str) => GetRecommendedProduct.fromJson(json.decode(str));
+GetRecommendedProduct getRecommendedServiceFromJson(String str) => GetRecommendedProduct.fromJson(json.decode(str));
 
-String getRecommendedProductToJson(GetRecommendedProduct data) => json.encode(data.toJson());
+String getRecommendedServiceToJson(GetRecommendedProduct data) => json.encode(data.toJson());
 
 class GetRecommendedProduct {
   List<GetRecommendedProductdata> data;
@@ -25,46 +26,46 @@ class GetRecommendedProduct {
 }
 
 class GetRecommendedProductdata {
-  int id;
-  String username;
-  String fullName;
-  String firstName;
+  dynamic id;
+  dynamic username;
+  dynamic displayName;
+  dynamic fullName;
+  dynamic firstName;
   dynamic lastName;
-  Gender gender;
+  dynamic gender;
   dynamic email;
   dynamic companyName;
-  String password;
-  Type userType;
-  String contactNumber;
+  dynamic password;
+  dynamic userType;
+  dynamic contactNumber;
   dynamic occupationId;
   dynamic countryId;
   dynamic stateId;
   dynamic cityId;
-  int providerId;
+  dynamic providerId;
   dynamic address;
   dynamic playerId;
-  int status;
-  String displayName;
+  dynamic status;
   dynamic providertypeId;
-  int isFeatured;
-  TimeZone timeZone;
+  dynamic isFeatured;
+  dynamic timeZone;
   dynamic lastNotificationSeen;
   dynamic emailVerifiedAt;
   dynamic rememberToken;
   dynamic deletedAt;
-  DateTime createdAt;
-  DateTime updatedAt;
+  dynamic createdAt;
+  dynamic updatedAt;
   dynamic stripeId;
   dynamic pmType;
   dynamic pmLastFour;
   dynamic trialEndsAt;
   dynamic loginType;
   dynamic serviceAddressId;
-  String? uid;
+  dynamic uid;
   dynamic handymantypeId;
-  int isSubscribe;
+  dynamic isSubscribe;
   dynamic socialImage;
-  int isAvailable;
+  dynamic isAvailable;
   dynamic designation;
   dynamic lastOnlineTime;
   dynamic modeOfBusiness;
@@ -74,37 +75,38 @@ class GetRecommendedProductdata {
   dynamic licenseNumber;
   dynamic fassaiNumber;
   dynamic occuaptionId;
-  int isAccount;
-  String referralCode;
-  int isSupplier;
-  int organizationsId;
-  double latitude;
-  double longitude;
-  int averageRating;
-  int totalRating;
-  int userId;
-  String name;
-  int categoryId;
-  int price;
-  int minPrice;
-  int maxPrice;
-  Type type;
+  dynamic isAccount;
+  dynamic referralCode;
+  dynamic isSupplier;
+  dynamic? organizationsId;
+  dynamic latitude;
+  dynamic longitude;
+  dynamic averageRating;
+  dynamic totalRating;
+  dynamic userId;
+  dynamic name;
+  dynamic categoryId;
+  dynamic price;
+  dynamic minPrice;
+  dynamic maxPrice;
+  dynamic type;
   dynamic discount;
-  String description;
+  dynamic description;
   dynamic addedBy;
-  int subcategoryId;
-  int workProfileId;
+  dynamic subcategoryId;
+  dynamic workProfileId;
   dynamic city;
   dynamic mapLink;
   dynamic mobile;
   dynamic productType;
-  int duration;
-  String productImage;
-  Tag tag;
+  dynamic duration;
+  dynamic productImage;
+  dynamic tag;
 
   GetRecommendedProductdata({
     required this.id,
     required this.username,
+    required this.displayName,
     required this.fullName,
     required this.firstName,
     required this.lastName,
@@ -122,7 +124,6 @@ class GetRecommendedProductdata {
     required this.address,
     required this.playerId,
     required this.status,
-    required this.displayName,
     required this.providertypeId,
     required this.isFeatured,
     required this.timeZone,
@@ -184,14 +185,15 @@ class GetRecommendedProductdata {
   factory GetRecommendedProductdata.fromJson(Map<String, dynamic> json) => GetRecommendedProductdata(
     id: json["id"],
     username: json["username"],
+    displayName: json["display_name"],
     fullName: json["full_name"],
     firstName: json["first_name"],
     lastName: json["last_name"],
-    gender: genderValues.map[json["gender"]]!,
+    gender: json["gender"],
     email: json["email"],
     companyName: json["company_name"],
     password: json["password"],
-    userType: typeValues.map[json["user_type"]]!,
+    userType: json["user_type"],
     contactNumber: json["contact_number"],
     occupationId: json["occupation_id"],
     countryId: json["country_id"],
@@ -201,10 +203,9 @@ class GetRecommendedProductdata {
     address: json["address"],
     playerId: json["player_id"],
     status: json["status"],
-    displayName: json["display_name"],
     providertypeId: json["providertype_id"],
     isFeatured: json["is_featured"],
-    timeZone: timeZoneValues.map[json["time_zone"]]!,
+    timeZone: json["time_zone"],
     lastNotificationSeen: json["last_notification_seen"],
     emailVerifiedAt: json["email_verified_at"],
     rememberToken: json["remember_token"],
@@ -237,15 +238,15 @@ class GetRecommendedProductdata {
     organizationsId: json["organizations_id"],
     latitude: json["latitude"]?.toDouble(),
     longitude: json["longitude"]?.toDouble(),
-    averageRating: json["average_rating"],
-    totalRating: json["total_rating"],
+    averageRating: json["average_rating"]?.toDouble(),
+    totalRating: json["total_rating"]?.toDouble(),
     userId: json["user_id"],
     name: json["name"],
     categoryId: json["category_id"],
     price: json["price"],
     minPrice: json["min_price"],
     maxPrice: json["max_price"],
-    type: typeValues.map[json["type"]]!,
+    type: json["type"],
     discount: json["discount"],
     description: json["description"],
     addedBy: json["added_by"],
@@ -257,20 +258,21 @@ class GetRecommendedProductdata {
     productType: json["product_type"],
     duration: json["duration"],
     productImage: json["product_image"],
-    tag: tagValues.map[json["tag"]]!,
+    tag: json["tag"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "username": username,
+    "display_name": displayName,
     "full_name": fullName,
     "first_name": firstName,
     "last_name": lastName,
-    "gender": genderValues.reverse[gender],
+    "gender": gender,
     "email": email,
     "company_name": companyName,
     "password": password,
-    "user_type": typeValues.reverse[userType],
+    "user_type": userType,
     "contact_number": contactNumber,
     "occupation_id": occupationId,
     "country_id": countryId,
@@ -280,10 +282,9 @@ class GetRecommendedProductdata {
     "address": address,
     "player_id": playerId,
     "status": status,
-    "display_name": displayName,
     "providertype_id": providertypeId,
     "is_featured": isFeatured,
-    "time_zone": timeZoneValues.reverse[timeZone],
+    "time_zone": timeZone,
     "last_notification_seen": lastNotificationSeen,
     "email_verified_at": emailVerifiedAt,
     "remember_token": rememberToken,
@@ -324,7 +325,7 @@ class GetRecommendedProductdata {
     "price": price,
     "min_price": minPrice,
     "max_price": maxPrice,
-    "type": typeValues.reverse[type],
+    "type": type,
     "discount": discount,
     "description": description,
     "added_by": addedBy,
@@ -336,56 +337,6 @@ class GetRecommendedProductdata {
     "product_type": productType,
     "duration": duration,
     "product_image": productImage,
-    "tag": tagValues.reverse[tag],
+    "tag": tag,
   };
-}
-
-enum Gender {
-  FEMALE,
-  MALE
-}
-
-final genderValues = EnumValues({
-  "female": Gender.FEMALE,
-  "male": Gender.MALE
-});
-
-enum Tag {
-  PROVIDER_PRODUCT,
-  SUPPLIER_PRODUCT
-}
-
-final tagValues = EnumValues({
-  "Provider Product": Tag.PROVIDER_PRODUCT,
-  "Supplier Product": Tag.SUPPLIER_PRODUCT
-});
-
-enum TimeZone {
-  UTC
-}
-
-final timeZoneValues = EnumValues({
-  "UTC": TimeZone.UTC
-});
-
-enum Type {
-  PROVIDER,
-  SUPPLIER
-}
-
-final typeValues = EnumValues({
-  "provider": Type.PROVIDER,
-  "supplier": Type.SUPPLIER
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

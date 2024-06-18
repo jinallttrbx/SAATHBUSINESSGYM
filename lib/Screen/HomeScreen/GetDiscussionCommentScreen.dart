@@ -138,7 +138,7 @@ class _GetDiscussionCommentScreenState
                     children: [
                       Text(widget.data.displayName),
                       regulartext(AppColors.black, 14,
-                          "${DateFormat("dd-MMM-yyyy").format(widget.data.createdAt)} ${DateFormat("h:mm a").format(widget.data.createdAt)}"),
+                          "${widget.data.time}"),
                     ],
                   )
                 ],
@@ -187,7 +187,7 @@ class _GetDiscussionCommentScreenState
                                         width: 10,
                                       ),
                                       Text(
-                                        comments![index].displayName ?? '',
+                                        comments![index].username ?? '',
                                         style: const TextStyle(
                                             color: Colors.black),
                                       ),
@@ -281,7 +281,7 @@ class _GetDiscussionCommentScreenState
           'Authorization': '$USERTOKKEN',
         },
         body: {
-          'user_id': widget.data!.userId.toString(),
+          'user_id': UserId.toString(),
           'group_id': widget.data!.groupId.toString(),
           'discussion_id': widget.discussion_id.toString(),
           'text': typecontroller.text

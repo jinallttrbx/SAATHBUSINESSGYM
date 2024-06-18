@@ -66,10 +66,12 @@ class NotificationScreenState extends State<NotificationScreen> {
   Future<List<NotificationModelData?>?>? notifications(String type) async {
     try {
       showLoader(context);
+      Map<String, String> headers = {'Authorization': USERTOKKEN.toString()};
       Map<String, String> requestBody = <String, String>{};
 
       final response = await http.post(
-        Uri.parse(ApiUrl.notificationList),
+        Uri.parse(ApiUrl.notificationList,),
+        headers:headers,
         body: {'user_type': type},
       );
       if (response.statusCode == 200) {
@@ -107,10 +109,10 @@ class NotificationScreenState extends State<NotificationScreen> {
               children: [
                 ListView.builder(
                   shrinkWrap: true,
-                  itemCount:notificationdata.length,
+                  itemCount:transactionData!.length,
                   scrollDirection: Axis.vertical,
                   itemBuilder: (BuildContext context, int index) {
-                    return InkWell(
+                    return transactionData!.isEmpty?boldtext(AppColors.primary, 20, "No Any NOtification"):InkWell(
                       onTap: () async {
                         await readNotification(widget
                             .notificationResponseModel?.data?[index].id
@@ -120,23 +122,23 @@ class NotificationScreenState extends State<NotificationScreen> {
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5)),
-                        child:Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            boldtext(AppColors.black,14,notificationdata[index].name??""),
-                            regulartext(AppColors.hint,12,notificationdata[index].hours??""),
-                            SizedBox(height: 10,),
-                            regulartext(AppColors.black,12,notificationdata[index].description??""),
-                            SizedBox(height: 10,),
-                         Divider(height: 1,thickness: 1,)
-                          ],
-                        )
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5)),
+                          child:Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              boldtext(AppColors.black,14,notificationdata[index].name??""),
+                              regulartext(AppColors.hint,12,notificationdata[index].hours??""),
+                              SizedBox(height: 10,),
+                              regulartext(AppColors.black,12,notificationdata[index].description??""),
+                              SizedBox(height: 10,),
+                              Divider(height: 1,thickness: 1,)
+                            ],
+                          )
                       ),
                     );
-                    ;
+
                   },
                 ),
 

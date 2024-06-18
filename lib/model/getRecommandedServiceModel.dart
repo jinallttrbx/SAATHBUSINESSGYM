@@ -27,10 +27,11 @@ class GetRecommendedService {
 class GetRecommendedServicedata {
   int id;
   String username;
-  String fullName;
+  String displayName;
+  String? fullName;
   String firstName;
-  dynamic lastName;
-  String gender;
+  String? lastName;
+  String? gender;
   dynamic email;
   dynamic companyName;
   String password;
@@ -39,15 +40,14 @@ class GetRecommendedServicedata {
   dynamic occupationId;
   dynamic countryId;
   dynamic stateId;
-  dynamic cityId;
+  int? cityId;
   int providerId;
   dynamic address;
   dynamic playerId;
   int status;
-  String displayName;
   dynamic providertypeId;
   int isFeatured;
-  TimeZone timeZone;
+  String timeZone;
   dynamic lastNotificationSeen;
   dynamic emailVerifiedAt;
   dynamic rememberToken;
@@ -60,12 +60,12 @@ class GetRecommendedServicedata {
   dynamic trialEndsAt;
   dynamic loginType;
   dynamic serviceAddressId;
-  String? uid;
+  String uid;
   dynamic handymantypeId;
   int isSubscribe;
   dynamic socialImage;
   int isAvailable;
-  dynamic designation;
+  String? designation;
   dynamic lastOnlineTime;
   dynamic modeOfBusiness;
   dynamic businessTiming;
@@ -77,10 +77,10 @@ class GetRecommendedServicedata {
   int isAccount;
   String referralCode;
   int isSupplier;
-  int organizationsId;
+  int? organizationsId;
   double latitude;
   double longitude;
-  int averageRating;
+  double averageRating;
   int totalRating;
   int userId;
   String name;
@@ -97,7 +97,7 @@ class GetRecommendedServicedata {
   dynamic city;
   dynamic mapLink;
   dynamic mobile;
-  String? type;
+  dynamic type;
   int duration;
   String serviceImage;
   String tag;
@@ -105,6 +105,7 @@ class GetRecommendedServicedata {
   GetRecommendedServicedata({
     required this.id,
     required this.username,
+    required this.displayName,
     required this.fullName,
     required this.firstName,
     required this.lastName,
@@ -122,7 +123,6 @@ class GetRecommendedServicedata {
     required this.address,
     required this.playerId,
     required this.status,
-    required this.displayName,
     required this.providertypeId,
     required this.isFeatured,
     required this.timeZone,
@@ -184,6 +184,7 @@ class GetRecommendedServicedata {
   factory GetRecommendedServicedata.fromJson(Map<String, dynamic> json) => GetRecommendedServicedata(
     id: json["id"],
     username: json["username"],
+    displayName: json["display_name"],
     fullName: json["full_name"],
     firstName: json["first_name"],
     lastName: json["last_name"],
@@ -201,10 +202,9 @@ class GetRecommendedServicedata {
     address: json["address"],
     playerId: json["player_id"],
     status: json["status"],
-    displayName: json["display_name"],
     providertypeId: json["providertype_id"],
     isFeatured: json["is_featured"],
-    timeZone: timeZoneValues.map[json["time_zone"]]!,
+    timeZone: json["time_zone"],
     lastNotificationSeen: json["last_notification_seen"],
     emailVerifiedAt: json["email_verified_at"],
     rememberToken: json["remember_token"],
@@ -237,7 +237,7 @@ class GetRecommendedServicedata {
     organizationsId: json["organizations_id"],
     latitude: json["latitude"]?.toDouble(),
     longitude: json["longitude"]?.toDouble(),
-    averageRating: json["average_rating"],
+    averageRating: json["average_rating"]?.toDouble(),
     totalRating: json["total_rating"],
     userId: json["user_id"],
     name: json["name"],
@@ -263,6 +263,7 @@ class GetRecommendedServicedata {
   Map<String, dynamic> toJson() => {
     "id": id,
     "username": username,
+    "display_name": displayName,
     "full_name": fullName,
     "first_name": firstName,
     "last_name": lastName,
@@ -280,10 +281,9 @@ class GetRecommendedServicedata {
     "address": address,
     "player_id": playerId,
     "status": status,
-    "display_name": displayName,
     "providertype_id": providertypeId,
     "is_featured": isFeatured,
-    "time_zone": timeZoneValues.reverse[timeZone],
+    "time_zone": timeZone,
     "last_notification_seen": lastNotificationSeen,
     "email_verified_at": emailVerifiedAt,
     "remember_token": rememberToken,
@@ -338,54 +338,4 @@ class GetRecommendedServicedata {
     "service_image": serviceImage,
     "tag": tag,
   };
-}
-
-enum Gender {
-  FEMALE,
-  MALE
-}
-
-final genderValues = EnumValues({
-  "female": Gender.FEMALE,
-  "male": Gender.MALE
-});
-
-enum Tag {
-  PROVIDER_SERVICE,
-  SERVICE
-}
-
-final tagValues = EnumValues({
-  "Provider Service": Tag.PROVIDER_SERVICE,
-  " Service": Tag.SERVICE
-});
-
-enum TimeZone {
-  UTC
-}
-
-final timeZoneValues = EnumValues({
-  "UTC": TimeZone.UTC
-});
-
-enum Type {
-  PROVIDER,
-  SUPPLIER
-}
-
-final typeValues = EnumValues({
-  "provider": Type.PROVIDER,
-  "supplier": Type.SUPPLIER
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

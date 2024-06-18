@@ -58,6 +58,7 @@ class MyGroupScreenState extends State<MyGroupScreen> {
   }
 
   Future<GetDiscussionsModel?> getAllservice(String group_id) async {
+    print(group_id);
     /*data=[];
     featuredVideos=[];
     resentVideos=[];*/
@@ -154,7 +155,6 @@ class MyGroupScreenState extends State<MyGroupScreen> {
 
                   children: [
                     SizedBox(height: 20,),
-
                     Row(
                       children: [
                         SizedBox(width: 20,),
@@ -162,9 +162,9 @@ class MyGroupScreenState extends State<MyGroupScreen> {
                           backgroundImage: NetworkImage(getDiscussionsModeldata![index].profileImage),
                         ),
                         SizedBox(width: 10,),
-                        Text(DateFormat("dd-MMM-yyyy").format(getDiscussionsModeldata![index].createdAt)),
+                        Text(getDiscussionsModeldata![index].time),
                         SizedBox(width: 10,),
-                        Text(DateFormat("h:mm a").format(getDiscussionsModeldata![index].createdAt))
+                      //  Text(DateFormat("h:mm a").format(getDiscussionsModeldata![index].createdAt))
                       ],
                     ),
                     SizedBox(height: 10,),

@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:businessgym/Screen/HomeScreen/MyServicesScreensProvider.dart';
 import 'package:businessgym/Screen/ProfileScreen/feedbackScreen.dart';
 import 'package:businessgym/components/commonBottomSheet.dart';
+import 'package:businessgym/components/commonBottomSheetUser.dart';
 import 'package:businessgym/components/snackbar.dart';
 import 'package:businessgym/conts/global_values.dart';
 import 'package:businessgym/Utils/ApiUrl.dart';
@@ -44,16 +45,17 @@ class _CRMScreensState extends State<CRMScreen> {
   String UserId = "";
   String? usertype;
   var now = DateTime.now();
-  Future<List<ViewprofileModeldata?>?>? viewprofilelist;
-  List<ViewprofileModeldata>? viewprofiledata = [];
-  Future<List<LeadDataModeldata?>?>? leadlist;
+ // Future<List<ViewprofileModeldata?>?>? viewprofilelist;
+ // List<ViewprofileModeldata>? viewprofiledata = [];
+//  Future<List<LeadDataModeldata?>?>? leadlist;
 
   List<LeadDataModeldata>? leaddata = [];
-  Future<List<GetClientModeldata?>?>? clientlist;
+  List<ViewprofileModeldata>? viewprofiledata = [];
+ // Future<List<GetClientModeldata?>?>? clientlist;
   List<GetClientModeldata>? clientdata = [];
-  Future<List<Getservicebyuseriddata?>?>? servicebyid;
+ // Future<List<Getservicebyuseriddata?>?>? servicebyid;
   List<Getservicebyuseriddata>? servicebyiddata = [];
-  Future<List<GetproductbyuseridData?>?>? productbyid;
+ // Future<List<GetproductbyuseridData?>?>? productbyid;
   List<GetproductbyuseridData>? productbyiddata = [];
 
   @override
@@ -127,10 +129,10 @@ class _CRMScreensState extends State<CRMScreen> {
                       children: [
                         for (int index = 0; index < viewprofiledata!.length; index++)
                           if (selectedTop == "Viewed profile")
-                         for(int index1=0;index1<viewprofiledata![index].viewed.length;index1++)
+                         for(int index1=0;index1<viewprofiledata![index].viewed!.length;index1++)
                            GestureDetector(
                              onTap: (){
-                               CommonBottomSheet.show(context,viewprofiledata![index].viewed[index1].userId.toString(),viewprofiledata![index].viewed[index1].id.toString(),"service");
+                               viewprofiledata![index].viewed![index1].userType=="user"?CommonBottomSheetUser.show(context,viewprofiledata![index].viewed![index1].userId.toString(),viewprofiledata![index].viewed![index1].id.toString(),"service","ViewProfile"):  CommonBottomSheet.show(context,viewprofiledata![index].viewed![index1].userId.toString(),viewprofiledata![index].viewed![index1].id.toString(),"service","ViewProfile");
 
                              },
                            child:  Container(
@@ -143,7 +145,7 @@ class _CRMScreensState extends State<CRMScreen> {
                                        CircleAvatar(
                                          radius: 30,
                                          backgroundImage: NetworkImage(
-                                             viewprofiledata![index].viewed[index1].profileImage??""),
+                                             viewprofiledata![index].viewed![index1].profileImage??""),
                                        ),
                                        const SizedBox(
                                          width: 12,
@@ -156,10 +158,10 @@ class _CRMScreensState extends State<CRMScreen> {
                                              boldtext(
                                                AppColors.black,
                                                14,
-                                               viewprofiledata![index].viewed[index1].fullName??"",
+                                               viewprofiledata![index].viewed![index1].username??"",
                                              ),
                                              regulartext(AppColors.hint, 12,
-                                                 viewprofiledata![index].viewed[index1].occupation??""),
+                                                 viewprofiledata![index].viewed![index1].occupation??""),
                                              InkWell(
                                                child: Row(
                                                  mainAxisAlignment:
@@ -169,7 +171,7 @@ class _CRMScreensState extends State<CRMScreen> {
                                                      direction:
                                                      Axis.horizontal,
                                                      rating: double.parse(
-                                                         "${ viewprofiledata![index].viewed[index1].totalRating??""}"),
+                                                         "${ viewprofiledata![index].viewed![index1].totalRating??""}"),
                                                      itemCount: 5,
                                                      itemSize: 14,
                                                      itemPadding:
@@ -184,7 +186,7 @@ class _CRMScreensState extends State<CRMScreen> {
                                                    boldtext(
                                                        const Color(0xff656565),
                                                        12,
-                                                       '    ${viewprofiledata![index].viewed[index1].totalRating??""}')
+                                                       '${viewprofiledata![index].viewed![index1].totalRating??""} Rating')
                                                  ],
                                                ),
                                              ),
@@ -212,7 +214,7 @@ class _CRMScreensState extends State<CRMScreen> {
 
                             GestureDetector(
                               onTap: () {
-                                CommonBottomSheet.show(context,leaddata![index].providerId.toString(),leaddata![index].id.toString(),"service");
+                                leaddata![index].receiverTag=="user"?CommonBottomSheetUser.show(context,leaddata![index].userId.toString(),leaddata![index].id.toString(),"service",""): CommonBottomSheet.show(context,leaddata![index].providerId.toString(),leaddata![index].id.toString(),"service","");
                               },
                               child: Container(
                                 padding: const EdgeInsets.only(
@@ -259,47 +261,50 @@ class _CRMScreensState extends State<CRMScreen> {
                                               ),
                                               Row(
                                                 children: [
-                                                  regulartext(
-                                                    const Color(0xff656565),
-                                                    12,
-                                                    leaddata![index]
-                                                        .name
-                                                        .toString(),
-                                                  ),
-                                                  Container(
-                                                      height: 18,
-                                                      width: 50,
-                                                      decoration: BoxDecoration(
-                                                          color: leaddata![
-                                                          index]
-                                                              .receiverTag !=
-                                                              "supplier product"
-                                                              ? const Color(
-                                                              0xffF2FFF7)
-                                                              : const Color(
-                                                              0xffF1FAFF),
-                                                          borderRadius:
-                                                          const BorderRadius
-                                                              .all(
-                                                              Radius
-                                                                  .circular(
-                                                                  9))),
-                                                      child: Center(
-                                                        child: regulartext(
-                                                            leaddata![index]
-                                                                .receiverTag !=
-                                                                "supplier product"
-                                                                ? const Color(
-                                                                0xff1B9346)
-                                                                : const Color(
-                                                                0xff1D84C7),
-                                                            10,
-                                                            leaddata![index]
-                                                                .receiverTag ==
-                                                                "supplier product"
-                                                                ? "Supplier"
-                                                                : "ME"),
-                                                      ))
+                                                 Expanded(flex: 1,child:  regulartext(
+                                                   const Color(0xff656565),
+                                                   12,
+                                                   leaddata![index]
+                                                       .name
+                                                       .toString(),
+                                                 ),),
+                                                 Expanded(flex: 1,
+                                                     child:  Container(
+                                                     height: 18,
+                                                     width: 50,
+                                                     decoration: BoxDecoration(
+                                                         color: leaddata![
+                                                         index]
+                                                             .receiverTag !=
+                                                             "supplier"
+                                                             ? const Color(
+                                                             0xffF2FFF7)
+                                                             : const Color(
+                                                             0xffF1FAFF),
+                                                         borderRadius:
+                                                         const BorderRadius
+                                                             .all(
+                                                             Radius
+                                                                 .circular(
+                                                                 9))),
+                                                     child: Center(
+                                                       child: regulartext(
+                                                           leaddata![index]
+                                                               .receiverTag !=
+                                                               "supplier"
+                                                               ? const Color(
+                                                               0xff1B9346)
+                                                               : const Color(
+                                                               0xff1D84C7),
+                                                           10,
+                                                           leaddata![index]
+                                                               .receiverTag ==
+                                                               "supplier"
+                                                               ? "Supplier"
+                                                               : "ME"
+                                                       ),
+                                                     ))),
+                                                  Expanded(flex: 1,child: SizedBox(width: 10,))
                                                 ],
                                               ),
                                               InkWell(
@@ -350,14 +355,17 @@ class _CRMScreensState extends State<CRMScreen> {
                                                         0xffF5F5F5)),
                                                 onPressed: () {
 
-                                                  leaddata![index].rating==null?
-                                                  ratenow(leaddata![index].type!,leaddata![index].typeId.toString(),leaddata![index].id.toString(),leaddata![index].userId.toString(),"recevier",context):
-                                                  ratenow1(leaddata![index].type!,leaddata![index].typeId.toString(),leaddata![index].id.toString(),leaddata![index].userId.toString(),leaddata![index].callLogRatingsId.toString(),"recevier",context);
+                                                 // leaddata![index].rating==0.0?
+
+                                                  leaddata![index].rating!=0.0?ratenow1(leaddata![index].type!,leaddata![index].typeId.toString(),leaddata![index].id.toString(),leaddata![index].userId.toString(),leaddata![index].rating!,leaddata![index].review??"" ,leaddata![index].myBooking.toString(),leaddata![index].callLogRatingsId.toString(),context):    ratenow(leaddata![index].type!,leaddata![index].typeId.toString(),leaddata![index].id.toString(),leaddata![index].userId.toString(),leaddata![index].myBooking.toString(),leaddata![index].callLogRatingsId.toString(),context);
+
+                                                 // :
+                                                 // ratenow1(leaddata![index].type!,leaddata![index].typeId.toString(),leaddata![index].id.toString(),leaddata![index].userId.toString(),leaddata![index].callLogRatingsId.toString(),"recevier",context);
                                                 },
                                                 child: boldtext(
                                                   AppColors.black,
                                                   12,
-                                                 leaddata![index].rating==null? "Rate Now":"Edit Rating",
+                                                  "Rate Now",
                                                 ))),
                                         const SizedBox(
                                           width: 10,
@@ -392,7 +400,7 @@ class _CRMScreensState extends State<CRMScreen> {
                             ):
                             GestureDetector(
                               onTap: () {
-                                CommonBottomSheet.show(context,leaddata![index].userId.toString(),leaddata![index].id.toString(),"service");
+                                leaddata![index].senderTag=="user"?CommonBottomSheetUser.show(context,leaddata![index].userId.toString(),leaddata![index].id.toString(),"service",""): CommonBottomSheet.show(context,leaddata![index].userId.toString(),leaddata![index].id.toString(),"service","");
                               },
                               child: Container(
                                 padding: const EdgeInsets.only(
@@ -447,10 +455,12 @@ class _CRMScreensState extends State<CRMScreen> {
                                                     child: Container(
                                                         padding: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
                                                         decoration: BoxDecoration(
-                                                            color: leaddata![index].senderTag!="Supplier Service"?AppColors.primary.withOpacity(0.05):AppColors.LightGreens,
+                                                            color: leaddata![index].senderTag=="user"?AppColors.white:leaddata![index].senderTag!="Supplier"?AppColors.primary.withOpacity(0.05):AppColors.LightGreens,
                                                             borderRadius: BorderRadius.all(Radius.circular(9))
                                                         ),
-                                                        child:  leaddata![index].senderTag!="Supplier Service"?boldtext(AppColors.Green,10,
+                                                        child: leaddata![index].senderTag=="user"?boldtext(AppColors.primary,10,
+                                                          "",
+                                                        ): leaddata![index].senderTag!="Supplier"?boldtext(AppColors.Green,10,
                                                           "ME",
                                                         ):boldtext(AppColors.primary,10,
                                                           "Supplier",
@@ -505,12 +515,12 @@ class _CRMScreensState extends State<CRMScreen> {
                                                     const Color(
                                                         0xffF5F5F5)),
                                                 onPressed: () {
-                                                  ratenow(leaddata![index].type!,leaddata![index].typeId.toString(),leaddata![index].id.toString(),leaddata![index].userId.toString(),"sender",context);
+                                                  leaddata![index].rating!=0.0?ratenow1(leaddata![index].type!,leaddata![index].typeId.toString(),leaddata![index].id.toString(),leaddata![index].userId.toString(),leaddata![index].rating!,leaddata![index].review??"" ,leaddata![index].myBooking.toString(),leaddata![index].callLogRatingsId.toString(),context):  ratenow(leaddata![index].type!,leaddata![index].typeId.toString(),leaddata![index].id.toString(),leaddata![index].userId.toString(), leaddata![index].myBooking.toString(),leaddata![index].callLogRatingsId.toString(),context);
                                                 },
                                                 child: boldtext(
                                                   AppColors.black,
                                                   12,
-                                                  leaddata![index].rating==0.0?"Rate Now":"Edit Rating",
+                                                  "Rate Now",
                                                 ))),
                                         const SizedBox(
                                           width: 10,
@@ -543,9 +553,189 @@ class _CRMScreensState extends State<CRMScreen> {
                             ),
                         for (int index = 0; index < clientdata!.length; index++)
                           if (selectedTop == "Client")
-                            GestureDetector(
+                          // clientdata![index].userId!=UserId?GestureDetector(
+                          //   onTap: () {
+                          //     CommonBottomSheet.show(context,clientdata![index].userId.toString(),clientdata![index].id.toString(),"service");
+                          //   },
+                          //   child: Container(
+                          //     padding: const EdgeInsets.only(
+                          //         left: 16, right: 16, bottom: 10),
+                          //     child: Column(
+                          //       children: [
+                          //         Row(
+                          //           children: [
+                          //             Stack(
+                          //               children: [
+                          //                 CircleAvatar(
+                          //                   radius: 30,
+                          //                   backgroundImage: NetworkImage(
+                          //                       clientdata![index]
+                          //                           .senderImage
+                          //                           .toString()),
+                          //                 ),
+                          //                 Positioned(
+                          //                   left: 40,
+                          //                   top: 40,
+                          //                   child:
+                          //                   clientdata![index].myBooking ==
+                          //                       1
+                          //                       ? SvgPicture.asset(
+                          //                       AppImages.roundright)
+                          //                       : SvgPicture.asset(
+                          //                       AppImages.roundleft),
+                          //                 )
+                          //               ],
+                          //             ),
+                          //             const SizedBox(
+                          //               width: 12,
+                          //             ),
+                          //             Expanded(
+                          //               child: Column(
+                          //                 crossAxisAlignment:
+                          //                 CrossAxisAlignment.start,
+                          //                 children: [
+                          //                   boldtext(
+                          //                       AppColors.black,
+                          //                       14,
+                          //                       clientdata![index]
+                          //                           .senderName!
+                          //                   ),
+                          //                   Row(
+                          //                     children: [
+                          //                       regulartext(
+                          //                         const Color(0xff656565),
+                          //                         12,
+                          //                         clientdata![index]
+                          //                             .name
+                          //                             .toString(),
+                          //                       ),
+                          //                       Container(
+                          //                           height: 18,
+                          //                           width: 50,
+                          //                           decoration: BoxDecoration(
+                          //                               color: clientdata![
+                          //                               index]
+                          //                                   .senderTag !=
+                          //                                   "supplier product"
+                          //                                   ? const Color(
+                          //                                   0xffF2FFF7)
+                          //                                   : const Color(
+                          //                                   0xffF1FAFF),
+                          //                               borderRadius:
+                          //                               const BorderRadius
+                          //                                   .all(
+                          //                                   Radius
+                          //                                       .circular(
+                          //                                       9))),
+                          //                           child: Center(
+                          //                             child: regulartext(
+                          //                                 clientdata![index]
+                          //                                     .senderTag !=
+                          //                                     "supplier product"
+                          //                                     ? const Color(
+                          //                                     0xff1B9346)
+                          //                                     : const Color(
+                          //                                     0xff1D84C7),
+                          //                                 10,
+                          //                                 clientdata![index]
+                          //                                     .senderTag ==
+                          //                                     "supplier product"
+                          //                                     ? "Supplier"
+                          //                                     : "ME"),
+                          //                           ))
+                          //                     ],
+                          //                   ),
+                          //                   InkWell(
+                          //                     child: Row(
+                          //                       mainAxisAlignment:
+                          //                       MainAxisAlignment.start,
+                          //                       children: [
+                          //                         RatingBarIndicator(
+                          //                           direction:
+                          //                           Axis.horizontal,
+                          //                           rating: clientdata![index].rating==0?0.0:clientdata![index].rating.toDouble(),
+                          //                           itemCount: 5,
+                          //                           itemSize: 14,
+                          //                           itemPadding:
+                          //                           const EdgeInsets.all(
+                          //                               2),
+                          //                           unratedColor: Colors.grey,
+                          //                           itemBuilder: (context,
+                          //                               _) =>
+                          //                               SvgPicture.asset(
+                          //                                   AppImages.rating),
+                          //                         ),
+                          //                         boldtext(
+                          //                             const Color(0xff656565),
+                          //                             12,
+                          //                             '    ${clientdata![index].rating==0?0.0:clientdata![index].rating} Rating')
+                          //                       ],
+                          //                     ),
+                          //                   ),
+                          //                 ],
+                          //               ),
+                          //             ),
+                          //             SvgPicture.asset(AppImages.altarroe)
+                          //           ],
+                          //         ),
+                          //         const SizedBox(
+                          //           height: 10,
+                          //         ),
+                          //         Row(
+                          //           mainAxisAlignment:
+                          //           MainAxisAlignment.spaceEvenly,
+                          //           children: [
+                          //             Expanded(
+                          //                 child: ElevatedButton(
+                          //                     style: ElevatedButton.styleFrom(
+                          //                         backgroundColor:
+                          //                         const Color(
+                          //                             0xffF5F5F5)),
+                          //                     onPressed: () {
+                          //
+                          //                       clientdata![index].rating==0?
+                          //                       ratenow(clientdata![index].type!,clientdata![index].typeId.toString(),clientdata![index].id.toString(),clientdata![index].userId.toString(),"recevier",context):
+                          //                       ratenow1(clientdata![index].type!,clientdata![index].typeId.toString(),clientdata![index].id.toString(),clientdata![index].userId.toString(),clientdata![index].callLogRatingsId.toString(),"recevier",context);
+                          //                     },
+                          //                     child: boldtext(
+                          //                       AppColors.black,
+                          //                       12,
+                          //                       clientdata![index].rating==0? "Rate Now":"Edit Rating",
+                          //                     ))),
+                          //             const SizedBox(
+                          //               width: 10,
+                          //             ),
+                          //             Expanded(
+                          //                 child: ElevatedButton.icon(
+                          //                     icon: SvgPicture.asset(
+                          //                         AppImages.crown),
+                          //                     style: ElevatedButton.styleFrom(
+                          //                         backgroundColor:
+                          //                         const Color(
+                          //                             0xffF1FAFF)),
+                          //                     onPressed: () {
+                          //                       removeclient(
+                          //                         context,
+                          //                         clientdata![index]
+                          //                             .id
+                          //                             .toString(),
+                          //                       );
+                          //                     },
+                          //                     label: boldtext(
+                          //                       AppColors.black,
+                          //                       12,
+                          //                       "Remove from Client",
+                          //                     )))
+                          //           ],
+                          //         ),
+                          //         const Divider(height: 1, thickness: 1),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ):
+                            clientdata![index].userId.toString()==UserId? GestureDetector(
                               onTap: () {
-                                CommonBottomSheet.show(context,clientdata![index].providerId.toString(),clientdata![index].id.toString(),"service");
+                                clientdata![index].receiverTag=="user"? CommonBottomSheetUser.show(context,clientdata![index].userId.toString(),clientdata![index].id.toString(),"service",""):   CommonBottomSheet.show(context,clientdata![index].providerId.toString(),clientdata![index].id.toString(),"service","");
                               },
                               child: Container(
                                 padding: const EdgeInsets.only(
@@ -592,47 +782,48 @@ class _CRMScreensState extends State<CRMScreen> {
                                               ),
                                               Row(
                                                 children: [
-                                                  regulartext(
-                                                    const Color(0xff656565),
-                                                    12,
-                                                    clientdata![index]
-                                                        .name
-                                                        .toString(),
-                                                  ),
-                                                  Container(
-                                                      height: 18,
-                                                      width: 50,
-                                                      decoration: BoxDecoration(
-                                                          color: clientdata![
-                                                          index]
-                                                              .receiverTag !=
-                                                              "supplier product"
-                                                              ? const Color(
-                                                              0xffF2FFF7)
-                                                              : const Color(
-                                                              0xffF1FAFF),
-                                                          borderRadius:
-                                                          const BorderRadius
-                                                              .all(
-                                                              Radius
-                                                                  .circular(
-                                                                  9))),
-                                                      child: Center(
-                                                        child: regulartext(
-                                                            clientdata![index]
-                                                                .receiverTag !=
-                                                                "supplier product"
-                                                                ? const Color(
-                                                                0xff1B9346)
-                                                                : const Color(
-                                                                0xff1D84C7),
-                                                            10,
-                                                            clientdata![index]
-                                                                .receiverTag ==
-                                                                "supplier product"
-                                                                ? "Supplier"
-                                                                : "ME"),
-                                                      ))
+                                                Expanded(child:   regulartext(
+                                                  const Color(0xff656565),
+                                                  12,
+                                                  clientdata![index]
+                                                      .name
+                                                      .toString(),
+                                                ),),
+                                                 Expanded(child:  Container(
+                                                     height: 18,
+                                                     width: 50,
+                                                     decoration: BoxDecoration(
+                                                         color: clientdata![
+                                                         index]
+                                                             .receiverTag !=
+                                                             "supplier"
+                                                             ?clientdata![index].receiverTag=="user"?Colors.white: const Color(
+                                                             0xffF2FFF7)
+                                                             : const Color(
+                                                             0xffF1FAFF),
+                                                         borderRadius:
+                                                         const BorderRadius
+                                                             .all(
+                                                             Radius
+                                                                 .circular(
+                                                                 9))),
+                                                     child: Center(
+                                                       child: regulartext(
+                                                           clientdata![index]
+                                                               .receiverTag !=
+                                                               "supplier"
+                                                               ? clientdata![index].receiverTag=="user"?Colors.white:const Color(
+                                                               0xff1B9346)
+                                                               : const Color(
+                                                               0xff1D84C7),
+                                                           10,
+                                                           clientdata![index].receiverTag=="user"?"": clientdata![index]
+                                                               .receiverTag ==
+                                                               "supplier"
+                                                               ? "Supplier"
+                                                               : "ME"),
+                                                     ))),
+                                                  Expanded(child: SizedBox(height: 10,))
                                                 ],
                                               ),
                                               InkWell(
@@ -643,7 +834,7 @@ class _CRMScreensState extends State<CRMScreen> {
                                                     RatingBarIndicator(
                                                       direction:
                                                       Axis.horizontal,
-                                                      rating: clientdata![index].rating==0?0.0:clientdata![index].rating.toDouble(),
+                                                      rating: clientdata![index].rating==0?0.0:clientdata![index].rating!,
                                                       itemCount: 5,
                                                       itemSize: 14,
                                                       itemPadding:
@@ -682,27 +873,25 @@ class _CRMScreensState extends State<CRMScreen> {
                                                     const Color(
                                                         0xffF5F5F5)),
                                                 onPressed: () {
+                                                  clientdata![index].rating!=0?ratenow1(clientdata![index].type!,clientdata![index].typeId.toString(),clientdata![index].id.toString(),clientdata![index].userId.toString(),clientdata![index].rating!,clientdata![index].review??"" ,clientdata![index].myBooking.toString(),clientdata![index].callLogRatingsId.toString(),context):    ratenow(clientdata![index].type!,clientdata![index].typeId.toString(),clientdata![index].id.toString(),clientdata![index].userId.toString(),clientdata![index].myBooking.toString(),clientdata![index].callLogRatingsId.toString(),context);
 
-                                                  clientdata![index].rating==0?
-                                                  ratenow(clientdata![index].type!,clientdata![index].typeId.toString(),clientdata![index].id.toString(),clientdata![index].userId.toString(),"recevier",context):
-                                                  ratenow1(clientdata![index].type!,clientdata![index].typeId.toString(),clientdata![index].id.toString(),clientdata![index].userId.toString(),clientdata![index].callLogRatingsId.toString(),"recevier",context);
+                                                 // clientdata![index].rating==0?
+                                                 // ratenow(clientdata![index].type!,clientdata![index].typeId.toString(),clientdata![index].id.toString(),clientdata![index].userId.toString(),"recevier", clientdata![index].rating.toDouble(),context):
+                                                //  ratenow1(clientdata![index].type!,clientdata![index].typeId.toString(),clientdata![index].id.toString(),clientdata![index].userId.toString(),clientdata![index].callLogRatingsId.toString(),"recevier",context);
                                                 },
                                                 child: boldtext(
                                                   AppColors.black,
                                                   12,
-                                                  clientdata![index].rating==0? "Rate Now":"Edit Rating",
+                                                   "Rate Now",
                                                 ))),
                                         const SizedBox(
                                           width: 10,
                                         ),
                                         Expanded(
-                                            child: ElevatedButton.icon(
-                                                icon: SvgPicture.asset(
-                                                    AppImages.crown),
+                                            child: ElevatedButton(
+
                                                 style: ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                    const Color(
-                                                        0xffF1FAFF)),
+                                                backgroundColor: Color(0xFFFFF2F3)),
                                                 onPressed: () {
                                                   removeclient(
                                                       context,
@@ -711,8 +900,186 @@ class _CRMScreensState extends State<CRMScreen> {
                                                           .toString(),
                                                       );
                                                 },
-                                                label: boldtext(
+                                                child: boldtext(
+                                                  AppColors.red,
+                                                  12,
+                                                  "Remove from Client",
+                                                )))
+                                      ],
+                                    ),
+                                    const Divider(height: 1, thickness: 1),
+                                  ],
+                                ),
+                              ),
+                            ):GestureDetector(
+                              onTap: () {
+                                clientdata![index].senderTag=="user"? CommonBottomSheetUser.show(context,clientdata![index].userId.toString(),clientdata![index].id.toString(),"service",""):  CommonBottomSheet.show(context,clientdata![index].userId.toString(),clientdata![index].id.toString(),"service","");
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.only(
+                                    left: 16, right: 16, bottom: 10),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Stack(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 30,
+                                              backgroundImage: NetworkImage(
+                                                  clientdata![index]
+                                                      .senderImage
+                                                      .toString()),
+                                            ),
+                                            Positioned(
+                                              left: 40,
+                                              top: 40,
+                                              child:
+                                              clientdata![index].myBooking ==
+                                                  1
+                                                  ? SvgPicture.asset(
+                                                  AppImages.roundright)
+                                                  : SvgPicture.asset(
+                                                  AppImages.roundleft),
+                                            )
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          width: 12,
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              boldtext(
                                                   AppColors.black,
+                                                  14,
+                                                  clientdata![index]
+                                                      .senderName!
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Expanded(child:   regulartext(
+                                                    const Color(0xff656565),
+                                                    12,
+                                                    clientdata![index]
+                                                        .name
+                                                        .toString(),
+                                                  ),),
+                                                  Expanded(child:  Container(
+                                                      height: 18,
+                                                      width: 50,
+                                                      decoration: BoxDecoration(
+                                                          color: clientdata![index].senderTag=="user"?Colors.white:clientdata![
+                                                          index]
+                                                              .senderTag !=
+                                                              "supplier"
+                                                              ? const Color(
+                                                              0xffF2FFF7)
+                                                              : const Color(
+                                                              0xffF1FAFF),
+                                                          borderRadius:
+                                                          const BorderRadius
+                                                              .all(
+                                                              Radius
+                                                                  .circular(
+                                                                  9))),
+                                                      child: Center(
+                                                        child: regulartext(
+                                                            clientdata![index].senderTag=="user"?Colors.white:  clientdata![index]
+                                                                .senderTag !=
+                                                                "supplier"
+                                                                ? const Color(
+                                                                0xff1B9346)
+                                                                : const Color(
+                                                                0xff1D84C7),
+                                                            10,
+                                                            clientdata![index].senderTag=="user"?"":  clientdata![index]
+                                                                .senderTag ==
+                                                                "supplier"
+                                                                ? "Supplier"
+                                                                : "ME"),
+                                                      ))),
+                                                  Expanded(child: SizedBox(height: 10,))
+                                                ],
+                                              ),
+                                              InkWell(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                                  children: [
+                                                    RatingBarIndicator(
+                                                      direction:
+                                                      Axis.horizontal,
+                                                      rating: clientdata![index].rating==0?0.0:clientdata![index].rating!,
+                                                      itemCount: 5,
+                                                      itemSize: 14,
+                                                      itemPadding:
+                                                      const EdgeInsets.all(
+                                                          2),
+                                                      unratedColor: Colors.grey,
+                                                      itemBuilder: (context,
+                                                          _) =>
+                                                          SvgPicture.asset(
+                                                              AppImages.rating),
+                                                    ),
+                                                    boldtext(
+                                                        const Color(0xff656565),
+                                                        12,
+                                                        '    ${clientdata![index].rating==0?0.0:clientdata![index].rating} Rating')
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SvgPicture.asset(AppImages.altarroe)
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Expanded(
+                                            child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                    const Color(
+                                                        0xffF5F5F5)),
+                                                onPressed: () {
+                                                  clientdata![index].rating!=0.0?ratenow1(clientdata![index].type!,clientdata![index].typeId.toString(),clientdata![index].id.toString(),clientdata![index].userId.toString(),clientdata![index].rating!,clientdata![index].review??"" ,clientdata![index].myBooking.toString(),clientdata![index].callLogRatingsId.toString(),context):  ratenow(clientdata![index].type!,clientdata![index].typeId.toString(),clientdata![index].id.toString(),clientdata![index].userId.toString(), clientdata![index].myBooking.toString(),clientdata![index].callLogRatingsId.toString(),context);
+
+                                                  // clientdata![index].rating==0.0?
+                                                 // ratenow(clientdata![index].type!,clientdata![index].typeId.toString(),clientdata![index].id.toString(),clientdata![index].userId.toString(),"recevier", clientdata![index].rating.toDouble(),context):
+                                                 // ratenow1(clientdata![index].type!,clientdata![index].typeId.toString(),clientdata![index].id.toString(),clientdata![index].userId.toString(),clientdata![index].callLogRatingsId.toString(),"recevier",context);
+                                                },
+                                                child: boldtext(
+                                                  AppColors.black,
+                                                  12,
+                                                   "Rate Now",
+                                                ))),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                            child: ElevatedButton(
+
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor: Color(0xFFFFF2F3)),
+                                                onPressed: () {
+                                                  removeclient(
+                                                    context,
+                                                    clientdata![index]
+                                                        .id
+                                                        .toString(),
+                                                  );
+                                                },
+                                                child: boldtext(
+                                                  AppColors.red,
                                                   12,
                                                   "Remove from Client",
                                                 )))
@@ -732,9 +1099,7 @@ class _CRMScreensState extends State<CRMScreen> {
             )));
   }
 
-
-
-  ratenow(String type,String typeid,String calllogid,String userid,String typeuser, BuildContext context,) async {
+  ratenow(String type,String typeid,String calllogid,String userid,String typeuser,String calllogratingid, BuildContext context,) async {
     TextEditingController description = TextEditingController();
     double addrating =4;
     return showDialog(
@@ -747,162 +1112,188 @@ class _CRMScreensState extends State<CRMScreen> {
             insetPadding: const EdgeInsets.only(left: 10, right: 10),
             iconPadding: EdgeInsets.zero,
             content: Container(
-                height: MediaQuery.of(context).size.height / 2.2,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+              height: MediaQuery.of(context).size.height / 2.2,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(Icons.close_rounded),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // SvgPicture.asset(subMenu.image),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      boldtext(AppColors.black, 18, "Rating and review"),
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 25,
+                  ),
+                  InkWell(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
+                        RatingBar.builder(
+                          initialRating: 1,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemPadding:
+                          const EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) =>
+                              SvgPicture.asset(AppImages.rating),
+                          onRatingUpdate: (rating) {
+                            setState(() {
+                              addrating=rating;
+                            });
+                            print(rating);
                           },
-                          child: const Icon(Icons.close_rounded),
                         )
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // SvgPicture.asset(subMenu.image),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        boldtext(AppColors.black, 18, "Rating and review"),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                    InkWell(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          RatingBar.builder(
-                            initialRating: 3,
-                            minRating: 1,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            itemPadding:
-                            const EdgeInsets.symmetric(horizontal: 4.0),
-                            itemBuilder: (context, _) =>
-                                SvgPicture.asset(AppImages.rating),
-                            onRatingUpdate: (rating) {
-                              setState(() {
-                                addrating=rating;
-                              });
-                              print(rating);
-                            },
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    textAreamo(description, "Description"),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 0, vertical: 0),
-                      child: SizedBox(
-                        height: 50,
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            backgroundColor: AppColors.primary,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  textAreamo(description, "Description"),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 0, vertical: 0),
+                    child: SizedBox(
+                      height: 50,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
-                          onPressed: () async{
+                          backgroundColor: AppColors.primary,
+                        ),
+                        onPressed: () async{
 
-                            typeuser!="receiver"?print("user receiver"):print("user sender");
-                            if(typeuser=="receiver"){
-                              print(typeuser);
-                              print(ApiUrl.addleadrating);
-                              final response = await http.post(
+                          typeuser=="1"?print("user sender"):print("user receiver");
+                          if(typeuser=="1"){
+                            print(typeuser);
+                            print(ApiUrl.addleadrating);
+                            final response = await http.post(
                                 Uri.parse(ApiUrl.addleadrating),
                                 headers: {"Authorization": "$USERTOKKEN"},
-                                body: {
+                                body:
+                                // rating==0.0?
+                                {
+                                  "id": calllogid,
                                   "type": type,
                                   "type_id": typeid,
                                   "call_log_id": calllogid,
                                   "rating": addrating.toString(),
                                   "review": description.text,
                                   "user_id":userid
-                                },
-                              );
-                              print(response.body);
-                              if (response.statusCode == 200) {
-                                ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-                                  content: Text(
-                                      "Rating Add Successfully"),
-                                ));
-                                Navigator.of(context).pop();
-                                //  alltransactionmodel = myfinancelist(userid!);
-                                if (kDebugMode) {
-                                  print(response.statusCode);
+                                }
+                              //:
+                              // {
+                              //   "id":"33",
+                              //   "type": type,
+                              //   "type_id": typeid,
+                              //   "call_log_id": calllogid,
+                              //   "rating": addrating.toString(),
+                              //   "review": description.text,
+                              //   "user_id":userid
+                              // },
+                            );
+                            print("${type}${typeid}${calllogid}${addrating}${description.text}${userid}");
 
-                                }
-                              } else {
-                                if (kDebugMode) {
-                                  print("object");
-                                  Navigator.pop(context);
-                                }
+
+                            print(response.body);
+                            if (response.statusCode == 200) {
+                              ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                                content: Text(
+                                    "Rating Add Successfully"),
+                              ));
+                              Navigator.of(context).pop();
+                              getlead();
+                              getclient();
+                              //  alltransactionmodel = myfinancelist(userid!);
+                              if (kDebugMode) {
+                                print(response.statusCode);
+
                               }
-                            }else{
-                              print(typeuser);
-                              print(ApiUrl.adduserrating);
-                              final response = await http.post(
-                                Uri.parse(ApiUrl.adduserrating),
-                                headers: {"Authorization": "$USERTOKKEN"},
-                                body: {
-                                  "type": type,
-                                  "type_id": typeid,
-                                  "call_log_id": calllogid,
-                                  "rating": addrating.toString(),
-                                  "review": description.text,
-                                  "user_id":userid
-                                },
-                              );
-                              print(response.body);
-                              if (response.statusCode == 200) {
-                                ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-                                  content: Text(
-                                      "Rating Add Successfully"),
-                                ));
-                                Navigator.of(context).pop();
-                                //  alltransactionmodel = myfinancelist(userid!);
-                                if (kDebugMode) {
-                                  print(response.statusCode);
-
-                                }
-                              } else {
-                                if (kDebugMode) {
-                                  print("object");
-                                  Navigator.pop(context);
-                                }
+                            } else {
+                              if (kDebugMode) {
+                                print("object");
+                                Navigator.pop(context);
                               }
                             }
+                          }else{
+                            print(typeuser);
+                            print(ApiUrl.adduserrating);
+                            final response = await http.post(
+                              Uri.parse(ApiUrl.adduserrating),
+                              headers: {"Authorization": "$USERTOKKEN"},
+                              body: {
 
-                          },
-                          child: boldtext(AppColors.white, 14, "Update"),
-                        ),
+                                "type": type,
+                                "type_id": typeid,
+                                "call_log_id": calllogid,
+                                "rating": addrating.toString(),
+                                "review": description.text,
+                                "user_id":userid
+                              },
+                            );
+                            print("${type}${typeid}${calllogid}${addrating}${description.text}${userid}");
+                            print(response.body);
+                            if (response.statusCode == 200) {
+                              ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                                content: Text(
+                                    "Rating Add Successfully"),
+                              ));
+                              Navigator.of(context).pop();
+                              getlead();
+                              getclient();
+                              //  alltransactionmodel = myfinancelist(userid!);
+                              if (kDebugMode) {
+                                print(response.statusCode);
+
+                              }
+                            } else {
+                              if (kDebugMode) {
+                                print("object");
+                                Navigator.pop(context);
+                              }
+                            }
+                          }
+
+                        },
+                        child: boldtext(AppColors.white, 14, "Rate Now"),
                       ),
                     ),
-                  ],
-                ),),
+                  ),
+                ],
+              ),),
           );
         });
   }
-  ratenow1(String type,String typeid,String calllogid,String userid,String typeuser,String callratinid, BuildContext context,) async {
+
+  ratenow1(String type,String typeid,String calllogid,String userid,double rating,String review,String typeuser,String calllogratingid, BuildContext context,) async {
     TextEditingController description = TextEditingController();
+    setState(() {
+      description.text=review;
+    });
     double addrating =4;
     return showDialog(
         context: context,
@@ -914,164 +1305,185 @@ class _CRMScreensState extends State<CRMScreen> {
             insetPadding: const EdgeInsets.only(left: 10, right: 10),
             iconPadding: EdgeInsets.zero,
             content: Container(
-                height: MediaQuery.of(context).size.height / 2.2,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+              height: MediaQuery.of(context).size.height / 2.2,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(Icons.close_rounded),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // SvgPicture.asset(subMenu.image),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      boldtext(AppColors.black, 18, "Rating and review"),
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 25,
+                  ),
+                  InkWell(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
+                        RatingBar.builder(
+                          initialRating: rating,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemPadding:
+                          const EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) =>
+                              SvgPicture.asset(AppImages.rating),
+                          onRatingUpdate: (rating) {
+                            setState(() {
+                              addrating=rating;
+                            });
+                            print(rating);
                           },
-                          child: const Icon(Icons.close_rounded),
                         )
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // SvgPicture.asset(subMenu.image),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        boldtext(AppColors.black, 18, "Rating and review"),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                    InkWell(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          RatingBar.builder(
-                            initialRating: 3,
-                            minRating: 1,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            itemPadding:
-                            const EdgeInsets.symmetric(horizontal: 4.0),
-                            itemBuilder: (context, _) =>
-                                SvgPicture.asset(AppImages.rating),
-                            onRatingUpdate: (rating) {
-                              setState(() {
-                                addrating=rating;
-                              });
-                              print(rating);
-                            },
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    textAreamo(description, "Description"),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 0, vertical: 0),
-                      child: SizedBox(
-                        height: 50,
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            backgroundColor: AppColors.primary,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  textAreamo(description, "Description"),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 0, vertical: 0),
+                    child: SizedBox(
+                      height: 50,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
-                          onPressed: () async{
+                          backgroundColor: AppColors.primary,
+                        ),
+                        onPressed: () async{
+                          typeuser=="1"?print("user receiver"):print("user sender");
+                          if(typeuser=="1"){
+                            print(typeuser);
+                            print(ApiUrl.addleadrating);
 
-                            typeuser=="receiver"?print("user receiver"):print("user sender");
-                            if(typeuser!="receiver"){
-                              print(typeuser);
-                              print(ApiUrl.addleadrating);
-                              final response = await http.post(
+                            final response = await http.post(
                                 Uri.parse(ApiUrl.addleadrating),
                                 headers: {"Authorization": "$USERTOKKEN"},
-                                body: {
-                                  "id":"4",
+                                body:
+                                // rating==0.0?
+                                {
+                                  "id": calllogid,
                                   "type": type,
                                   "type_id": typeid,
                                   "call_log_id": calllogid,
                                   "rating": addrating.toString(),
                                   "review": description.text,
                                   "user_id":userid
-
-
-                                },
-                              );
-                              print(response.body);
-                              if (response.statusCode == 200) {
-                                ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-                                  content: Text(
-                                      "Rating Add Successfully"),
-                                ));
-                                Navigator.of(context).pop();
-                                //  alltransactionmodel = myfinancelist(userid!);
-                                if (kDebugMode) {
-                                  print(response.statusCode);
-
                                 }
-                              } else {
-                                if (kDebugMode) {
-                                  print("object");
-                                  Navigator.pop(context);
-                                }
+                              //:
+                              // {
+                              //   "id":"33",
+                              //   "type": type,
+                              //   "type_id": typeid,
+                              //   "call_log_id": calllogid,
+                              //   "rating": addrating.toString(),
+                              //   "review": description.text,
+                              //   "user_id":userid
+                              // },
+                            );
+                            print("${type}${typeid}${calllogid}${addrating}${description.text}${userid}");
+
+
+                            print(response.body);
+                            if (response.statusCode == 200) {
+                              ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                                content: Text(
+                                    "Rating Add Successfully"),
+                              ));
+                              Navigator.of(context).pop();
+                              getlead();
+                              getclient();
+                              //  alltransactionmodel = myfinancelist(userid!);
+                              if (kDebugMode) {
+                                print(response.statusCode);
+
                               }
-                            }else{
-                              print(typeuser);
-                              print(ApiUrl.adduserrating);
-                              final response = await http.post(
-                                Uri.parse(ApiUrl.adduserrating),
-                                headers: {"Authorization": "$USERTOKKEN"},
-                                body: {
-                                  "id":callratinid,
-                                  "type": type,
-                                  "type_id": typeid,
-                                  "call_log_id": calllogid,
-                                  "rating": addrating.toString(),
-                                  "review": description.text,
-                                  "user_id":userid
-                                },
-                              );
-                              print(response.body);
-                              if (response.statusCode == 200) {
-                                ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-                                  content: Text(
-                                      "Rating Add Successfully"),
-                                ));
-                                Navigator.of(context).pop();
-                                //  alltransactionmodel = myfinancelist(userid!);
-                                if (kDebugMode) {
-                                  print(response.statusCode);
-
-                                }
-                              } else {
-                                if (kDebugMode) {
-                                  print("object");
-                                  Navigator.pop(context);
-                                }
+                            } else {
+                              if (kDebugMode) {
+                                print("object");
+                                Navigator.pop(context);
                               }
                             }
+                          }else{
+                            print(typeuser);
+                            print(ApiUrl.adduserrating);
+                            final response = await http.post(
+                              Uri.parse(ApiUrl.adduserrating),
+                              headers: {"Authorization": "$USERTOKKEN"},
+                              body: {
 
-                          },
-                          child: boldtext(AppColors.white, 14, "Update"),
-                        ),
+                                "type": type,
+                                "type_id": typeid,
+                                "call_log_id": calllogid,
+                                "rating": addrating.toString(),
+                                "review": description.text,
+                                "user_id":userid
+                              },
+                            );
+                            print("${type}${typeid}${calllogid}${addrating}${description.text}${userid}");
+                            print(response.body);
+                            if (response.statusCode == 200) {
+                              ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                                content: Text(
+                                    "Rating Add Successfully"),
+                              ));
+                              Navigator.of(context).pop();
+                              getlead();
+                              getclient();
+                              //  alltransactionmodel = myfinancelist(userid!);
+                              if (kDebugMode) {
+                                print(response.statusCode);
+
+                              }
+                            } else {
+                              if (kDebugMode) {
+                                print("object");
+                                Navigator.pop(context);
+                              }
+                            }
+                          }
+
+                        },
+                        child: boldtext(AppColors.white, 14, rating==0.0?"Rate Now":"Update"),
                       ),
                     ),
-                  ],
-                ),),
+                  ),
+                ],
+              ),),
           );
         });
   }
+
+
+
 
   markasclient(BuildContext context,String calllogid,) async {
     TextEditingController description = TextEditingController();
@@ -1162,7 +1574,7 @@ class _CRMScreensState extends State<CRMScreen> {
   }
 
   removeclient(BuildContext context, String clientid) async {
-    print("PRINT DATA ID $clientdata");
+    print("PRINT DATA CLIENT ID $clientid");
     TextEditingController description = TextEditingController();
     return showDialog(
         context: context,
@@ -1227,19 +1639,21 @@ class _CRMScreensState extends State<CRMScreen> {
                           onPressed: () async {
                             //for delete client use userid
                             print(clientid);
+                            print(UserId);
                             showLoader(context);
                             print(ApiUrl.removeasclient);
                             try {
                               final response = await http.post(Uri.parse(ApiUrl.removeasclient),
                                   headers: {"Authorization": USERTOKKEN.toString()},
-                                  body: {"id": UserId,
-                                  "mark_as_client":clientid});
+                                  body: {"id": clientid,
+                                 });
                               if (response.statusCode == 200) {
                                 print("success");
                               //  showInSnackBar(
                                  // "Addes successfully",
                               //  );
-
+                                getlead();
+                                getclient();
                                 Navigator.pop(context);
                                 hideLoader();
                               } else {
@@ -1283,55 +1697,50 @@ class _CRMScreensState extends State<CRMScreen> {
     // ignore: prefer_interpolation_to_compose_strings
     print("Ashish" + UserId);
     setState(() {
-      viewprofilelist=getviewprofilelist();
+   //   viewprofilelist=getviewprofilelist();
      // leadlist = getleadlist();
-      getproductseller();
-      getproductseller1();
+      getviewdprofile();
+      getlead();
+      getclient();
      // clientlist = getclientlist();
 
 
     });
   }
-  Future<List<ViewprofileModeldata>?> getviewprofilelist() async {
-    print("PRINT VIEW PROFILE  OF DATA");
-    print(ApiUrl.getviewprofile);
+
+  Future<List<ViewprofileModeldata?>?>? getviewdprofile() async {
     try {
+      print(ApiUrl.getviewprofile);
       showLoader(context);
       final response = await http.post(
         Uri.parse(ApiUrl.getviewprofile),
+        body: {
+        },
         headers: {"Authorization": USERTOKKEN.toString()},
       );
+      print("response data my news ================="+response.body);
+      print("response data my news ================="+response.statusCode.toString());
+      //  Map<String, dynamic> map = json.decode(response.body);
       if (response.statusCode == 200) {
-        print(ApiUrl.getviewprofile);
-        print("PRINT VIEW PROFILE URL DATA FROM VIREW PROFILE ${response.statusCode}");
         hideLoader();
-        ViewprofileModel? allServiceModel =
-        ViewprofileModel.fromJson(jsonDecode(response.body));
-        for (int i = 0; i < allServiceModel.data!.length; i++) {
-          ViewprofileModeldata categoryModelData = ViewprofileModeldata(
-              id: allServiceModel.data[i].id,
-              fullName: allServiceModel.data[i].fullName,
-              firstName: allServiceModel.data[i].firstName,
-              occupationId: allServiceModel.data[i].occupationId,
-              occupation: allServiceModel.data[i].occupation,
-              profileImage: allServiceModel.data[i].profileImage,
-              totalRating: allServiceModel.data[i].totalRating,
-            lastName: allServiceModel.data[i].lastName,
-            viewed: allServiceModel.data[i].viewed,
-              );
-          viewprofiledata!.add(categoryModelData);
+        ViewprofileModel? viewNewsModel = ViewprofileModel.fromJson(jsonDecode(response.body));
+        viewprofiledata = viewNewsModel.data!;
+        setState(() {
+        });
 
-        }
-        setState(() {});
-
-        return allServiceModel.data;
+        print("Success");
+        return viewNewsModel.data;
       } else {
         hideLoader();
+        print("Something went wronge");
       }
-    } catch (e) {}
-    return null;
+    } catch (e) {
+
+      print("data==1=$e");
+
+    }
   }
-  Future<List<LeadDataModeldata?>?>? getproductseller() async {
+  Future<List<LeadDataModeldata?>?>? getlead() async {
     try {
       print(ApiUrl.getleadlist);
       showLoader(context);
@@ -1363,7 +1772,7 @@ class _CRMScreensState extends State<CRMScreen> {
 
     }
   }
-  Future<List<GetClientModeldata?>?>? getproductseller1() async {
+  Future<List<GetClientModeldata?>?>? getclient() async {
     try {
       print(ApiUrl.getleadlist);
       showLoader(context);
@@ -1423,6 +1832,8 @@ class _CRMScreensState extends State<CRMScreen> {
         //   "Addes successfully",
         // );
         Navigator.pop(context);
+        getlead();
+        getclient();
         hideLoader();
       } else {
         print("not success");
@@ -1488,9 +1899,7 @@ class _CRMScreensState extends State<CRMScreen> {
     }
   }
 
-  void removeasclient(String clientid) async {
 
-  }
 
 
 

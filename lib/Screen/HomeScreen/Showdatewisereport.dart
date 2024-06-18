@@ -205,7 +205,10 @@ class FinancePageViewDetailReportFilterScreenState
                                         subdata.transMobile,
                                         subdata.paymentMode)
                                         .then((value) =>
-                                        Navigator.pop(context));
+                                        Navigator.pop(context),
+
+                                    );
+
 
                                   },
                                   child:
@@ -307,6 +310,8 @@ class FinancePageViewDetailReportFilterScreenState
                 widget.username,widget.address,widget.city
               );
               await Methods1.orderSuccessAlert(context, "Report Download Successfully");
+              Navigator.pop(context);
+              Navigator.pop(context);
 
 
             }

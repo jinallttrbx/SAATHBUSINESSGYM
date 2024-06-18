@@ -42,7 +42,7 @@ class RatingandReviewByUserScreens extends StatefulWidget {
 
 class RatingandReviewByUserScreensState
     extends State<RatingandReviewByUserScreens> {
-
+  final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
 
   bool rating = false;
   String? UserId;
@@ -50,6 +50,9 @@ class RatingandReviewByUserScreensState
   String ratingcount="";
   SharedPreference _sharedPreference = SharedPreference();
   Future<GetratingClass?>? allservice1;
+  List<GetratingClassdata>? ratingdata = [];
+  double avgrating=0.0;
+  int totalReview=0;
   @override
   void initState() {
     // TODO: implement initState
@@ -63,32 +66,41 @@ class RatingandReviewByUserScreensState
     print("Ashish" + usertype!);
     UserId = await _sharedPreference.isUsetId();
     print("Ashish" + UserId!);
-
-    allservice1 = getratingreview();
+     getratingreview();
   }
 
-  Future<GetratingClass?> getratingreview() async {
-    showLoader(context);
+  Future<List<GetratingClassdata?>?>? getratingreview() async {
     try {
-      var headers = {'Authorization': USERTOKKEN!};
-      final response =  await http.post(Uri.parse(
-          ApiUrl.ratingreview),
-          headers: headers);
-      print(response.body);
-      Map<String, dynamic> map = json.decode(response.body);
+      print(ApiUrl.ratingreview);
+      showLoader(context);
+      final response = await http.post(
+        Uri.parse(ApiUrl.ratingreview),
+        body: {
+        },
+        headers: {"Authorization": USERTOKKEN.toString()},
+      );
+      print("response data my news ================="+response.body);
+      print("response data my news ================="+response.statusCode.toString());
+      //  Map<String, dynamic> map = json.decode(response.body);
       if (response.statusCode == 200) {
         hideLoader();
-        GetratingClass? allServiceModel =
-        GetratingClass.fromJson(jsonDecode(response.body));
+        GetratingClass? viewNewsModel = GetratingClass.fromJson(jsonDecode(response.body));
+        ratingdata = viewNewsModel.data!;
+        avgrating=viewNewsModel.avgStar;
+        totalReview=viewNewsModel.totalReview;
 
-        setState(() {});
-        return allServiceModel;
+        setState(() {
+        });
 
+        print("Success");
+        return viewNewsModel.data;
       } else {
-hideLoader();
+        hideLoader();
+        print("Something went wronge");
       }
     } catch (e) {
-      hideLoader();
+
+      print("data==1=$e");
 
     }
   }
@@ -96,177 +108,149 @@ hideLoader();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldkey,
       appBar: APPBar(title: "Rating And Review"),
       backgroundColor: AppColors.BGColor,
-      body:FutureBuilder<GetratingClass?>(
-          future: allservice1,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text(
-                    '${snapshot.error} occurred',
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                );
-              } else if (snapshot.hasData) {
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
+      body:Container(
+        margin: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                padding: EdgeInsets.only(left: 16,right: 16,top: 20,bottom: 20),
+                decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.all(Radius.circular(16))
+                ),
 
-                      Container(
-                        margin: const EdgeInsets.all(10),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            boldtext(AppColors.black,18,'Rating',
+                            ),
+                            regulartext(Colors.black,14,"From ${avgrating} Ratings", )
+                          ],
+                        ),),
+                        Expanded(child: InkWell(
+
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment:
+                            MainAxisAlignment.end,
                             children: [
-                              Container(
-                                  padding: EdgeInsets.only(left: 16,right: 16,top: 20,bottom: 20),
-                                  decoration: BoxDecoration(
-                                      color: AppColors.primaryColor,
-                                      borderRadius: BorderRadius.all(Radius.circular(16))
-                                  ),
-
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Expanded(child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              boldtext(AppColors.black,18,'Rating',
-                                              ),
-                                              regulartext(Colors.black,14,"From ${snapshot.data!.avgStar!} Ratings", )
-                                            ],
-                                          ),),
-                                          Expanded(child: InkWell(
-
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                              children: [
-                                                RatingBarIndicator(
-                                                  direction: Axis
-                                                      .horizontal,
-                                                  rating: double
-                                                      .parse(
-                                                      "${snapshot.data!.avgStar}"),
-                                                  itemCount: 5,
-                                                  itemSize: 14,
-                                                  itemPadding:
-                                                  const EdgeInsets
-                                                      .all(2),
-                                                  unratedColor:
-                                                  Colors.grey,
-                                                  itemBuilder:
-                                                      (context,
-                                                      _) =>
-                                                      SvgPicture.asset(AppImages.rating),
-                                                ),
-
-                                                boldtext(Colors.black, 12,
-                                                    '${snapshot.data!.avgStar}/5')
-                                              ],
-                                            ),
-                                          ),)
-                                        ],
-                                      ),
-                                      SizedBox(height: 10,),
-                                      Divider(height: 1,thickness: 1,color: Color(0xffEEEEEE),),
-                                      SizedBox(height: 10,),
-                                      boldtext(AppColors.black,14,"${snapshot.data!.totalReview} Reviews",  )
-
-                                    ],
-                                  )
+                              RatingBarIndicator(
+                                direction: Axis
+                                    .horizontal,
+                                rating: double
+                                    .parse(
+                                    "${avgrating}"),
+                                itemCount: 5,
+                                itemSize: 14,
+                                itemPadding:
+                                const EdgeInsets
+                                    .all(2),
+                                unratedColor:
+                                Colors.grey,
+                                itemBuilder:
+                                    (context,
+                                    _) =>
+                                    SvgPicture.asset(AppImages.rating),
                               ),
-                              SizedBox(height: 16,),
-                              Padding(padding: EdgeInsets.only(left: 18),child: regulartext(Color(0xff656565),14,"All Reviews and Ratings",
-                              ),),
-                              SizedBox(height: 12,),
-                              Container(
-                                padding: EdgeInsets.only(left: 16,right: 16,top: 20,bottom: 20),
-                                decoration: BoxDecoration(
-                                    color: AppColors.primaryColor,
-                                    borderRadius: BorderRadius.all(Radius.circular(16))
-                                ),
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: snapshot.data!.data.length,
-                                    itemBuilder: (context,index){
-                                      return Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Expanded(child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  boldtext(AppColors.black,16,snapshot.data!.data![index].customerName),
-                                                  SizedBox(height: 5,),
-                                                  InkWell(
 
-                                                    child: Row(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                      children: [
-                                                        RatingBarIndicator(
-                                                          direction: Axis
-                                                              .horizontal,
-                                                          rating: double
-                                                              .parse(
-                                                              "${snapshot.data!.data[index].rating}"),
-                                                          itemCount: 5,
-                                                          itemSize: 14,
-                                                          itemPadding:
-                                                          const EdgeInsets
-                                                              .all(2),
-                                                          unratedColor:
-                                                          Colors.grey,
-                                                          itemBuilder:
-                                                              (context,
-                                                              _) =>
-                                                              SvgPicture.asset(AppImages.rating),
-                                                        ),
-
-                                                        boldtext(Colors.black, 12,
-                                                          '${snapshot.data!.data![index].rating} Rating',)
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),),
-                                              regulartext(AppColors.hint,12,"${DateFormat("dd-MM-yyyy").format(snapshot.data!.data![index].createdAt)}",),
-                                            ],
-                                          ),
-                                          SizedBox(height: 10,),
-                                          regulartext(AppColors.black,12,"${snapshot.data!.data![index].review}",),
-                                          SizedBox(height: 10,),
-                                          Divider(height: 1,thickness: 1,color: Color(0xffEEEEEE),),
-                                          SizedBox(height: 10,),
-                                        ],
-                                      );
-                                    }),
-                              )
-
+                              boldtext(Colors.black, 12,
+                                  '${avgrating}/5')
                             ],
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }
-            }
+                        ),)
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    Divider(height: 1,thickness: 1,color: Color(0xffEEEEEE),),
+                    SizedBox(height: 10,),
+                    boldtext(AppColors.black,14,"${totalReview} Reviews",  )
+                  ],
+                )
+            ),
+            SizedBox(height: 20,),
+            Padding(padding: EdgeInsets.only(left: 18),child: regulartext(Color(0xff656565),14,"All Reviews and Ratings",
+            ),),
+           SizedBox(height: 20,),
+         Expanded(child:  Container(
+           decoration: BoxDecoration(
+               color: AppColors.primaryColor,
+               borderRadius: BorderRadius.all(Radius.circular(16))
+           ),
+           child:  Expanded(child:  ratingdata!.isEmpty?Center(child: Text("No Any One Given Rating"),):Container(child: ListView.builder(
+               shrinkWrap: true,
+               physics: BouncingScrollPhysics(),
+               itemCount: ratingdata!.length,
+               itemBuilder: (context,index){
+                 return Container(
+                   margin: EdgeInsets.only(left: 20,right: 20,top: 20),
+                   child: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Row(
+                         children: [
+                           Expanded(child: Column(
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                               boldtext(AppColors.black,16,ratingdata![index].customerName),
+                               SizedBox(height: 5,),
+                               InkWell(
 
-            // Displaying LoadingSpinner to indicate waiting state
-            return const Center(
-                child: SizedBox()
-            );
-          }),
+                                 child: Row(
+                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                   mainAxisAlignment:
+                                   MainAxisAlignment.start,
+                                   children: [
+                                     RatingBarIndicator(
+                                       direction: Axis
+                                           .horizontal,
+                                       rating: double
+                                           .parse(
+                                           "${ratingdata![index].rating}"),
+                                       itemCount: 5,
+                                       itemSize: 14,
+                                       itemPadding:
+                                       const EdgeInsets
+                                           .all(2),
+                                       unratedColor:
+                                       Colors.grey,
+                                       itemBuilder:
+                                           (context,
+                                           _) =>
+                                           SvgPicture.asset(AppImages.rating),
+                                     ),
+
+                                     boldtext(Colors.black, 12,
+                                       '${ratingdata![index].rating} Rating',)
+                                   ],
+                                 ),
+                               ),
+                             ],
+                           ),),
+                           regulartext(AppColors.hint,12,"${DateFormat("dd-MM-yyyy").format(ratingdata![index].createdAt)}",),
+                         ],
+                       ),
+                       SizedBox(height: 10,),
+                       regulartext(AppColors.black,12,"${ratingdata![index].review}",),
+                       SizedBox(height: 10,),
+                       Divider(height: 1,thickness: 1,color: Color(0xffEEEEEE),),
+                       SizedBox(height: 10,),
+                     ],
+                   ),
+                 );
+               }),)),
+         ))
+          ],
+        ),
+      )
 
     );
   }

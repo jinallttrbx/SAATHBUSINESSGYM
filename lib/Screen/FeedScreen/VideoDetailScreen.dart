@@ -311,7 +311,7 @@ class _VideosDetailScreenState extends State<VideosDetailScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: regulartext(AppColors.blackShade4, 12,
-                  widget.data!.videoShortDescription!.toString(),
+                  widget.data!.videoShortDescription??"".toString(),
                 ),
               ),
               const SizedBox(

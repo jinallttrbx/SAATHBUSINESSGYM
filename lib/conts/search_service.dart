@@ -216,7 +216,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: (){
-                          CommonBottomSheet.show(context,searchlist![index].userid.toString(),searchlist![index].userid.toString(),"service"); //  print("print user id ${searchlist![index].userId}");
+                          CommonBottomSheet.show(context,searchlist![index].userid.toString(),searchlist![index].typeId.toString(),"service",""); //  print("print user id ${searchlist![index].userId}");
 
                         },
                         child: Container(

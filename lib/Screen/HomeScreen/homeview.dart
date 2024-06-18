@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:async';
 import 'dart:convert';
 import 'package:businessgym/Controller/adresscontroller.dart';
 import 'package:businessgym/Controller/productController.dart';
@@ -22,6 +23,7 @@ import 'package:businessgym/Utils/ApiUrl.dart';
 import 'package:businessgym/Utils/SharedPreferences.dart';
 import 'package:businessgym/Utils/common_route.dart';
 import 'package:businessgym/Screen/HomeScreen/loandetailScreen.dart';
+import 'package:businessgym/conts/to_map_scree.dart';
 import 'package:businessgym/model/AllViewTransectionModel.dart';
 import 'package:businessgym/model/GetGroupsModel.dart';
 import 'package:businessgym/model/GetHomeModel.dart';
@@ -250,7 +252,7 @@ class _HomeViewState extends State<HomeView> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const UpdateLOcation(),
+                            builder: (context) =>  ToMapScreen(),
                           ),
                         );
                        // showmapbottomsheet(context);
@@ -264,7 +266,7 @@ class _HomeViewState extends State<HomeView> {
                   notificationResponseModel==null?IconButton(onPressed: (){
                     Get.to(() => NotificationScreen(
                       notificationResponseModel:
-                      notificationResponseModel!,
+                      notificationResponseModel,
                     ));
                   }, icon: SvgPicture.asset(
                     AppImages.notification,
@@ -472,7 +474,7 @@ class _HomeViewState extends State<HomeView> {
                                           padEnds: false,
                                           autoPlay: true,
                                           autoPlayInterval:
-                                              const Duration(seconds: 3),
+                                              const Duration(seconds: 1),
                                           // autoPlayAnimationDuration:
                                           // const Duration(milliseconds: 800),
                                           // autoPlayCurve: Curves.fastOutSlowIn,
@@ -1339,7 +1341,7 @@ class _HomeViewState extends State<HomeView> {
                                                 (BuildContext context, int i) {
                                               return GestureDetector(
                                                 onTap: (){
-                                                  CommonBottomSheet.show(context,snapshot.data!.productList[i].providerId.toString(),snapshot.data!.productList[i].id.toString(),"product");
+                                                  CommonBottomSheet.show(context,snapshot.data!.productList[i].providerId.toString(),snapshot.data!.productList[i].id.toString(),"product","");
                                                 },
                                                 child: Container(
                                                     margin:
@@ -1471,7 +1473,7 @@ class _HomeViewState extends State<HomeView> {
                                                                           const Color(
                                                                               0xff656565),
                                                                           12,
-                                                                          '${snapshot.data!.productList![i].averageRating!} Rating')
+                                                                          '${snapshot.data!.productList![i].averageRating.toStringAsFixed(1)!} Rating')
 
                                                                     ],
                                                                   ),
@@ -1567,7 +1569,7 @@ class _HomeViewState extends State<HomeView> {
                                                 (BuildContext context, int i) {
                                               return GestureDetector(
                                                 onTap: () {
-                                                  CommonBottomSheet.show(context,snapshot.data!.serviceList[i].providerId.toString(),snapshot.data!.serviceList[i].id.toString(),"service");
+                                                  CommonBottomSheet.show(context,snapshot.data!.serviceList[i].providerId.toString(),snapshot.data!.serviceList[i].id.toString(),"service","");
                                                      },
                                                 child: Container(
                                                     margin:
@@ -1699,7 +1701,7 @@ class _HomeViewState extends State<HomeView> {
                                                                           const Color(
                                                                               0xff656565),
                                                                           12,
-                                                                          '${snapshot.data!.serviceList![i].averageRating!} Rating')
+                                                                          '${snapshot.data!.serviceList![i].averageRating!.toStringAsFixed(1)} Rating')
                                                                 ],
                                                               ),
                                                             ),
@@ -1819,7 +1821,7 @@ class _HomeViewState extends State<HomeView> {
                                                       children: [
                                                         SvgPicture.asset(AppImages.activeprofile),
                                                         SizedBox(width: 5,),
-                                                        Padding(padding: EdgeInsets.only(left: 5),child: Text(
+                                                       Text(
                                                           snapshot.data!
                                                               .profilecompleted
                                                               .toString(),
@@ -1829,7 +1831,7 @@ class _HomeViewState extends State<HomeView> {
                                                               FontWeight.w600,
                                                               fontFamily:
                                                               "OpenSans"),
-                                                        ),)
+                                                        ),
                                                       ],
                                                     ),
 
@@ -1971,13 +1973,8 @@ class _HomeViewState extends State<HomeView> {
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) => MyGroupScreen(
-                                                              getGroupsModeldata![
-                                                                      i]
-                                                                  .id
-                                                                  .toString(),
-                                                              getGroupsModeldata![
-                                                                      i]
-                                                                  .groupTitle,getGroupsModeldata!.length)));
+                                                              getGroupsModeldata![i].Groupid.toString(),
+                                                              getGroupsModeldata![i].groupTitle,getGroupsModeldata!.length)));
                                                 },
                                                 child: Container(
                                                     margin:
@@ -2202,7 +2199,7 @@ class _HomeViewState extends State<HomeView> {
                                 child: Text(
                                   addincome == "Add Income"
                                       ? "Add Income"
-                                      : "Add Expences",
+                                      : "Add Expenses",
                                   style: const TextStyle(
                                       fontFamily: "OpenSans",
                                       fontWeight: FontWeight.w600,
@@ -2294,7 +2291,7 @@ class _HomeViewState extends State<HomeView> {
                                 filled: true,
                                 border: InputBorder.none,
                                 fillColor: AppColors.textfieldcolor,
-                                hintText: "Paid by"),
+                                hintText: addincome=="Add Income"?"Paid by":"Paid To"),
                             controller: paidby,
                             keyboardType: TextInputType.text,
                           ),
@@ -2481,27 +2478,27 @@ class _HomeViewState extends State<HomeView> {
                                   ],
                                 ),
                               )),
-                              Expanded(
-                                  child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    paymentmode = "3";
-                                    paymenttype = "Googlepay";
-                                  });
-                                  if (kDebugMode) {
-                                    print(paymentmode);
-                                  }
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.circle_outlined,
-                                        color: paymentmode == "3"
-                                            ? AppColors.primary
-                                            : AppColors.gray),
-                                    const Text("Googlepay"),
-                                  ],
-                                ),
-                              )),
+                              // Expanded(
+                              //     child: GestureDetector(
+                              //   onTap: () {
+                              //     setState(() {
+                              //       paymentmode = "3";
+                              //       paymenttype = "Googlepay";
+                              //     });
+                              //     if (kDebugMode) {
+                              //       print(paymentmode);
+                              //     }
+                              //   },
+                              //   child: Row(
+                              //     children: [
+                              //       Icon(Icons.circle_outlined,
+                              //           color: paymentmode == "3"
+                              //               ? AppColors.primary
+                              //               : AppColors.gray),
+                              //       const Text("Googlepay"),
+                              //     ],
+                              //   ),
+                              // )),
                             ],
                           ),
                           Container(
@@ -2528,9 +2525,9 @@ class _HomeViewState extends State<HomeView> {
                                         ));
                                       } else if (paidby.text.isEmpty) {
                                         ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
+                                            .showSnackBar( SnackBar(
                                           content:
-                                              Text("Please Add  Paid By Name"),
+                                              Text(addincome!="Add Income"?"Please Add  Paid To Name":"Please Add  Paid By Name"),
                                         ));
 
 
@@ -2575,8 +2572,9 @@ class _HomeViewState extends State<HomeView> {
                                             content: addincome=="Add Income"?Text(
                                                 "Income Add Successfully"):Text(
                                                 "Expenses Add Successfully"),
+                                            duration: Duration(microseconds: 1),
                                           ));
-                                          Navigator.of(context).pop();
+                                          Timer(const Duration(seconds: 1), () => Navigator.of(context).pop());
                                           alltransactionmodel = myfinancelist(userid!);
                                           if (kDebugMode) {
                                             print(response.statusCode);
@@ -2636,7 +2634,7 @@ class _HomeViewState extends State<HomeView> {
     alltransactionmodel = myfinancelist(userid!);
     providerdatalist = addloanmmodeloges(userid!);
     getAllservice(userid!);
-    getNotification(userid!);
+   // getNotification(userid!);
     cdate = DateFormat("yyyy-MM-dd").format(DateTime.now());
   }
 

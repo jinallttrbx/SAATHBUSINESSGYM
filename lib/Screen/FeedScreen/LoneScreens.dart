@@ -95,6 +95,8 @@ class LoneScreensState extends State<LoneScreens> {
           Navigator.of(context).pop();
         }else{
           await Methods1.orderSuccessAlert(context, "${addCallModel.message}");
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
         }
 
 

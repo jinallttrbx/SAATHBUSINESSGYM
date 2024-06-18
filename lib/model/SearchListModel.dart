@@ -35,15 +35,17 @@ class Serchlistmodel {
 class Serchlistmodeldata {
   String type;
   int userid;
+  int typeId;
   String name;
   String subCategoryName;
   String providername;
   String profileImage;
-  int rating;
+  double rating;
 
   Serchlistmodeldata({
     required this.type,
     required this.userid,
+    required this.typeId,
     required this.name,
     required this.subCategoryName,
     required this.providername,
@@ -54,16 +56,18 @@ class Serchlistmodeldata {
   factory Serchlistmodeldata.fromJson(Map<String, dynamic> json) => Serchlistmodeldata(
     type: json["type"],
     userid: json["userid"],
+    typeId: json["type_id"],
     name: json["name"],
     subCategoryName: json["sub_category_name"],
     providername: json["providername"],
     profileImage: json["profile_image"],
-    rating: json["rating"],
+    rating: json["rating"]?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
     "type": type,
     "userid": userid,
+    "type_id": typeId,
     "name": name,
     "sub_category_name": subCategoryName,
     "providername": providername,

@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, non_constant_identifier_names, prefer_interpolation_to_compose_strings, avoid_print, body_might_complete_normally_nullable, unused_local_variable
 
+import 'dart:async';
 import 'dart:convert';
 import 'package:businessgym/Screen/HomeScreen/Showdatewisereport.dart';
 import 'package:businessgym/components/snackbar.dart';
@@ -74,7 +75,6 @@ class FinancePageScreenState extends State<FinancePageScreen> {
     UserId = await sharedPreference.isUsetId();
     print("Ashish" + UserId!);
     alltransactionmodel = MyFinanceList(UserId!);
-
     cdate = DateFormat("yyyy-MM-dd").format(DateTime.now());
   }
 
@@ -836,13 +836,14 @@ class FinancePageScreenState extends State<FinancePageScreen> {
                         onPressed: () async {
                           if(fromdate.text.isEmpty){
 
-                            ScaffoldMessenger.of(context)
+                            ScaffoldMessenger.of(innerContext)
                                 .showSnackBar(const SnackBar(
                               content: Text(
                                   "Please Select From Date"),
+
                             ));
                           }else if(todate.text.isEmpty){
-                            ScaffoldMessenger.of(context)
+                            ScaffoldMessenger.of(innerContext)
                                 .showSnackBar(const SnackBar(
                               content: Text(
                                   "Please Select To Date"),
@@ -917,7 +918,7 @@ class FinancePageScreenState extends State<FinancePageScreen> {
                                     child: Text(
                                       addincome == "Add Income"
                                           ? "Add Income"
-                                          : "Add Expences",
+                                          : "Add Expenses",
                                       style: const TextStyle(
                                           fontFamily: "OpenSans",
                                           fontWeight: FontWeight.w600,
@@ -1009,7 +1010,7 @@ class FinancePageScreenState extends State<FinancePageScreen> {
                                     filled: true,
                                     border: InputBorder.none,
                                     fillColor: AppColors.textfieldcolor,
-                                    hintText: "Paid by"),
+                                    hintText: addincome=="Add Income"?"Paid by":"Paid To"),
                                 controller: paidby,
                                 keyboardType: TextInputType.text,
                               ),
@@ -1197,27 +1198,27 @@ class FinancePageScreenState extends State<FinancePageScreen> {
                                           ],
                                         ),
                                       )),
-                                  Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            paymentmode = "3";
-                                            paymenttype = "Googlepay";
-                                          });
-                                          if (kDebugMode) {
-                                            print(paymentmode);
-                                          }
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.circle_outlined,
-                                                color: paymentmode == "3"
-                                                    ? AppColors.primary
-                                                    : AppColors.gray),
-                                            const Text("Googlepay"),
-                                          ],
-                                        ),
-                                      )),
+                                  // Expanded(
+                                  //     child: GestureDetector(
+                                  //       onTap: () {
+                                  //         setState(() {
+                                  //           paymentmode = "3";
+                                  //           paymenttype = "Googlepay";
+                                  //         });
+                                  //         if (kDebugMode) {
+                                  //           print(paymentmode);
+                                  //         }
+                                  //       },
+                                  //       child: Row(
+                                  //         children: [
+                                  //           Icon(Icons.circle_outlined,
+                                  //               color: paymentmode == "3"
+                                  //                   ? AppColors.primary
+                                  //                   : AppColors.gray),
+                                  //           const Text("Googlepay"),
+                                  //         ],
+                                  //       ),
+                                  //     )),
                                 ],
                               ),
                               Container(
@@ -1244,9 +1245,9 @@ class FinancePageScreenState extends State<FinancePageScreen> {
                                             ));
                                           } else if (paidby.text.isEmpty) {
                                             ScaffoldMessenger.of(context)
-                                                .showSnackBar(const SnackBar(
+                                                .showSnackBar( SnackBar(
                                               content:
-                                              Text("Please Add  Paid By Name"),
+                                              Text(addincome == "Add Income"?"Please Add  Paid By Name":"Please Add  Paid To Name"),
                                             ));
                                           } else if (mobileno.text.isNotEmpty &&
                                               mobileno.text.length != 10) {
@@ -1318,15 +1319,13 @@ class FinancePageScreenState extends State<FinancePageScreen> {
                                             print(response.statusCode);
                                             print(response.body);
                                             if (response.statusCode == 200) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(SnackBar(
-                                                content: addincome == "Add Income"
-                                                    ? const Text(
-                                                    "Income Add Successfully")
-                                                    : const Text(
+                                              ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                                                content: addincome=="Add Income"?Text(
+                                                    "Income Add Successfully"):Text(
                                                     "Expenses Add Successfully"),
+                                                duration: Duration(microseconds: 1),
                                               ));
-                                              Navigator.of(context).pop();
+                                              Timer(const Duration(seconds: 1), () => Navigator.of(context).pop());
                                               alltransactionmodel =
                                                   MyFinanceList(UserId!);
                                               if (kDebugMode) {

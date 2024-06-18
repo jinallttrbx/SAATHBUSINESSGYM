@@ -190,99 +190,99 @@ class _walkthrough_oneState extends State<walkthrough_one>{
 
                 height: 280,
                 width: MediaQuery.of(context).size.width,
-                child: Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.pop(context);
-                    },
-                    child:     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Icon(Icons.close_rounded)
-                      ],
-                    ),
-                  ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.pop(context);
+                      },
+                      child:     Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          // SvgPicture.asset(subMenu.image),
-                          SizedBox(width: 10,),
-                          boldtext(AppColors.black,18,"Choose Language",),
+                          Icon(Icons.close_rounded)
                         ],
                       ),
-                      ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: LanguageModel.languageList.length,
-                          itemBuilder: (context,index){
-                            return Container(
-                                margin:EdgeInsets.only(left: 16,right: 16,top: 10),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // SvgPicture.asset(subMenu.image),
+                        SizedBox(width: 10,),
+                        boldtext(AppColors.black,18,"Choose Language",),
+                      ],
+                    ),
+                    ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: LanguageModel.languageList.length,
+                        itemBuilder: (context,index){
+                          return Container(
+                              margin:EdgeInsets.only(left: 16,right: 16,top: 10),
 
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () async {
-                                        setState(() {
-                                          selectedIndex = index;
-                                        });
-                                        Locale locale = await setLocale(
-                                            LanguageModel.languageList[index].languageCode);
-                                        // ignore: use_build_context_synchronously
-                                        MyApp.setLocale(
-                                          context,
-                                          locale,
-                                        );
-                                        setState(() {
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      setState(() {
+                                        selectedIndex = index;
+                                      });
+                                      print(selectedIndex);
+                                      print(LanguageModel.languageList[index].languageCode);
+                                      Locale locale = await setLocale(
+                                          LanguageModel.languageList[index].languageCode);
+                                      // ignore: use_build_context_synchronously
+                                      MyApp.setLocale(
+                                        context,
+                                        locale,
+                                      );
+                                      setState(() {
 
-                                        });
-                                      },
+                                      });
+                                    },
 
-                                      child: Container(
+                                    child: Container(
 
-                                        padding:EdgeInsets.only(top: 10,left: 10,right: 10,bottom: 20),
+                                      padding:EdgeInsets.only(top: 10,left: 10,right: 10,bottom: 20),
 
 
-                                        child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                                height:30,
-                                                width:30,
-                                                decoration:BoxDecoration(
-                                                    color: Color(0xffF1FAFF),
-                                                    borderRadius: BorderRadius.all(Radius.circular(5))
-                                                ),
-                                                child: Center(
-                                                  child: Text(LanguageModel.languageList[index].languageletter,style: TextStyle(
-                                                      fontSize: 19,color: AppColors.primary,fontFamily: "OpenSans",fontWeight: FontWeight.w600
-                                                  ),),
-                                                )
-                                            ),
-                                            SizedBox(width: 10,),
-                                            Expanded(child: Text(LanguageModel.languageList[index].name,style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 14,
-                                                fontFamily: "OpenSans"
-                                            ),),),
-                                            selectedIndex==index?GestureDetector(
-                                              // onTap: () => _viewdialog(context,prodcutdata[position].subMenu[index]),
-                                              child: SvgPicture.asset(AppImages.verify),
-                                            ):SizedBox.shrink(),
-                                          ],
-                                        ),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                              height:30,
+                                              width:30,
+                                              decoration:BoxDecoration(
+                                                  color: Color(0xffF1FAFF),
+                                                  borderRadius: BorderRadius.all(Radius.circular(5))
+                                              ),
+                                              child: Center(
+                                                child: Text(LanguageModel.languageList[index].languageletter,style: TextStyle(
+                                                    fontSize: 19,color: AppColors.primary,fontFamily: "OpenSans",fontWeight: FontWeight.w600
+                                                ),),
+                                              )
+                                          ),
+                                          SizedBox(width: 10,),
+                                          Expanded(child: Text(LanguageModel.languageList[index].name,style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14,
+                                              fontFamily: "OpenSans"
+                                          ),),),
+                                          selectedIndex==index?GestureDetector(
+                                            // onTap: () => _viewdialog(context,prodcutdata[position].subMenu[index]),
+                                            child: SvgPicture.asset(AppImages.verify),
+                                          ):SizedBox.shrink(),
+                                        ],
                                       ),
-                                    )
-                                  ],
-                                )
-                            );
-                          })
-                    ],
-                  ),
-                )
+                                    ),
+                                  )
+                                ],
+                              )
+                          );
+                        })
+                  ],
+                ),
             ),
 
           );

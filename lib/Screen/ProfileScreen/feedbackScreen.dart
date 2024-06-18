@@ -85,14 +85,13 @@ class FeedbackScreenState extends State<FeedbackScreen> {
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0),
-
                         ),
                         backgroundColor: AppColors.primary,
                       ),
                       onPressed: () async {
                         if(description.text.isEmpty){
                           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text("Please Enter Discription!"),
+                            content: Text("Please Enter Description!"),
                           ));
                         }else {
                           sendfeedback(

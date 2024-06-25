@@ -45,7 +45,7 @@ class MfiScreenState extends State<MfiScreen> {
 
   // Future<AppliedLoanModel?>? providerdatalist1;
   List<MfilistModelData>? providerdata = [];
-  String Mfid = "";
+  String Mfid = "0";
   AppliedLoanListModel? addCallModel;
 
   // AppliedLoanModel? addCallModel1;
@@ -384,7 +384,7 @@ class MfiScreenState extends State<MfiScreen> {
                                     return GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          // Mfid=snapshot.data![index]!.mfiId.toString();
+                                           Mfid=snapshot.data![index]!.mfiId.toString();
                                           print(snapshot.data![index]!.mfiId
                                               .toString());
                                         });
@@ -393,7 +393,8 @@ class MfiScreenState extends State<MfiScreen> {
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(5),
-                                          color: AppColors.BGColor,
+                                          color: Mfid==snapshot.data![index]!.mfiId.toString()?   AppColors.LightBlue
+                                          : null,
                                         ),
                                         padding: EdgeInsets.all(20),
                                         margin: EdgeInsets.all(10),

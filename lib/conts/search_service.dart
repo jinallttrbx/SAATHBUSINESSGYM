@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:businessgym/Screen/HomeScreen/MyServicesScreens.dart';
 
-
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:businessgym/Screen/ProfileScreen/RatingandReviewByUserScreens.dart';
 import 'package:businessgym/Screen/ProfileScreen/SubCategoryScreen.dart';
 import 'package:businessgym/Screen/ProfileScreen/myservices.dart';
@@ -66,11 +66,12 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   Timer? _debounce;
 
-
+  double _confidence = 1.0;
 
   @override
   void initState() {
     super.initState();
+    _speech = stt.SpeechToText();
   }
   var categoryIdList = [];
   String? ratingValue;
@@ -81,6 +82,9 @@ class _SearchWidgetState extends State<SearchWidget> {
   String? closeAt;
   double? startPrice;
   double? endPrice;
+  bool onmick=false;
+  bool _isListening = false;
+  stt.SpeechToText? _speech;
   @override
   Widget build(BuildContext context) {
     filter = widget.productView == true ? 'name' : 'service_name';
@@ -149,12 +153,28 @@ class _SearchWidgetState extends State<SearchWidget> {
                                 color: Colors.white,
                               ),
                             ),
+                            suffixIcon: GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  onmick=true;
+                                });
+                                if(onmick==true){
+                                  _initializeSpeechRecognition ();
+                                }else{
+                                  _stopListening();
+
+                                }
+                                print("USE MIKE AND SPEAK ORD TO SEARCH SOMETHING YOU WANT");
+                              },
+                              child:  _isListening==true?Icon(Icons.mic,color: AppColors.primary,):Icon(Icons.mic_off)
+                            ),
                             prefixIcon: const Icon(Icons.search),
 
                           ),
                         ),
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Material(
@@ -271,11 +291,44 @@ class _SearchWidgetState extends State<SearchWidget> {
         ));
   }
 
+  void _initializeSpeechRecognition() async {
+    print("speak to word");
+    bool available = await _speech!.initialize(
+      onStatus: (val) => print('onStatus: $val'),
+      onError: (val) => print('onError: $val'),
+    );
+    if (available) {
 
+      setState(() => _isListening = true);
+      _startListening();
+    }
+  }
+
+  void _startListening() {
+    _speech?.listen(
+      onResult: (val) => setState(() {
+        controller.text = val.recognizedWords;
+
+        if (val.hasConfidenceRating && val.confidence > 0) {
+          _confidence = val.confidence;
+        }
+        searchWithFilter( controller.text);
+      }),
+    );
+  }
+
+  void _stopListening() {
+    setState(() {
+      onmick=false;
+    });
+    _speech!.stop();
+    setState(() => _isListening = false);
+  }
 
 
 
   searchWithFilter(String value) async {
+    print(ApiUrl.searchFilterUrl);
     searchlist = [];
     try {
       final request = http.MultipartRequest(

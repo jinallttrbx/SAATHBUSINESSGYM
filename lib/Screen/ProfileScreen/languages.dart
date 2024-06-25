@@ -39,6 +39,9 @@ class _LanguagesState extends State<Languages> {
   }
 
   Future<void> translate() async {
+    print(targetLanguage);
+    print(apiUrl);
+    print(apiKey);
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: {

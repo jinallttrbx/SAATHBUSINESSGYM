@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+
   flutter:
     sdk: flutter
 
@@ -105,6 +106,7 @@ dependencies:
   flutter_localization:
   flutter_file_downloader: ^1.1.2
   flutter_dotenv: ^5.0.2
+  speech_to_text: ^5.4.2
 
 
 

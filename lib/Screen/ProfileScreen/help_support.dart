@@ -1,7 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, unnecessary_new, prefer_final_fields, prefer_interpolation_to_compose_strings, avoid_print, unused_local_variable, avoid_unnecessary_containers
 
 import 'dart:convert';
-
 import 'package:businessgym/Utils/SharedPreferences.dart';
 import 'package:businessgym/components/snackbar.dart';
 import 'package:businessgym/conts/appbar_global.dart';
@@ -9,17 +8,14 @@ import 'package:businessgym/conts/global_values.dart';
 import 'package:businessgym/model/SubjectListModel.dart';
 import 'package:businessgym/values/assets.dart';
 import 'package:businessgym/values/const_text.dart';
-import 'package:businessgym/values/spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'dart:io';
 import '../../../Utils/ApiUrl.dart';
 import '../../../Utils/common_route.dart';
-import '../../../model/AllDocumentList.dart';
-
 import '../../../values/Colors.dart';
 
 class Help_supportScreen extends StatefulWidget {
@@ -37,7 +33,9 @@ class Help_supportScreenState extends State<Help_supportScreen> {
   List<SubjectModeldata>? categorydata = [];
   String? subjectId ;
   SubjectModeldata? subjectvalue;
-
+  File? _image;
+  PickedFile? pickedImage;
+  final ImagePicker picker = ImagePicker();
   @override
   void initState() {
     usetId();
@@ -200,6 +198,63 @@ class Help_supportScreenState extends State<Help_supportScreen> {
                     'Description',
                   ),
                 ),
+                GestureDetector(
+                  child: Container(
+                      margin:
+                      const EdgeInsets.only(left: 20, right: 20, top: 20),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 80,
+                            width: 80,
+                            decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius:
+                                const BorderRadius.all(Radius.circular(12)),
+                                border: Border.all(
+                                    color: AppColors.white, width: 1)),
+                            child: _image != null
+                                ? ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(12)),
+                              child: Image.file(
+                                _image!,
+                                height: 70,
+                                fit: BoxFit.fill,
+                              ),
+                            )
+                                : SvgPicture.asset(
+                              AppImages.gellary,
+                              width: 50,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              _showPicker(context);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(17),
+                                  ),
+                                  border: Border.all(color: AppColors.primary)),
+                              margin: const EdgeInsets.only(left: 20),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(AppImages.upload),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  regulartext(
+                                      AppColors.black, 12, "Upload picture")
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      )),
+                ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 26),
                   child: SizedBox(
@@ -301,11 +356,10 @@ class Help_supportScreenState extends State<Help_supportScreen> {
   }
 
   sendhelpsupport(String subjectid, String description, String userid) async {
-    String url = ApiUrl.addhelpsupport;
+    String url = "https://clone.businessgym.in/api/add-support-request";
     showLoader(context);
     print(url);
     print(userid);
-
     try {
       var request = http.MultipartRequest("POST", Uri.parse(url));
       request.headers["Authorization"] = USERTOKKEN!;
@@ -313,6 +367,9 @@ class Help_supportScreenState extends State<Help_supportScreen> {
       request.fields["booking_id"] = subjectid;
       request.fields["description"] = description;
       request.fields["subject"] = subjectid.toString();
+      request.files.add(await http.MultipartFile.fromPath(
+         'image',
+          (_image!.path)));
       await request.send().then((value) async {
         String result = await value.stream.bytesToString();
         print("result  $result");
@@ -326,6 +383,54 @@ class Help_supportScreenState extends State<Help_supportScreen> {
 
       // hideLoader();
     }
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: Wrap(
+                children: <Widget>[
+                  ListTile(
+                      leading: const Icon(Icons.photo_library),
+                      title: const Text('Gallery'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  ListTile(
+                    leading: const Icon(Icons.photo_camera),
+                    title: const Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  _imgFromCamera() async {
+    pickedImage =
+    await picker.getImage(source: ImageSource.camera, imageQuality: 50);
+    File image = File(pickedImage!.path);
+    setState(() {
+      _image = image;
+    });
+  }
+
+  _imgFromGallery() async {
+    pickedImage =
+    await picker.getImage(source: ImageSource.gallery, imageQuality: 50);
+    File image = File(pickedImage!.path);
+    setState(() {
+      _image = image;
+    });
   }
 }
 

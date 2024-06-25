@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
         <uses-permission android:name="android.permission.BLUETOOTH" />
 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
    <application
         android:label="BusinessGym"
@@ -29,6 +30,7 @@
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"
             android:requestLegacyExternalStorage="true">
+
 
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
@@ -54,6 +56,7 @@
     <intent>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.BROWSABLE" />
+        <action android:name="android.speech.RecognitionService" />
         <data android:scheme="https" />
     </intent>
 </queries>

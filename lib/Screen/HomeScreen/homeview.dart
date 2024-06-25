@@ -474,7 +474,7 @@ class _HomeViewState extends State<HomeView> {
                                           padEnds: false,
                                           autoPlay: true,
                                           autoPlayInterval:
-                                              const Duration(seconds: 1),
+                                              const Duration(seconds: 3),
                                           // autoPlayAnimationDuration:
                                           // const Duration(milliseconds: 800),
                                           // autoPlayCurve: Curves.fastOutSlowIn,
@@ -1621,15 +1621,15 @@ class _HomeViewState extends State<HomeView> {
                                                             ),
                                                             Row(
                                                               children: [
-                                                                regulartext(
-                                                                  AppColors.hint,
-                                                                  14,
-                                                                  snapshot
-                                                                      .data!
-                                                                      .serviceList![
-                                                                          i]
-                                                                      .name!,
-                                                                ),
+                                                               Expanded(child:  regulartext(
+                                                                 AppColors.hint,
+                                                                 14,
+                                                                 snapshot
+                                                                     .data!
+                                                                     .serviceList![
+                                                                 i]
+                                                                     .name!,
+                                                               ),),
                                                                 const SizedBox(
                                                                   width: 10,
                                                                 ),

@@ -33,14 +33,14 @@ class Serchlistmodel {
 }
 
 class Serchlistmodeldata {
-  String type;
-  int userid;
-  int typeId;
-  String name;
-  String subCategoryName;
-  String providername;
-  String profileImage;
-  double rating;
+  dynamic type;
+  dynamic userid;
+  dynamic typeId;
+  dynamic name;
+  dynamic subCategoryName;
+  dynamic providername;
+  dynamic profileImage;
+  dynamic rating;
 
   Serchlistmodeldata({
     required this.type,

@@ -557,7 +557,7 @@ class serviceproviderScreen extends StatefulWidget {
 
 class _serviceproviderScreenState extends State<serviceproviderScreen> {
   TextEditingController search=TextEditingController();
- // Future<ProviderModel?>? allserviceCategory;
+  // Future<ProviderModel?>? allserviceCategory;
   SharedPreference _sharedPreference = new SharedPreference();
   String? UserId;
   String? cdate;
@@ -761,339 +761,339 @@ class _serviceproviderScreenState extends State<serviceproviderScreen> {
               Row(
                 children: [
                   Container(
-                   padding: EdgeInsets.only(left: 15,right: 15),
-                   decoration: BoxDecoration(
-                       border: Border.all(color: AppColors.primary),
-                       borderRadius: BorderRadius.all(Radius.circular(20))
-                   ),
-                   height: 35,
-                   width: 100,
-                   child: Center(
-                       child: GestureDetector(
-                         onTap: ()async {
+                    padding: EdgeInsets.only(left: 15,right: 15),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.primary),
+                        borderRadius: BorderRadius.all(Radius.circular(20))
+                    ),
+                    height: 35,
+                    width: 100,
+                    child: Center(
+                        child: GestureDetector(
+                          onTap: ()async {
 
-                           final result = await Get.to(
-                                 () => filterscreen(
-                               catType: catType,
-                               categoryList: categoryIdList,
-                               rating: ratingValue,
-                               lat: lat.toString(),
-                               lng: lng.toString(),
-                               openAt: openAt,
-                               closeAt: closeAt,
-                               min: startPrice,
-                               max: endPrice,
-                             ),
-                           );
-                           if (result != null) {
-                             catType = result['type'];
-                             categoryIdList = result['category_id'];
-                             ratingValue = result['rating'];
-                             lat = result['lat'];
-                             lng = result['lng'];
-                             openAt = result['open_at'];
-                             closeAt = result['close_at'];
-                             startPrice = result['min_price'];
-                             endPrice = result['max_price'];
-                           }
+                            final result = await Get.to(
+                                  () => filterscreen(
+                                catType: catType,
+                                categoryList: categoryIdList,
+                                rating: ratingValue,
+                                lat: lat.toString(),
+                                lng: lng.toString(),
+                                openAt: openAt,
+                                closeAt: closeAt,
+                                min: startPrice,
+                                max: endPrice,
+                              ),
+                            );
+                            if (result != null) {
+                              catType = result['type'];
+                              categoryIdList = result['category_id'];
+                              ratingValue = result['rating'];
+                              lat = result['lat'];
+                              lng = result['lng'];
+                              openAt = result['open_at'];
+                              closeAt = result['close_at'];
+                              startPrice = result['min_price'];
+                              endPrice = result['max_price'];
+                            }
 
-                           // Navigator.push(context, MaterialPageRoute(builder: (context)=>filterscreen()));
-                           // Get.to(const filterscreen());
+                            // Navigator.push(context, MaterialPageRoute(builder: (context)=>filterscreen()));
+                            // Get.to(const filterscreen());
 
-                         },
-                         child: Row(
-                           crossAxisAlignment: CrossAxisAlignment.center,
-                           mainAxisAlignment: MainAxisAlignment.center,
-                           children: [
-                             SvgPicture.asset(AppImages.filter),
-                             SizedBox(width: 5,),
-                             Text("Filter",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,fontFamily: "OpenSans",),)
-                           ],
-                         ),
-                       )
-                   ),
-                 ),
-                 Expanded(
-                   flex:3,child:  SizedBox(width: 5,),),
-               //   Expanded(child: Text("2 filters apply",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,fontFamily: "OpenSans",),),),
-                 GestureDetector(
-                   onTap: (){
-                     search.clear();
-                     print("searchsearchsearchsearchsearchsearchsearch");
-                   getuserType();
-                   },
+                          },
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(AppImages.filter),
+                              SizedBox(width: 5,),
+                              Text("Filter",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,fontFamily: "OpenSans",),)
+                            ],
+                          ),
+                        )
+                    ),
+                  ),
+                  Expanded(
+                    flex:3,child:  SizedBox(width: 5,),),
+                  //   Expanded(child: Text("2 filters apply",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,fontFamily: "OpenSans",),),),
+                  GestureDetector(
+                    onTap: (){
+                      search.clear();
+                      print("searchsearchsearchsearchsearchsearchsearch");
+                      getuserType();
+                    },
 
-                   child:  Text("Clear All",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600
-                       ,fontFamily: "OpenSans",color: AppColors.primary),),
-                 )
+                    child:  Text("Clear All",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600
+                        ,fontFamily: "OpenSans",color: AppColors.primary),),
+                  )
 
                 ],
               ),
 
               SizedBox(height: 15,),
-             widget.title=="Service Provider"? searchlist.isEmpty || search.text.isEmpty?ListView.builder(
-                 shrinkWrap: true,
-                 itemCount: serviceproviderdata.length,
-                 physics: const NeverScrollableScrollPhysics(),
-                 itemBuilder: (BuildContext context, int index) {
-                   return GestureDetector(
-                     onTap: (){
-                       CommonBottomSheet.show(context,serviceproviderdata![index].userId.toString(),serviceproviderdata![index].userId.toString(),"service","");
+              widget.title=="Service Provider"? searchlist.isEmpty || search.text.isEmpty?ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: serviceproviderdata.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: (){
+                        CommonBottomSheet.show(context,serviceproviderdata![index].userId.toString(),serviceproviderdata![index].userId.toString(),"service","");
 
 
-                     },
-                     child: Container(
-                         padding: EdgeInsets.all(10),
-                         child:Column(
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(10),
+                          child:Column(
 
-                           children: [
-                             Row(
-                               children: [
-                                 CircleAvatar(
-                                   radius: 40,
-                                   backgroundImage: NetworkImage(
-                                     "${serviceproviderdata[index].profileImage??""}",
-                                   ),
-                                 ),
-                                 SizedBox(width: 10,),
-                                 Expanded(child:  Column(
-                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                   children: [
-                                     boldtext(
-                                       AppColors.black,
-                                       14,
-                                       "${serviceproviderdata[index].username??""}",
-                                     ),
-                                     boldtext(
-                                       AppColors.blackShade3,
-                                       12,
-                                       "${serviceproviderdata[index].categoryName==null?"-":serviceproviderdata[index].categoryName}",
-                                     ),
-                                     StarsView(
-                                         total:  5,
-                                         colored: serviceproviderdata?[index].averageRating.toInt(),
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 40,
+                                    backgroundImage: NetworkImage(
+                                      "${serviceproviderdata[index].profileImage??""}",
+                                    ),
+                                  ),
+                                  SizedBox(width: 10,),
+                                  Expanded(child:  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      boldtext(
+                                        AppColors.black,
+                                        14,
+                                        "${serviceproviderdata[index].username??""}",
+                                      ),
+                                      boldtext(
+                                        AppColors.blackShade3,
+                                        12,
+                                        "${serviceproviderdata[index].categoryName==null?"-":serviceproviderdata[index].categoryName}",
+                                      ),
+                                      StarsView(
+                                          total:  5,
+                                          colored: serviceproviderdata?[index].averageRating.toInt(),
 
-                                         ontap: () {
-                                           // Get.to(() =>
-                                           //     RatingandReviewByUserScreens(
-                                           //       isProduct: false,
-                                           //       user_id: UserId,
-                                           //       serviceOrProductId:
-                                           //       1
-                                           //           .toString(),
-                                           //       providerId: 1
-                                           //           .toString(),
-                                           //     ));
-                                         })
-                                   ],
-                                 ))
-                               ],
-                             ),
-                             SizedBox(height: 10,),
-                             Divider(height: 1,thickness: 1,)
-                           ],
-                         )
-                     ),
-                   ) ;
+                                          ontap: () {
+                                            // Get.to(() =>
+                                            //     RatingandReviewByUserScreens(
+                                            //       isProduct: false,
+                                            //       user_id: UserId,
+                                            //       serviceOrProductId:
+                                            //       1
+                                            //           .toString(),
+                                            //       providerId: 1
+                                            //           .toString(),
+                                            //     ));
+                                          })
+                                    ],
+                                  ))
+                                ],
+                              ),
+                              SizedBox(height: 10,),
+                              Divider(height: 1,thickness: 1,)
+                            ],
+                          )
+                      ),
+                    ) ;
 
-                 }):
-             ListView.builder(
-                 shrinkWrap: true,
-                 itemCount: searchlist.length,
-                 physics: const NeverScrollableScrollPhysics(),
-                 itemBuilder: (BuildContext context, int index) {
-                   return GestureDetector(
-                     onTap: (){
-                       CommonBottomSheet.show(context,searchlist![index].userid.toString(),searchlist![index].userid.toString(),"service","");
-
-
-                     },
-                     child: Container(
-                         padding: EdgeInsets.all(10),
-                         child:Column(
-
-                           children: [
-                             Row(
-                               children: [
-                                 CircleAvatar(
-                                   radius: 40,
-                                   backgroundImage: NetworkImage(
-                                     "${searchlist[index].profileImage??""}",
-                                   ),
-                                 ),
-                                 SizedBox(width: 10,),
-                                 Expanded(child:  Column(
-                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                   children: [
-                                     boldtext(
-                                       AppColors.black,
-                                       14,
-                                       "${searchlist[index].providername??""}",
-                                     ),
-                                     boldtext(
-                                       AppColors.blackShade3,
-                                       12,
-                                       "${searchlist[index].subCategoryName==null?"-":searchlist[index].subCategoryName}",
-                                     ),
-                                     StarsView(
-                                         total:  5,
-                                         colored: searchlist?[index].rating!.toInt(),
-
-                                         ontap: () {
-                                           // Get.to(() =>
-                                           //     RatingandReviewByUserScreens(
-                                           //       isProduct: false,
-                                           //       user_id: UserId,
-                                           //       serviceOrProductId:
-                                           //       1
-                                           //           .toString(),
-                                           //       providerId: 1
-                                           //           .toString(),
-                                           //     ));
-                                         })
-                                   ],
-                                 ))
-                               ],
-                             ),
-                             SizedBox(height: 10,),
-                             Divider(height: 1,thickness: 1,)
-                           ],
-                         )
-                     ),
-                   ) ;
-
-                 }):
-     search.text.isEmpty||   searchlist!.isEmpty?ListView.builder(
-                 shrinkWrap: true,
-                 itemCount: productsellerdata!.length,
-                 physics: const NeverScrollableScrollPhysics(),
-                 itemBuilder: (BuildContext context, int index) {
-                   return GestureDetector(
-                     onTap: (){
-                       CommonBottomSheet.show(context,productsellerdata![index].userId.toString(),productsellerdata![index].userId.toString(),"product","");
+                  }):
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: searchlist.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: (){
+                        CommonBottomSheet.show(context,searchlist![index].userid.toString(),searchlist![index].userid.toString(),"service","");
 
 
-                     },
-                     child: Container(
-                         padding: EdgeInsets.all(10),
-                         child:Column(
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(10),
+                          child:Column(
 
-                           children: [
-                             Row(
-                               children: [
-                                 CircleAvatar(
-                                   radius: 40,
-                                   backgroundImage: NetworkImage(
-                                     "${productsellerdata![index].profileImage??""}",
-                                   ),
-                                 ),
-                                 SizedBox(width: 10,),
-                                 Expanded(child:  Column(
-                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                   children: [
-                                     boldtext(
-                                       AppColors.black,
-                                       14,
-                                       "${productsellerdata![index].username??""}",
-                                     ),
-                                     boldtext(
-                                       AppColors.blackShade3,
-                                       12,
-                                       "${productsellerdata![index].categoryName==null?"-":productsellerdata![index].categoryName}",
-                                     ),
-                                     StarsView(
-                                         total:  5,
-                                         colored: productsellerdata?[index].averageRating.toInt(),
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 40,
+                                    backgroundImage: NetworkImage(
+                                      "${searchlist[index].profileImage??""}",
+                                    ),
+                                  ),
+                                  SizedBox(width: 10,),
+                                  Expanded(child:  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      boldtext(
+                                        AppColors.black,
+                                        14,
+                                        "${searchlist[index].providername??""}",
+                                      ),
+                                      boldtext(
+                                        AppColors.blackShade3,
+                                        12,
+                                        "${searchlist[index].subCategoryName==null?"-":searchlist[index].subCategoryName}",
+                                      ),
+                                      StarsView(
+                                          total:  5,
+                                          colored: searchlist?[index].rating!.toInt(),
 
-                                         ontap: () {
-                                           // Get.to(() =>
-                                           //     RatingandReviewByUserScreens(
-                                           //       isProduct: false,
-                                           //       user_id: UserId,
-                                           //       serviceOrProductId:
-                                           //       1
-                                           //           .toString(),
-                                           //       providerId: 1
-                                           //           .toString(),
-                                           //     ));
-                                         })
-                                   ],
-                                 ))
-                               ],
-                             ),
-                             SizedBox(height: 10,),
-                             Divider(height: 1,thickness: 1,)
-                           ],
-                         )
-                     ),
-                   );
+                                          ontap: () {
+                                            // Get.to(() =>
+                                            //     RatingandReviewByUserScreens(
+                                            //       isProduct: false,
+                                            //       user_id: UserId,
+                                            //       serviceOrProductId:
+                                            //       1
+                                            //           .toString(),
+                                            //       providerId: 1
+                                            //           .toString(),
+                                            //     ));
+                                          })
+                                    ],
+                                  ))
+                                ],
+                              ),
+                              SizedBox(height: 10,),
+                              Divider(height: 1,thickness: 1,)
+                            ],
+                          )
+                      ),
+                    ) ;
 
-                 }):
-             ListView.builder(
-                 shrinkWrap: true,
-                 itemCount: searchlist!.length,
-                 physics: const NeverScrollableScrollPhysics(),
-                 itemBuilder: (BuildContext context, int index) {
-                   return GestureDetector(
-                     onTap: (){
-                       CommonBottomSheet.show(context,searchlist![index].userid.toString(),searchlist![index].userid.toString(),"product","");
+                  }):
+              search.text.isEmpty||   searchlist!.isEmpty?ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: productsellerdata!.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: (){
+                        CommonBottomSheet.show(context,productsellerdata![index].userId.toString(),productsellerdata![index].userId.toString(),"product","");
 
-                     },
-                     child: Container(
-                         padding: EdgeInsets.all(10),
-                         child:Column(
 
-                           children: [
-                             Row(
-                               children: [
-                                 CircleAvatar(
-                                   radius: 40,
-                                   backgroundImage: NetworkImage(
-                                     "${searchlist![index].profileImage??""}",
-                                   ),
-                                 ),
-                                 SizedBox(width: 10,),
-                                 Expanded(child:  Column(
-                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                   children: [
-                                     boldtext(
-                                       AppColors.black,
-                                       14,
-                                       "${searchlist![index].providername??""}",
-                                     ),
-                                     boldtext(
-                                       AppColors.blackShade3,
-                                       12,
-                                       "${searchlist![index].subCategoryName==null?"-":searchlist![index].subCategoryName}",
-                                     ),
-                                     StarsView(
-                                         total:  5,
-                                         colored: searchlist?[index].rating.toInt(),
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(10),
+                          child:Column(
 
-                                         ontap: () {
-                                           // Get.to(() =>
-                                           //     RatingandReviewByUserScreens(
-                                           //       isProduct: false,
-                                           //       user_id: UserId,
-                                           //       serviceOrProductId:
-                                           //       1
-                                           //           .toString(),
-                                           //       providerId: 1
-                                           //           .toString(),
-                                           //     ));
-                                         })
-                                   ],
-                                 ))
-                               ],
-                             ),
-                             SizedBox(height: 10,),
-                             Divider(height: 1,thickness: 1,)
-                           ],
-                         )
-                     ),
-                   );
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 40,
+                                    backgroundImage: NetworkImage(
+                                      "${productsellerdata![index].profileImage??""}",
+                                    ),
+                                  ),
+                                  SizedBox(width: 10,),
+                                  Expanded(child:  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      boldtext(
+                                        AppColors.black,
+                                        14,
+                                        "${productsellerdata![index].username??""}",
+                                      ),
+                                      boldtext(
+                                        AppColors.blackShade3,
+                                        12,
+                                        "${productsellerdata![index].categoryName==null?"-":productsellerdata![index].categoryName}",
+                                      ),
+                                      StarsView(
+                                          total:  5,
+                                          colored: productsellerdata?[index].averageRating.toInt(),
 
-                 })
+                                          ontap: () {
+                                            // Get.to(() =>
+                                            //     RatingandReviewByUserScreens(
+                                            //       isProduct: false,
+                                            //       user_id: UserId,
+                                            //       serviceOrProductId:
+                                            //       1
+                                            //           .toString(),
+                                            //       providerId: 1
+                                            //           .toString(),
+                                            //     ));
+                                          })
+                                    ],
+                                  ))
+                                ],
+                              ),
+                              SizedBox(height: 10,),
+                              Divider(height: 1,thickness: 1,)
+                            ],
+                          )
+                      ),
+                    );
+
+                  }):
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: searchlist!.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: (){
+                        CommonBottomSheet.show(context,searchlist![index].userid.toString(),searchlist![index].userid.toString(),"product","");
+
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(10),
+                          child:Column(
+
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 40,
+                                    backgroundImage: NetworkImage(
+                                      "${searchlist![index].profileImage??""}",
+                                    ),
+                                  ),
+                                  SizedBox(width: 10,),
+                                  Expanded(child:  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      boldtext(
+                                        AppColors.black,
+                                        14,
+                                        "${searchlist![index].providername??""}",
+                                      ),
+                                      boldtext(
+                                        AppColors.blackShade3,
+                                        12,
+                                        "${searchlist![index].subCategoryName==null?"-":searchlist![index].subCategoryName}",
+                                      ),
+                                      StarsView(
+                                          total:  5,
+                                          colored: searchlist?[index].rating.toInt(),
+
+                                          ontap: () {
+                                            // Get.to(() =>
+                                            //     RatingandReviewByUserScreens(
+                                            //       isProduct: false,
+                                            //       user_id: UserId,
+                                            //       serviceOrProductId:
+                                            //       1
+                                            //           .toString(),
+                                            //       providerId: 1
+                                            //           .toString(),
+                                            //     ));
+                                          })
+                                    ],
+                                  ))
+                                ],
+                              ),
+                              SizedBox(height: 10,),
+                              Divider(height: 1,thickness: 1,)
+                            ],
+                          )
+                      ),
+                    );
+
+                  })
 
 
 
@@ -1105,9 +1105,9 @@ class _serviceproviderScreenState extends State<serviceproviderScreen> {
   }
 
   void getuserType() async {
-   // usertype = await _sharedPreference.isUserType();
+    // usertype = await _sharedPreference.isUserType();
     UserId = await _sharedPreference.isUsetId();
-   // usertoken = await _sharedPreference.isToken();
+    // usertoken = await _sharedPreference.isToken();
     print("Ashish" + UserId!);
     getproductseller();
     getserviceprovider();
@@ -1141,56 +1141,88 @@ class _serviceproviderScreenState extends State<serviceproviderScreen> {
   //   setState(() {});
   // }
 
+  searchWithFilter(String value) async{
+  searchlist = [];
+    try{
+      var response = await http.post(Uri.parse(ApiUrl.searchFilterUrl),
+          body: {
+            "text":"ac",
+            "category_id":"",
+            "rating":"4",
+            "min_price":"0",
+            "max_price":"0",
+            "latitude":"23.1141",
+            "longitude":"72.5402",
+            "open_at":"",
+            "close_at":""
+          });
+
+      Map<String, dynamic> jsondata = jsonDecode(response.body);
+      print(response.statusCode);
+      print(ApiUrl.searchFilterUrl);
+
+      searchlist = jsondata['data'];
 
 
-  searchWithFilter(String value) async {
-    searchlist = [];
-    try {
-      final request = http.MultipartRequest(
-        'POST',
-        Uri.parse(ApiUrl.searchFilterUrl),
-      );
-      request.fields['text'] = value;
-      if (categoryIdList != []) {
-        for (var i = 0; i < categoryIdList.length; i++) {
-          request.fields['category_id[$i]'] = categoryIdList[i].toString();
-        }
-      }
-      if (ratingValue != null) {
-        request.fields['rating'] = ratingValue ?? '';
-      }
-      if (startPrice != null) {
-        request.fields['min_price'] =  startPrice.toString() ??  '';
-      }
-      if (endPrice != null) {
-        request.fields['max_price'] = endPrice.toString() ??  '';
-      }
-      if (lat != null) {
-        request.fields['latitude'] = lat.toString() ?? '';
-      }
-      if (lng != null) {
-        request.fields['longitude'] = lng.toString() ?? '';
-      }
-      if (openAt != null) {
-        request.fields['open_at'] = openAt ?? '';
-      }
-      if (closeAt != null) {
-        request.fields['close_at'] = closeAt ?? '';
-      }
-      final response = await request.send();
-      final data = await http.Response.fromStream(response);
-      print(data.body);
-      print(data.statusCode);
-      if (response.statusCode == 200) {
-        Serchlistmodel vehicalTypeModel =
-        Serchlistmodel.fromJson(jsonDecode(data.body));
-        searchlist = vehicalTypeModel.data;
-        setState(() {});
-      } else {}
-    } catch (e) {
-      print(e);
+
+    }catch(e){
+      return  e;
     }
-  }
+
+}
+
+  // searchWithFilter(String value) async {
+  //   searchlist = [];
+  //   try {
+  //     final request = http.MultipartRequest(
+  //       'POST',
+  //       Uri.parse(ApiUrl.searchFilterUrl),
+  //     );
+  //     request.fields['text'] = value;
+  //     if (categoryIdList != []) {
+  //       for (var i = 0; i < categoryIdList.length; i++) {
+  //         request.fields['category_id[$i]'] = categoryIdList[i].toString();
+  //       }
+  //     }
+  //     if(categoryIdList==[]){
+  //       request.fields['category_id']="";
+  //     }
+  //     if (ratingValue != null) {
+  //       request.fields['rating'] = ratingValue ?? '';
+  //     }
+  //     if (startPrice != null) {
+  //       request.fields['min_price'] =  startPrice.toString() ??  '';
+  //     }
+  //     if (endPrice != null) {
+  //       request.fields['max_price'] = endPrice.toString() ??  '';
+  //     }
+  //     if (lat != null) {
+  //       request.fields['latitude'] = lat.toString() ?? '';
+  //     }
+  //     if (lng != null) {
+  //       request.fields['longitude'] = lng.toString() ?? '';
+  //     }
+  //     if (openAt != null) {
+  //       request.fields['open_at'] = openAt ?? '';
+  //     }
+  //     if (closeAt != null) {
+  //       request.fields['close_at'] = closeAt ?? '';
+  //     }
+  //     final response = await request.send();
+  //     final data = await http.Response.fromStream(response);
+  //     print(data);
+  //     print(data.body);
+  //     print(data.statusCode);
+  //     if (response.statusCode == 200) {
+  //       Serchlistmodel vehicalTypeModel =
+  //       Serchlistmodel.fromJson(jsonDecode(data.body));
+  //       searchlist = vehicalTypeModel.data;
+  //       setState(() {});
+  //     } else {}
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
 
 }

@@ -151,9 +151,9 @@ class RecomandedServiceState extends State<RecomandedServiceScreen> {
                                           color: getrecommandedservicedata![i].tag!="Supplier Service"?AppColors.primary.withOpacity(0.05):AppColors.LightGreens,
                                           borderRadius: BorderRadius.all(Radius.circular(9))
                                       ),
-                                      child:  getrecommandedservicedata![i].tag!="Supplier Service"?boldtext(AppColors.Green,10,
+                                      child:  getrecommandedservicedata![i].tag!="Supplier Service"?boldtext1(AppColors.Green,10,
                                         "ME",
-                                      ):boldtext(AppColors.primary,10,
+                                      ):boldtext1(AppColors.primary,10,
                                         "Supplier",
                                       )
                                   ),),

@@ -6,6 +6,7 @@ import 'package:businessgym/Utils/common_route.dart';
 import 'package:businessgym/model/organizationmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_translator/google_translator.dart';
 import 'package:http/http.dart' as http;
 
 import '../../values/Colors.dart';
@@ -86,63 +87,64 @@ class _SelectorRegisterState extends State<SelectorRegister> {
                 ],
               ),
               vertical(45),
-              const Text(
+               Text(
                 "Select Who Are You To Get Started",
                 style: TextStyle(
                     fontFamily: "OpenSans",
                     fontWeight: FontWeight.w600,
                     fontSize: 14),
-              ),
+              ).translate(),
               vertical(20),
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          Suppiler = "user";
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(16),
-                          ),
-                          border: Suppiler == "user"
-                              ? Border.all(
-                                  color: AppColors.lightBlue,
-                                  width: 3,
-                                )
-                              : null,
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        height: 100,
-                        width: 100,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              AppImages.customer,
-                              height: 32,
-                              width: 32,
-                            ),
-                            vertical(10),
-                            const Text(
-                              "Customer",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "OpenSans"),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
+                   Expanded(child:  GestureDetector(
+                     onTap: () {
+                       setState(() {
+                         Suppiler = "user";
+                       });
+                     },
+                     child: Container(
+                       decoration: BoxDecoration(
+                         color: AppColors.white,
+                         borderRadius: const BorderRadius.all(
+                           Radius.circular(16),
+                         ),
+                         border: Suppiler == "user"
+                             ? Border.all(
+                           color: AppColors.lightBlue,
+                           width: 3,
+                         )
+                             : null,
+                       ),
+                       padding: const EdgeInsets.all(5),
+                       height: 100,
+                       width: 100,
+                       child: Column(
+                         crossAxisAlignment: CrossAxisAlignment.center,
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: [
+                           SvgPicture.asset(
+                             AppImages.customer,
+                             height: 35,
+                             width: 35,
+                           ),
+                           vertical(10),
+                           const Text(
+                             "Customer",
+                             style: TextStyle(
+                                 fontSize: 12.5,
+                                 fontWeight: FontWeight.w600,
+                                 fontFamily: "OpenSans"),
+                           ).translate(),
+                         ],
+                       ),
+                     ),
+                   ),),
+        SizedBox(width: 10,),
+        Expanded(child: GestureDetector(
                       onTap: () {
                         setState(() {
                           Suppiler = "provider";
@@ -159,7 +161,7 @@ class _SelectorRegisterState extends State<SelectorRegister> {
                             color: AppColors.white,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(16))),
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(5),
                         height: 100,
                         width: 100,
                         child: Column(
@@ -168,25 +170,24 @@ class _SelectorRegisterState extends State<SelectorRegister> {
                           children: [
                             SvgPicture.asset(
                               AppImages.microenterprinute,
-                              height: 32,
-                              width: 32,
+                              height: 35,
+                              width: 35,
                             ),
                             vertical(5),
-                            const FittedBox(
-                              child: Text(
-                                "Micro\nEntre-preneur",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "OpenSans"),
-                              ),
-                            ),
+                            const Text(
+                              "Micro\nEntrepreneur",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 12.5,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "OpenSans"),
+                            ).translate(),
                           ],
                         ),
                       ),
-                    ),
-                    GestureDetector(
+                    ),),
+                    SizedBox(width: 10,),
+        Expanded(child: GestureDetector(
                       onTap: () {
                         setState(() {
                           Suppiler = "supplier";
@@ -203,7 +204,7 @@ class _SelectorRegisterState extends State<SelectorRegister> {
                             color: AppColors.white,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(16))),
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(5),
                         height: 100,
                         width: 100,
                         child: Column(
@@ -212,21 +213,21 @@ class _SelectorRegisterState extends State<SelectorRegister> {
                           children: [
                             SvgPicture.asset(
                               AppImages.suppier,
-                              height: 32,
-                              width: 32,
+                              height: 35,
+                              width: 35,
                             ),
                             vertical(10),
                             const Text(
                               "Supplier",
                               style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 12.5,
                                   fontWeight: FontWeight.w600,
                                   fontFamily: "OpenSans"),
-                            ),
+                            ).translate(),
                           ],
                         ),
                       ),
-                    ),
+                    ),)
                   ],
                 ),
               ),
@@ -241,44 +242,46 @@ class _SelectorRegisterState extends State<SelectorRegister> {
                       decoration: const BoxDecoration(
                           color: AppColors.white,
                           borderRadius: BorderRadius.all(Radius.circular(16))),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          boldtext(
-                              Colors.black, 20, "Choose your Organization"),
-                          ListView.builder(
-                              itemCount: categorydata!.length,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      organizationId = categorydata![index].id;
-                                    });
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: organizationId ==
-                                              categorydata![index].id
-                                          ? AppColors.LightBlue
-                                          : null,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            boldtext(
+                                Colors.black, 20, "Choose your Organization"),
+                            ListView.builder(
+                                itemCount: categorydata!.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        organizationId = categorydata![index].id;
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: organizationId ==
+                                            categorydata![index].id
+                                            ? AppColors.LightBlue
+                                            : null,
+                                      ),
+                                      padding: const EdgeInsets.all(10),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          boldtext(Colors.black, 14,
+                                              categorydata![index].name),
+                                          regulartext(Colors.black, 12,
+                                              categorydata![index].stateName)
+                                        ],
+                                      ),
                                     ),
-                                    padding: const EdgeInsets.all(10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        boldtext(Colors.black, 14,
-                                            categorydata![index].name),
-                                        regulartext(Colors.black, 12,
-                                            categorydata![index].stateName)
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              })
-                        ],
+                                  );
+                                })
+                          ],
+                        ),
                       ))
                   : const SizedBox.shrink()
 
@@ -311,7 +314,7 @@ class _SelectorRegisterState extends State<SelectorRegister> {
                       'Continue',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-                    )),
+                    ).translate()),
               ),
             )
           : const SizedBox.shrink(),

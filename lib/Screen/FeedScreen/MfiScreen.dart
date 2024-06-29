@@ -64,7 +64,6 @@ class MfiScreenState extends State<MfiScreen> {
   void getuserType() async {
     String? usertype = await _sharedPreference.isUserType();
     UserId = await _sharedPreference.isUsetId();
-    print("Ashish" + UserId);
 
     setState(() {
       providerdatalist = getserviceList(UserId);
@@ -74,21 +73,20 @@ class MfiScreenState extends State<MfiScreen> {
   }
 
   Future<AppliedLoanListModel?> addloanmmodeloges(String userId) async {
-    print("print userid is equal to provicer id $userId");
+
     showLoader(context);
     try {
       Map<String, String> requestBody = <String, String>{
         'provider_id': "" + userId,
         'status': "0",
       };
-      print("USerId1 == supplier_id" + userId);
+
       final response = await http.post(
         Uri.parse(ApiUrl.approved_loan_list),
         body: requestBody,
       );
       Map<String, dynamic> map = json.decode(response.body);
-      print("Responce new datatat ===== ---- " + ApiUrl.approved_loan_list);
-      print("Responce new datatat ===== ---- " + response.body);
+
       if (response.statusCode == 200) {
         hideLoader();
         addCallModel = AppliedLoanListModel.fromJson(jsonDecode(response.body));
@@ -101,16 +99,16 @@ class MfiScreenState extends State<MfiScreen> {
                     : element.mfiName != null)
                 .toList() ??
             [];
-        print(addCallModel);
+
         return addCallModel;
       } else {
         hideLoader();
-        print("Something went wronge");
+
         return addCallModel;
       }
     } catch (e) {
       hideLoader();
-      print("data==1=$e");
+
     }
   }
 
@@ -123,8 +121,6 @@ class MfiScreenState extends State<MfiScreen> {
           //   "provider_id" : ""+UserId,
         },
       );
-      print("response data my  =================" + response.body);
-      //  Map<String, dynamic> map = json.decode(response.body);
 
       if (response.statusCode == 200) {
         MfilistModel? myBookingModel =
@@ -132,18 +128,18 @@ class MfiScreenState extends State<MfiScreen> {
 
         hideLoader();
         providerdata = myBookingModel.data;
-        print("Success");
+
 
         setState(() {});
 
         return myBookingModel.data;
       } else {
         hideLoader();
-        print("Something went wronge");
+
       }
     } catch (e) {
       hideLoader();
-      print("data==1=$e");
+
     }
   }
 
@@ -156,8 +152,6 @@ class MfiScreenState extends State<MfiScreen> {
           "id": "" + id,
         },
       );
-      print("response data my  =================" + response.body);
-      //  Map<String, dynamic> map = json.decode(response.body);
 
       if (response.statusCode == 200) {
         //ProviderServiceModel? myBookingModel = ProviderServiceModel.fromJson(jsonDecode(response.body));
@@ -165,18 +159,18 @@ class MfiScreenState extends State<MfiScreen> {
         hideLoader();
 
         //providerdata = myBookingModel.data;
-        print("Success");
+
         providerdatalist = getserviceList(UserId);
         setState(() {});
 
         return true;
       } else {
         hideLoader();
-        print("Something went wronge");
+
       }
     } catch (e) {
       hideLoader();
-      print("data==1=$e");
+
     }
   }
 
@@ -385,8 +379,7 @@ class MfiScreenState extends State<MfiScreen> {
                                       onTap: () {
                                         setState(() {
                                            Mfid=snapshot.data![index]!.mfiId.toString();
-                                          print(snapshot.data![index]!.mfiId
-                                              .toString());
+
                                         });
                                       },
                                       child: Container(

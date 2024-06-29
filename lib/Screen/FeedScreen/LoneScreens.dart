@@ -310,7 +310,7 @@ class LoneScreensState extends State<LoneScreens> {
           ),
         ),
       ),
-      bottomNavigationBar:  GestureDetector(
+      bottomSheet:  GestureDetector(
         onTap: () {
           // loadProgress();
           if(subjectId=="0"){

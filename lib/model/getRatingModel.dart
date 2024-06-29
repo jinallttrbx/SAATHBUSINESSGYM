@@ -12,9 +12,9 @@ class GetratingClass {
   bool status;
   String message;
   List<GetratingClassdata> data;
-  double totalRating;
-  double avgStar;
-  int totalReview;
+  dynamic totalRating;
+  dynamic avgStar;
+  dynamic totalReview;
 
   GetratingClass({
     required this.status,

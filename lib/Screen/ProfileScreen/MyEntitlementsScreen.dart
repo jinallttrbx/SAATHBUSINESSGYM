@@ -571,7 +571,7 @@ class MyEntitlementsScreenState extends State<MyEntitlementsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
          SnackBar(
           content: Text('Update Successfully'),
-          duration: Duration(microseconds: 5),
+          duration: Duration(seconds: 5),
         ),
       );
       Navigator.of(context).pop();

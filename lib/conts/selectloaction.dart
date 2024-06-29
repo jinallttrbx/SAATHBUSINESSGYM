@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:businessgym/Screen/extra.dart';
 import 'package:businessgym/conts/to_map_scree.dart';
 import 'package:businessgym/values/Colors.dart';
 import 'package:businessgym/values/assets.dart';
@@ -40,7 +41,7 @@ class _CustomSelectfromMapState extends State<CustomSelectMapfrom> {
                 widget.controller.text = value[1];
                 widget.onLocationChange!(value[0]);
               });
-              print("Print Selected Location ${value[0]}");
+
             }
           }
         });

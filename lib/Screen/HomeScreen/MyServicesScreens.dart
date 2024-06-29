@@ -119,10 +119,7 @@ class MyServicesScreensState extends State<MyServicesScreens> {
         AllServiceModel? viewNewsModel = AllServiceModel.fromJson(jsonDecode(response.body));
         serviceproviderdata = viewNewsModel.data!;
         setState(() {
-
-
         });
-
         print("Success");
 
 
@@ -155,7 +152,7 @@ class MyServicesScreensState extends State<MyServicesScreens> {
               //   'Search ',
               // ),
               SizedBox(height: 15,),
-              ListView.builder(
+             serviceproviderdata.isEmpty==0?Text("No Service Provider Data Found"): ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount:serviceproviderdata.length,
@@ -204,7 +201,7 @@ class MyServicesScreensState extends State<MyServicesScreens> {
                                                          color: Colors.white,
                                                          borderRadius: BorderRadius.all(Radius.circular(50))
                                                      ),
-                                        child:Center(child:  boldtext(AppColors.black,14,serviceproviderdata[index].subData![index1].name!,
+                                        child:Center(child:  boldtext(AppColors.black,14,serviceproviderdata[index].subData![index1].name!.length>15?'${ serviceproviderdata[index].subData![index1].name!.substring(0,14)}...' :serviceproviderdata[index].subData![index1].name!,
                                         ),)
                                       ),
                                     );
@@ -226,7 +223,7 @@ class MyServicesScreensState extends State<MyServicesScreens> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 20,),
-                          boldtext(Colors.black,16,productsellerdata![index].name!),
+                          boldtext(Colors.black,16,productsellerdata![index].name),
                           SizedBox(height: 20,),
                           Container(
 
@@ -264,12 +261,11 @@ class MyServicesScreensState extends State<MyServicesScreens> {
                                             color: Colors.white,
                                             borderRadius: BorderRadius.all(Radius.circular(50))
                                         ),
-                                        child: Center(child: boldtext(AppColors.black,14,productsellerdata![index].subData![index1].name!,
+                                        child: Center(child: boldtext(AppColors.black,14,productsellerdata![index].subData![index1].name!.length>15?'${ productsellerdata![index].subData![index1].name!.substring(0,14)}...' :productsellerdata![index].subData![index1].name!,
                                         ),)
                                       ),
                                     );
                                   })
-
                           )
                         ],
                       ),

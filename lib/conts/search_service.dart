@@ -3,6 +3,7 @@ import 'dart:convert';
 
 
 import 'package:businessgym/Screen/HomeScreen/MyServicesScreens.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:businessgym/Screen/ProfileScreen/RatingandReviewByUserScreens.dart';
@@ -52,7 +53,6 @@ class _SearchWidgetState extends State<SearchWidget> {
   List<Getservicebyuseriddata>? servicebyiddata = [];
   Future<List<GetproductbyuseridData?>?>? productbyid;
   List<GetproductbyuseridData>? productbyiddata = [];
-
   String? filter;
 
 
@@ -78,6 +78,7 @@ class _SearchWidgetState extends State<SearchWidget> {
   String? catType;
   String? lat;
   String? lng;
+  Position? _currentPosition;
   String? openAt;
   String? closeAt;
   double? startPrice;
@@ -113,7 +114,9 @@ class _SearchWidgetState extends State<SearchWidget> {
                           controller: controller,
                           style: const TextStyle(
                               color: Colors.black, fontFamily: "caviarbold"),
-                          onChanged: (value) {
+                          onChanged: (value)  async{
+                            _currentPosition = await Geolocator.getCurrentPosition();
+
                             // getSearch(controller.text);
                             if (_debounce?.isActive ?? false) {
                               _debounce!.cancel();
@@ -185,6 +188,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: IconButton(
+
                             onPressed: () async {
                               final result = await Get.to(
                                     () => filterscreen(
@@ -236,7 +240,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: (){
-                          CommonBottomSheet.show(context,searchlist![index].userid.toString(),searchlist![index].typeId.toString(),"service",""); //  print("print user id ${searchlist![index].userId}");
+                          CommonBottomSheet.show(context,searchlist![index].userid.toString(),searchlist![index].typeId.toString(),"service","");
 
                         },
                         child: Container(
@@ -253,7 +257,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                                       ),
                                     ),
                                     SizedBox(width: 10,),
-                                    Expanded(child:  Column(
+                                    Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         boldtext(
@@ -274,7 +278,7 @@ class _SearchWidgetState extends State<SearchWidget> {
 
                                             })
                                       ],
-                                    ))
+                                    )
                                   ],
                                 ),
                                 SizedBox(height: 10,),
@@ -312,7 +316,7 @@ class _SearchWidgetState extends State<SearchWidget> {
         if (val.hasConfidenceRating && val.confidence > 0) {
           _confidence = val.confidence;
         }
-        searchWithFilter( controller.text);
+        searchWithFilter(controller.text);
       }),
     );
   }
@@ -325,8 +329,6 @@ class _SearchWidgetState extends State<SearchWidget> {
     setState(() => _isListening = false);
   }
 
-
-
   searchWithFilter(String value) async {
     print(ApiUrl.searchFilterUrl);
     searchlist = [];
@@ -336,35 +338,52 @@ class _SearchWidgetState extends State<SearchWidget> {
         Uri.parse(ApiUrl.searchFilterUrl),
       );
       request.fields['text'] = value;
-      if (categoryIdList != []) {
+      if (categoryIdList == []) {
         for (var i = 0; i < categoryIdList.length; i++) {
-          request.fields['category_id[$i]'] = categoryIdList[i].toString();
+          request.fields['category_id'] = categoryIdList[i].toString();
+          print("PRINT A CATEGORYLIST ${categoryIdList[i]}");
         }
       }
       if (ratingValue != null) {
         request.fields['rating'] = ratingValue ?? '';
+        print(ratingValue);
       }
       if (startPrice != null) {
-        request.fields['min_price'] = ratingValue ?? '';
+        request.fields['min_price'] = startPrice.toString() ?? '';
+        print(startPrice);
       }
       if (endPrice != null) {
-        request.fields['max_price'] = ratingValue ?? '';
+        request.fields['max_price'] = endPrice.toString() ?? '';
+        print(endPrice);
       }
       if (lat != null) {
-        request.fields['latitude'] = ratingValue ?? '';
+        request.fields['latitude'] = lat.toString() ?? '';
+        print(lat);
       }
       if (lng != null) {
-        request.fields['longitude'] = ratingValue ?? '';
+        request.fields['longitude'] = lng.toString() ?? '';
+        print(lng);
       }
       if (openAt != null) {
-        request.fields['open_at'] = ratingValue ?? '';
+        request.fields['open_at'] = openAt.toString() ?? '';
+        print(openAt);
       }
       if (closeAt != null) {
-        request.fields['close_at'] = ratingValue ?? '';
+        request.fields['close_at'] = closeAt.toString() ?? '';
+        print(closeAt);
       }
       final response = await request.send();
       final data = await http.Response.fromStream(response);
       print(data.body);
+      print( request.fields['text']);
+      print( request.fields['category_id']);
+      print( request.fields['rating']);
+      print( request.fields['min_price']);
+      print(request.fields['max_price']);
+      print(request.fields['latitude']);
+      print(request.fields['longitude']);
+      print(request.fields['open_at']);
+      print( request.fields['close_at']);
       print(data.statusCode);
       if (response.statusCode == 200) {
         Serchlistmodel vehicalTypeModel =
@@ -376,6 +395,7 @@ class _SearchWidgetState extends State<SearchWidget> {
       print(e);
     }
   }
+
 
 
 }

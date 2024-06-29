@@ -39,7 +39,7 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
     var result = await googlePlace.autocomplete.get(value);
 
     if (result != null && result.predictions != null && mounted) {
-      print(result.predictions!.first.description);
+
       setState(() {
         predictions = result.predictions!;
       });
@@ -64,8 +64,8 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
     // try {
     //   Address address =
     //       await geoCode.reverseGeocoding(latitude: lat, longitude: lang);
-    //   print('address');
-    //   print(address);
+    //
+    //
     //   return "${address.city}, ${address.streetAddress}, ${address.countryName}, ${address.postal}";
     // } catch (e) {
     //   return '';
@@ -75,8 +75,8 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
       // try {
       //   Address address =
       //       await geoCode.reverseGeocoding(latitude: lat, longitude: lang);
-      //   print('address');
-      //   print(address);
+      //
+      //
       //   return "${address.city}, ${address.streetAddress}, ${address.countryName}, ${address.postal}";
       // } catch (e) {
       //   return '';
@@ -86,10 +86,10 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
           lat,
           lang,
         );
-        print(value);
+
         return '${value.first.name}, ${value.first.subLocality}, ${value.first.locality}, ${value.first.administrativeArea}-${value.first.postalCode}';
       } catch (e) {
-        print(e);
+
 
         return '';
       }
@@ -164,7 +164,7 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
         .then((value) {})
         .onError((error, stackTrace) async {
       await Geolocator.requestPermission();
-      print("ERROR" + error.toString());
+
     });
     return await Geolocator.getCurrentPosition();
   }
@@ -204,7 +204,7 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
                   //  _startSearchFieldController.text = value;
                 });
               } catch (e) {
-                print(e);
+
               }
             },
             markers: mark.map((e) => e).toSet(),
@@ -218,7 +218,7 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
               //     _startSearchFieldController.text = value;
               //   });
               // } catch (e) {
-              //   print(e);
+              //
               // }
             },
             onCameraMove: (position) {
@@ -232,7 +232,7 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
               //     _startSearchFieldController.text = value;
               //   });
               // } catch (e) {
-              //   print(e);
+              //
               // }
             },
           ),
@@ -351,7 +351,7 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
                                           setState(() {});
                                         }
                                       } else {
-                                        print("else-------------");
+
 
                                         setState(() {
                                           endPosition = details.result;
@@ -365,7 +365,7 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
                                           predictions = [];
                                         });
                                         if (details.result != null) {
-                                          print("else if------------");
+
                                           addMarker(LatLng(
                                               details.result!.geometry!
                                                   .location!.lat!,
@@ -387,7 +387,7 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
                                           );
                                           setState(() {});
                                         }
-                                        print("else-------");
+
                                       }
                                     }
                                   },
@@ -414,7 +414,7 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
           //               isGetLocationBusy = true;
           //             });
           //             getUserCurrentLocation().then((value) async {
-          //               //print("${value.latitude} ${value.longitude}");
+          //
           //
           //               // marker added for current users location
           //               // addMarker(
@@ -436,7 +436,7 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
           //                 setState(() {
           //                   isGetLocationBusy = false;
           //                 });
-          //                 print(e);
+          //
           //               }
           //
           //               // specified current users location
@@ -466,7 +466,7 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
           //   backgroundColor: Colors.black,
           //   onPressed: () {
           //     getUserCurrentLocation().then((value) async {
-          //       print("${value.latitude} ${value.longitude}");
+          //
           //
           //       // marker added for current users location
           //       addMarker(
@@ -482,7 +482,7 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
           //           _startSearchFieldController.text = value;
           //         });
           //       } catch (e) {
-          //         print(e);
+          //
           //       }
           //
           //       // specified current users location
@@ -511,8 +511,7 @@ class _ToLocationScreenState extends State<UpdateLOcation> {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary),
                 onPressed: () {
-                  print(finalLatLng?.latitude.toString());
-                  print(finalLatLng?.longitude.toString());
+
                   controller.sendUserLocation(finalLatLng!.latitude.toString(),finalLatLng!.longitude.toString());
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>DashBoardScreen()));
                 },

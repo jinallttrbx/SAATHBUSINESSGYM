@@ -1,8 +1,8 @@
-import 'dart:math';
-
 import 'package:businessgym/Screen/HomeScreen/DashBoardScreen.dart';
 import 'package:businessgym/Screen/HomeScreen/homeview.dart';
+import 'package:businessgym/Screen/authentication/walkthrough_one.dart';
 import 'package:businessgym/conts/appbar_global.dart';
+import 'package:businessgym/conts/global_values.dart';
 
 import 'package:businessgym/model/LanguageModel.dart';
 import 'package:businessgym/values/Colors.dart';
@@ -10,23 +10,23 @@ import 'package:businessgym/values/assets.dart';
 import 'package:businessgym/values/const_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_translator/google_translator.dart';
 import '../../../Utils/SharedPreferences.dart';
 import '../../../main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class Languages extends StatefulWidget {
-  const Languages({super.key});
+class ChangeLanguageScreen extends StatefulWidget {
+  const ChangeLanguageScreen({super.key});
 
   @override
-  State<Languages> createState() => _LanguagesState();
+  State<ChangeLanguageScreen> createState() => _ChangeLanguagesState();
 }
 
-class _LanguagesState extends State<Languages> {
+class _ChangeLanguagesState extends State<ChangeLanguageScreen> {
   List<LanguageModel>? list;
   Locale sharedLocale = const Locale('en', 'gu');
   int? selectedIndex;
-
   final String apiKey = 'AIzaSyBLlDB37YPbULTRu7ms76TvaqthIlvYj54'; // Replace with your API key
   final String apiUrl = 'https://translation.googleapis.com/language/translate/v2';
 
@@ -62,11 +62,11 @@ class _LanguagesState extends State<Languages> {
       final translatedText = jsonResponse['data']['translations'][0]['translatedText'];
       setState(() {
         _translatedText  = translatedText;
-       // Global.wholehint=translatedText;
+        Global.wholehint=translatedText;
       });
 
       print(_translatedText);
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>DashBoardScreen()));
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>walkthrough_one()));
     } else {
       throw Exception('Failed to load translation');
     }
@@ -76,41 +76,41 @@ class _LanguagesState extends State<Languages> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.BGColor,
-      appBar:  AppBar(
-        elevation:  0,
-        automaticallyImplyLeading: false,
+      // appBar:  AppBar(
+      //   elevation:  0,
+      //   automaticallyImplyLeading: false,
+      //
+      //   leading:
+      //   IconButton(
+      //     icon: const Icon(
+      //       Icons.arrow_back,
+      //       color: Colors.black,
+      //     ),
+      //     onPressed:
+      //         () => Navigator.of(context).pop(),
+      //   ),
+      //   backgroundColor: AppColors.white,
+      //   title: boldtext(AppColors.black, 16, "Languages"),
+      //   actions: [
+      //
+      //     Center(
+      //
+      //         child:   Padding(
+      //             padding: EdgeInsets.only(right: 20),
+      //             child: GestureDetector(
+      //               onTap: (){
+      //                 translate();
+      //                 // setSelectedLanguage();
+      //               },
+      //               child: boldtext(AppColors.primary, 12, "Save"),
+      //             )
+      //         )
+      //     )
+      //   ],
+      //   centerTitle: true,
+      //
+      // ),
 
-        leading:
-             IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed:
-            () => Navigator.of(context).pop(),
-        ),
-        backgroundColor: AppColors.white,
-        title: boldtext(AppColors.black, 16, "Languages"),
-        actions: [
-
-       Center(
-
-         child:   Padding(
-           padding: EdgeInsets.only(right: 20),
-           child: GestureDetector(
-             onTap: (){
-                translate(LanguageModel.languageList[0].name);
-               //setSelectedLanguage();
-             },
-             child: boldtext(AppColors.primary, 12, "Save"),
-           )
-         )
-       )
-        ],
-        centerTitle: true,
-
-      ),
-     
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Container(
@@ -122,8 +122,17 @@ class _LanguagesState extends State<Languages> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 50,),
+              Center(child: Image.asset(AppImages.changelanguage,width: MediaQuery.of(context).size.width/2,),),
+
               SizedBox(height: 20,),
-              Padding(padding: EdgeInsets.only(left: 16,right: 16,bottom: 10),child:  Text("Select preferred language",style: TextStyle(fontFamily: "OpenSans",fontSize: 16,fontWeight: FontWeight.w600),),),
+               Center(
+                 child: Text("Select preferred language",style: TextStyle(fontFamily: "OpenSans",fontSize: 16,fontWeight: FontWeight.w600),).translate(),
+               ),
+              SizedBox(height: 10,),
+            Center(
+              child: Text(" पसंदीदा भाषा चुनें ",style: TextStyle(fontFamily: "OpenSans",fontSize: 16,fontWeight: FontWeight.w600),).translate(),
+            ),
 
               SizedBox(
                   child: ListView.builder(
@@ -138,7 +147,6 @@ class _LanguagesState extends State<Languages> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 GestureDetector(
-
                                   onTap: () async {
                                     setState(() {
                                       selectedIndex = index;
@@ -151,8 +159,7 @@ class _LanguagesState extends State<Languages> {
                                       locale,
                                     );
                                     setState(() {});
-
-                        },
+                                  },
 
                                   child: Container(
 
@@ -176,15 +183,11 @@ class _LanguagesState extends State<Languages> {
                                             )
                                         ),
                                         SizedBox(width: 10,),
-                                        Expanded(child: Text(LanguageModel.languageList[index].name,style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                            fontFamily: "OpenSans"
-                                        ),),),
+                                        Expanded(child: changeapp(Colors.black,14,LanguageModel.languageList[index].name,)),
                                         selectedIndex==index?GestureDetector(
-                                           // onTap: () => _viewdialog(context,prodcutdata[position].subMenu[index]),
-                                           child: SvgPicture.asset(AppImages.verify),
-                                         ):SizedBox.shrink(),
+                                          // onTap: () => _viewdialog(context,prodcutdata[position].subMenu[index]),
+                                          child: SvgPicture.asset(AppImages.verify),
+                                        ):SizedBox.shrink(),
                                       ],
                                     ),
                                   ),
@@ -196,6 +199,29 @@ class _LanguagesState extends State<Languages> {
               ),
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar:  Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: 16, vertical: 30),
+        child: SizedBox(
+          height: 50,
+          width: double.infinity,
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                backgroundColor: AppColors.primary,
+              ),
+              onPressed: () async {
+                translate(LanguageModel.languageList[0].name);
+              },
+              child: const Text(
+                'Submit',
+                style: TextStyle(
+                    fontSize: 18, fontWeight: FontWeight.w400),
+              ).translate()),
         ),
       ),
     );

@@ -434,10 +434,10 @@ class FinancePageScreenState extends State<FinancePageScreen> {
                                       'open',
                                       transactionData![index]!.date,
                                       "Rs${subdata.flag != "debit" ? subdata.creditAmount : subdata.debitAmount}/- ${subdata.flag != "debit" ? "(Credit)" : "(Debit)"}",
-                                      subdata.description,
+                                      subdata.description??"",
                                       subdata.transName,
                                       subdata.transMobile,
-                                      subdata.paymentMode)
+                                     "upi")
                                       .then((value) => Navigator.of(context));
                                 },
                                 child: SvgPicture.asset(AppImages.download),
@@ -1170,13 +1170,6 @@ class FinancePageScreenState extends State<FinancePageScreen> {
                                               const Text("UPI"),
                                             ],
                                           ))),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                children: [
                                   Expanded(
                                       child: GestureDetector(
                                         onTap: () {
@@ -1198,6 +1191,14 @@ class FinancePageScreenState extends State<FinancePageScreen> {
                                           ],
                                         ),
                                       )),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                children: [
+
                                   // Expanded(
                                   //     child: GestureDetector(
                                   //       onTap: () {

@@ -220,10 +220,10 @@ class _CustomerCRMScreensState extends State<CustomerCRMScreen> {
                                     0xffF5F5F5)),
                             onPressed: () {
 
-                              // leaddata![index].rating==0.0?
-                              ratenow(leaddata![index].type!,leaddata![index].typeId.toString(),leaddata![index].id.toString(),leaddata![index].userId.toString(),leaddata![index].rating==null?0.0:leaddata![index].rating!.toDouble(),leaddata![index].review==null?"Description":leaddata![index].review!,"recevier",leaddata![index].callLogRatingsId.toString(),context);
-                              //:
-                              // ratenow1(leaddata![index].type!,leaddata![index].typeId.toString(),leaddata![index].id.toString(),leaddata![index].userId.toString(),leaddata![index].callLogRatingsId.toString(),"recevier",context);
+                               leaddata![index].rating!=0.0?
+                              ratenow(leaddata![index].type!,leaddata![index].typeId.toString(),leaddata![index].id.toString(),leaddata![index].userId.toString(),leaddata![index].rating==null?0.0:leaddata![index].rating!.toDouble(),leaddata![index].review==null?"Description":leaddata![index].review!,"recevier",leaddata![index].callLogRatingsId.toString(),context)
+                              :
+                               ratenow1(leaddata![index].type!,leaddata![index].typeId.toString(),leaddata![index].id.toString(),leaddata![index].userId.toString(),leaddata![index].callLogRatingsId.toString(),"recevier",context);
                             },
                             child: boldtext(
                               AppColors.black,
@@ -429,7 +429,7 @@ class _CustomerCRMScreensState extends State<CustomerCRMScreen> {
                             setState(() {
                               addrating=rating;
                             });
-                            print(rating);
+
                           },
                         )
                       ],
@@ -457,16 +457,13 @@ class _CustomerCRMScreensState extends State<CustomerCRMScreen> {
                         ),
                         onPressed: () async{
 
-                          typeuser!="receiver"?print("user receiver"):print("user sender");
-                          if(typeuser!="receiver"){
-                            print(typeuser);
-                            print(ApiUrl.addleadrating);
 
+                          if(typeuser!="receiver"){
                             final response = await http.post(
                                 Uri.parse(ApiUrl.addleadrating),
                                 headers: {"Authorization": "$USERTOKKEN"},
                                 body:
-                                // rating==0.0?
+                                 rating==0.0?
                                 {
                                   "id": calllogid,
                                   "type": type,
@@ -476,21 +473,18 @@ class _CustomerCRMScreensState extends State<CustomerCRMScreen> {
                                   "review": description.text,
                                   "user_id":userid
                                 }
-                              //:
-                              // {
-                              //   "id":"33",
-                              //   "type": type,
-                              //   "type_id": typeid,
-                              //   "call_log_id": calllogid,
-                              //   "rating": addrating.toString(),
-                              //   "review": description.text,
-                              //   "user_id":userid
-                              // },
+                              :
+                              {
+                                "id":calllogratingid,
+                                "type": type,
+                                "type_id": typeid,
+                                "call_log_id": calllogid,
+                                "rating": addrating.toString(),
+                                "review": description.text,
+                                "user_id":userid
+                              },
                             );
-                            print("${type}${typeid}${calllogid}${addrating}${description.text}${userid}");
 
-
-                            print(response.body);
                             if (response.statusCode == 200) {
                               ScaffoldMessenger.of(context).showSnackBar( SnackBar(
                                 content: Text(
@@ -501,18 +495,17 @@ class _CustomerCRMScreensState extends State<CustomerCRMScreen> {
                               getclient();
                               //  alltransactionmodel = myfinancelist(userid!);
                               if (kDebugMode) {
-                                print(response.statusCode);
+
 
                               }
                             } else {
                               if (kDebugMode) {
-                                print("object");
+
                                 Navigator.pop(context);
                               }
                             }
                           }else{
-                            print(typeuser);
-                            print(ApiUrl.adduserrating);
+
                             final response = await http.post(
                               Uri.parse(ApiUrl.adduserrating),
                               headers: {"Authorization": "$USERTOKKEN"},
@@ -526,8 +519,7 @@ class _CustomerCRMScreensState extends State<CustomerCRMScreen> {
                                 "user_id":userid
                               },
                             );
-                            print("${type}${typeid}${calllogid}${addrating}${description.text}${userid}");
-                            print(response.body);
+
                             if (response.statusCode == 200) {
                               ScaffoldMessenger.of(context).showSnackBar( SnackBar(
                                 content: Text(
@@ -538,12 +530,12 @@ class _CustomerCRMScreensState extends State<CustomerCRMScreen> {
                               getclient();
                               //  alltransactionmodel = myfinancelist(userid!);
                               if (kDebugMode) {
-                                print(response.statusCode);
+
 
                               }
                             } else {
                               if (kDebugMode) {
-                                print("object");
+
                                 Navigator.pop(context);
                               }
                             }
@@ -559,180 +551,178 @@ class _CustomerCRMScreensState extends State<CustomerCRMScreen> {
           );
         });
   }
-  // ratenow1(String type,String typeid,String calllogid,String userid,String typeuser,String callratinid, BuildContext context,) async {
-  //   TextEditingController description = TextEditingController();
-  //   double addrating =4;
-  //   return showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return AlertDialog(
-  //           shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.circular(15.0),
-  //           ),
-  //           insetPadding: const EdgeInsets.only(left: 10, right: 10),
-  //           iconPadding: EdgeInsets.zero,
-  //           content: Container(
-  //               height: MediaQuery.of(context).size.height / 2.2,
-  //               width: MediaQuery.of(context).size.width,
-  //               child: Column(
-  //                 crossAxisAlignment: CrossAxisAlignment.start,
-  //                 children: [
-  //                   Row(
-  //                     mainAxisAlignment: MainAxisAlignment.end,
-  //                     children: [
-  //                       GestureDetector(
-  //                         onTap: () {
-  //                           Navigator.pop(context);
-  //                         },
-  //                         child: const Icon(Icons.close_rounded),
-  //                       )
-  //                     ],
-  //                   ),
-  //                   Row(
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: [
-  //                       // SvgPicture.asset(subMenu.image),
-  //                       const SizedBox(
-  //                         width: 10,
-  //                       ),
-  //                       boldtext(AppColors.black, 18, "Rating and review"),
-  //                     ],
-  //                   ),
-  //                   const SizedBox(
-  //                     width: 25,
-  //                   ),
-  //                   InkWell(
-  //                     child: Row(
-  //                       mainAxisAlignment: MainAxisAlignment.center,
-  //                       children: [
-  //                         RatingBar.builder(
-  //                           initialRating: 3,
-  //                           minRating: 1,
-  //                           direction: Axis.horizontal,
-  //                           allowHalfRating: true,
-  //                           itemCount: 5,
-  //                           itemPadding:
-  //                           const EdgeInsets.symmetric(horizontal: 4.0),
-  //                           itemBuilder: (context, _) =>
-  //                               SvgPicture.asset(AppImages.rating),
-  //                           onRatingUpdate: (rating) {
-  //                             setState(() {
-  //                               addrating=rating;
-  //                             });
-  //                             print(rating);
-  //                           },
-  //                         )
-  //                       ],
-  //                     ),
-  //                   ),
-  //                   const SizedBox(
-  //                     height: 30,
-  //                   ),
-  //                   textAreamo(description, "Description"),
-  //                   const SizedBox(
-  //                     height: 25,
-  //                   ),
-  //                   Padding(
-  //                     padding: const EdgeInsets.symmetric(
-  //                         horizontal: 0, vertical: 0),
-  //                     child: SizedBox(
-  //                       height: 50,
-  //                       width: double.infinity,
-  //                       child: ElevatedButton(
-  //                         style: ElevatedButton.styleFrom(
-  //                           shape: RoundedRectangleBorder(
-  //                             borderRadius: BorderRadius.circular(12.0),
-  //                           ),
-  //                           backgroundColor: AppColors.primary,
-  //                         ),
-  //                         onPressed: () async{
-  //
-  //                           typeuser=="receiver"?print("user receiver"):print("user sender");
-  //                           if(typeuser!="receiver"){
-  //                             print(typeuser);
-  //                             print(ApiUrl.addleadrating);
-  //                             final response = await http.post(
-  //                               Uri.parse(ApiUrl.addleadrating),
-  //                               headers: {"Authorization": "$USERTOKKEN"},
-  //                               body: {
-  //                                 "type": type,
-  //                                 "type_id": typeid,
-  //                                 "call_log_id": calllogid,
-  //                                 "rating": addrating.toString(),
-  //                                 "review": description.text,
-  //                                 "user_id":userid
-  //
-  //
-  //                               },
-  //                             );
-  //                             print(response.body);
-  //                             if (response.statusCode == 200) {
-  //                               getlead();
-  //                               getclient();
-  //                               ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-  //                                 content: Text(
-  //                                     "Rating Add Successfully"),
-  //                               ));
-  //                               Navigator.of(context).pop();
-  //                               //  alltransactionmodel = myfinancelist(userid!);
-  //                               if (kDebugMode) {
-  //                                 print(response.statusCode);
-  //
-  //                               }
-  //                             } else {
-  //                               if (kDebugMode) {
-  //                                 print("object");
-  //                                 Navigator.pop(context);
-  //                               }
-  //                             }
-  //                           }else{
-  //                             print(typeuser);
-  //                             print(ApiUrl.adduserrating);
-  //                             final response = await http.post(
-  //                               Uri.parse(ApiUrl.adduserrating),
-  //                               headers: {"Authorization": "$USERTOKKEN"},
-  //                               body: {
-  //                                 "id":callratinid,
-  //                                 "type": type,
-  //                                 "type_id": typeid,
-  //                                 "call_log_id": calllogid,
-  //                                 "rating": addrating.toString(),
-  //                                 "review": description.text,
-  //                                 "user_id":userid
-  //                               },
-  //                             );
-  //                             print(response.body);
-  //                             if (response.statusCode == 200) {
-  //                               getlead();
-  //                               getclient();
-  //                               ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-  //                                 content: Text(
-  //                                     "Rating Add Successfully"),
-  //                               ));
-  //                               Navigator.of(context).pop();
-  //                               //  alltransactionmodel = myfinancelist(userid!);
-  //                               if (kDebugMode) {
-  //                                 print(response.statusCode);
-  //
-  //                               }
-  //                             } else {
-  //                               if (kDebugMode) {
-  //                                 print("object");
-  //                                 Navigator.pop(context);
-  //                               }
-  //                             }
-  //                           }
-  //
-  //                         },
-  //                         child: boldtext(AppColors.white, 14, "Update"),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),),
-  //         );
-  //       });
-  // }
+  ratenow1(String type,String typeid,String calllogid,String userid,String typeuser,String callratinid, BuildContext context,) async {
+    TextEditingController description = TextEditingController();
+    double addrating =4;
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            insetPadding: const EdgeInsets.only(left: 10, right: 10),
+            iconPadding: EdgeInsets.zero,
+            content: Container(
+                height: MediaQuery.of(context).size.height / 2.2,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(Icons.close_rounded),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // SvgPicture.asset(subMenu.image),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        boldtext(AppColors.black, 18, "Rating and review"),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 25,
+                    ),
+                    InkWell(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RatingBar.builder(
+                            initialRating: 3,
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (context, _) =>
+                                SvgPicture.asset(AppImages.rating),
+                            onRatingUpdate: (rating) {
+                              setState(() {
+                                addrating=rating;
+                              });
+                              print(rating);
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    textAreamo(description, "Description"),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 0),
+                      child: SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            backgroundColor: AppColors.primary,
+                          ),
+                          onPressed: () async{
+
+                            typeuser=="receiver"?print("user receiver"):print("user sender");
+                            if(typeuser!="receiver"){
+                              print(typeuser);
+                              print(ApiUrl.addleadrating);
+                              final response = await http.post(
+                                Uri.parse(ApiUrl.addleadrating),
+                                headers: {"Authorization": "$USERTOKKEN"},
+                                body: {
+                                  "type": type,
+                                  "type_id": typeid,
+                                  "call_log_id": calllogid,
+                                  "rating": addrating.toString(),
+                                  "review": description.text,
+                                  "user_id":userid
+                                },
+                              );
+                              print(response.body);
+                              if (response.statusCode == 200) {
+                                getlead();
+                                getclient();
+                                ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                                  content: Text(
+                                      "Rating Add Successfully"),
+                                ));
+                                Navigator.of(context).pop();
+                                //  alltransactionmodel = myfinancelist(userid!);
+                                if (kDebugMode) {
+                                  print(response.statusCode);
+
+                                }
+                              } else {
+                                if (kDebugMode) {
+                                  print("object");
+                                  Navigator.pop(context);
+                                }
+                              }
+                            }else{
+                              print(typeuser);
+                              print(ApiUrl.adduserrating);
+                              final response = await http.post(
+                                Uri.parse(ApiUrl.adduserrating),
+                                headers: {"Authorization": "$USERTOKKEN"},
+                                body: {
+                                  "id":callratinid,
+                                  "type": type,
+                                  "type_id": typeid,
+                                  "call_log_id": calllogid,
+                                  "rating": addrating.toString(),
+                                  "review": description.text,
+                                  "user_id":userid
+                                },
+                              );
+                              print(response.body);
+                              if (response.statusCode == 200) {
+                                getlead();
+                                getclient();
+                                ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                                  content: Text(
+                                      "Rating Add Successfully"),
+                                ));
+                                Navigator.of(context).pop();
+                                //  alltransactionmodel = myfinancelist(userid!);
+                                if (kDebugMode) {
+                                  print(response.statusCode);
+
+                                }
+                              } else {
+                                if (kDebugMode) {
+                                  print("object");
+                                  Navigator.pop(context);
+                                }
+                              }
+                            }
+
+                          },
+                          child: boldtext(AppColors.white, 14, "Update"),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),),
+          );
+        });
+  }
 
   markasclient(BuildContext context,String calllogid,) async {
     TextEditingController description = TextEditingController();

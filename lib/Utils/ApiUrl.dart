@@ -6,7 +6,8 @@ class ApiUrl {
   //http://admin.businessgym.in/api/
   // static var baseurl = "http://admin.businessgym.in/api/";
   static var BASEURL="https://admin.businessgym.in/";
-  static var  baseurl="https://admin.businessgym.in/api/";
+  static var baseurl="https://clone.businessgym.in/api/";
+ //static var  baseurl="https://admin.businessgym.in/api/";
  //  static var BASEURL="https://devbusinessgym.lttrbx.in";
  // static var  baseurl="https://devbusinessgym.lttrbx.in/api/";
  //  static var BASEURL="https://saath.lttrbx.in/";

@@ -180,8 +180,6 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
     selectedimage = widget.list1.serviceImage;
     myminpriceController.text = widget.list1.minPrice.toString();
     mymaxpriceController.text = widget.list1.maxPrice.toString();
-    print("print service id ${widget.list.id}");
-    print("print service subcategory id ${widget.list1.id}");
     getuserType();
     setState(() {});
   }
@@ -202,8 +200,7 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
       showLoader(context);
       final response = await http.get(Uri.parse(ApiUrl.getsupplierproductlist),
           headers: {"Authorization": USERTOKKEN.toString()});
-      print(response.body);
-      print(response.statusCode);
+
       if (response.statusCode == 200) {
         hideLoader();
         GetProductCategory? allServiceModel =
@@ -230,10 +227,10 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
         return allServiceModel.data;
       } else {
         hideLoader();
-        print("Something went worange");
+
       }
     } catch (e) {
-      print("data===1 error  $e");
+
     }
     return null;
   }
@@ -283,9 +280,8 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
           Uri.parse(ApiUrl.workProfileListsURL),
           headers: {"Authorization": USERTOKKEN.toString()});
       if (response.statusCode == 200) {
-        print(USERTOKKEN.toString());
-        print(response.statusCode);
-        print(response.body);
+
+
         WorkProfileModel catrgortModel =
             WorkProfileModel.fromJson(jsonDecode(response.body));
         for (int i = 0; i < catrgortModel.data!.length; i++) {
@@ -317,9 +313,9 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
         setState(() {});
         return viewoccuaptionsModelData;
       }
-      print(response.statusCode);
+
     } catch (e) {
-      print("sdfok" + e.toString());
+
     }
     return null;
   }
@@ -328,13 +324,12 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
       String id, String type) async {
     subservicecategorydata=[];
 
-    print("${ApiUrl.getservicesubcategorylist}category_id=$id&type=$type");
     try {
       final response = await http.get(
           Uri.parse(
               "${ApiUrl.getservicesubcategorylist}category_id=$id&type=$type"),
           headers: {"Authorization": USERTOKKEN.toString()});
-      print("sub category response ${response.body}");
+
       if (response.statusCode == 200) {
         GetServiceSubCategory? allServiceModel =
             GetServiceSubCategory.fromJson(jsonDecode(response.body));
@@ -361,10 +356,10 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
         return allServiceModel.data;
       } else {
         hideLoader();
-        print("Something went worange");
+
       }
     } catch (e) {
-      print("data===1error $e");
+
     }
     return null;
   }
@@ -455,7 +450,7 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
                     }).toList() ??
                         [],
                     onChanged: (val) async {
-                      print(val);
+
                       setState(() {
                         subServiceValue = null;
                         subcategotyid = null;
@@ -630,7 +625,7 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
                           }).toList(),
                           onChanged: (val) {
                             occupationid = val!.workProfileId.toString();
-                            print(occupationid);
+
                           },
                         ),
                       ],
@@ -818,13 +813,10 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
 
   callAddProduct(String catid, String subcatId, String name, String minprice,
       String maxprice, String description, String userid) async {
-    print("subcatid $subcatId");
-    print(
-        "Select Sub type of supplier${categorype == "PROVIDER" ? "provider" : "supplier"}");
 
     String url = ApiUrl.serviceAdd;
     showLoader(context);
-    print(url);
+
 
     try {
       var request = http.MultipartRequest("POST", Uri.parse(url));
@@ -849,17 +841,6 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
       //     (_image!.path)));
       await request.send().then((value) async {
         String result = await value.stream.bytesToString();
-        print("result  $result");
-        print(widget.list1.id.toString());
-        print(catid);
-        print(subcatId);
-        print(UserId);
-        print(occupationid);
-        print(name);
-        print(minprice);
-        print(maxprice);
-        print(description);
-        print(categorype);
         hideLoader();
         await product.viewproductprofile();
         await service.viewsericeprofile();
@@ -867,7 +848,7 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
         hideLoader();
       });
     } catch (e) {
-      print("exception" + e.toString());
+
       hideLoader();
       // showInSnackBar("Http Error Try Again Later $e");
       // hideLoader();
@@ -910,7 +891,6 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
 
 
   deleteservice() async {
-    print("subcatid ");
     String url =
         widget.title == "Product" ? ApiUrl.deleteproduct : ApiUrl.deleteservice;
     // String url = widget.title == 'Product'
@@ -921,12 +901,6 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
     //     ? ApiUrl.supplier_service_add
     //     : ApiUrl.serviceAdd;
     showLoader(context);
-    print(widget.title == "Product"
-        ? ApiUrl.deleteproduct
-        : ApiUrl.deleteservice);
-    print(widget.list1.id);
-    print(widget.list.type.name == "SUPPLIER" ? "supplier" : "provider");
-
     try {
       final response =
           await http.post(Uri.parse(ApiUrl.deleteservice), headers: {
@@ -935,12 +909,12 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
         "user_type": categorype,
         "id": widget.list1.id.toString(),
       });
-      print(response.statusCode);
+
       if (response.statusCode == 200) {
         Navigator.of(context).pop();
         Navigator.of(context).pop();
        await Methods1.orderSuccessAlert(context, "Service Delete Successfully");
-        print(response.body);
+
         hideLoader();
         Navigator.of(context).pop();
         await service.viewsericeprofile();
@@ -948,7 +922,7 @@ class editproviderproductpcreenState extends State<editproviderservicepcreen> {
         // showInSnackBar("Service delete Successfully");
       }
     } catch (e) {
-      print("exception" + e.toString());
+
       hideLoader();
       // showInSnackBar("Http Error Try Again Later $e");
       // hideLoader();

@@ -98,7 +98,7 @@ Widget regulartext(
       fontFamily: "OpenSans",
       fontWeight: FontWeight.w500,
     ),
-  );//.translate();
+  ).translate();
 }
 Widget regulartext1(
     Color tcolor,
@@ -114,7 +114,7 @@ Widget regulartext1(
       fontFamily: "OpenSans",
       fontWeight: FontWeight.w600,
     ),
-  );//.translate();
+  ).translate();
 }
 Widget boldtext(
   Color tcolor,
@@ -130,7 +130,23 @@ Widget boldtext(
       fontFamily: "OpenSans",
       fontWeight: FontWeight.w600,
     ),
-  );//.translate();
+  ).translate();
+}
+Widget boldtext1(
+    Color tcolor,
+    double tsize,
+    String text, {
+      String? fontFamily,
+    }) {
+  return Text(
+    text,
+    style: TextStyle(
+      color: tcolor,
+      fontSize: tsize,
+      fontFamily: "OpenSans",
+      fontWeight: FontWeight.w600,
+    ),
+  );
 }
 
 Widget bottomtexttitle(
@@ -159,8 +175,17 @@ Widget bottomtextdesc(
         fontSize: tsize,
         fontWeight: FontWeight.w600,
         fontFamily: "OpenSans",
-      ));
-     // .translate();
+      ))
+      .translate();
+}
+Widget changeapp(Color tcolor,
+    double tsize,
+    String text, {
+      String? fontFamily,
+    }){
+  return Text(text,style: TextStyle(fontWeight: FontWeight.w500,
+      fontSize: tsize,
+      fontFamily: "OpenSans"),).translate();
 }
 
 class CustomStyle {
@@ -171,5 +196,6 @@ class CustomStyle {
     fontWeight: FontWeight.w400,
   );
 }
+
 const hintstyle = TextStyle(color: Color(0xff808080), fontFamily: 'caviarbold');
 const textstyle = TextStyle(color: Color(0xff000000), fontFamily: 'caviarbold');

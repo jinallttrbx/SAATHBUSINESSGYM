@@ -1,54 +1,149 @@
+// import 'dart:async';
 // import 'dart:convert';
+// import 'dart:typed_data';
+// import 'dart:ui' as ui;
+//
 // import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
+// import 'package:geocoding/geocoding.dart';
+// import 'package:geolocator/geolocator.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:google_place/google_place.dart';
 // import 'package:http/http.dart' as http;
-// import 'package:translator/translator.dart';
 //
-// void main()
-// {
-//   runApp(
-//       MaterialApp(
-//         home: App(),
-//       )
-//   );
+// class ToMapScreen extends StatefulWidget {
+//   final location;
+//   ToMapScreen({Key? key, this.location}) : super(key: key);
 //
+//   @override
+//   State<ToMapScreen> createState() => _ToMapScreenState();
 // }
 //
-// class MyApp extends StatelessWidget {
+// class _ToMapScreenState extends State<ToMapScreen> {
+//   late GooglePlace googlePlace;
+//   final Completer<GoogleMapController> controller1 = Completer<GoogleMapController>();
+//   List<Marker> mark = [];
+//   List<AutocompletePrediction> predictions = [];
+//   LatLng? markerPosition;
+//   LatLng? finalLatLng;
+//   Position? _currentPosition;
+//   final _startSearchFieldController = TextEditingController();
+//   late FocusNode startFocusNode;
+//   Timer? _debounce;
+//
 //   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: HomePage(),
-//     );
+//   void initState() {
+//     super.initState();
+//     String apiKey = "YOUR_GOOGLE_API_KEY"; // Replace with your Google Maps API key
+//     googlePlace = GooglePlace(apiKey);
+//     startFocusNode = FocusNode();
+//     _getUserLocation();
 //   }
-// }
 //
-// class HomePage extends StatefulWidget {
-//   @override
-//   _HomePageState createState() => _HomePageState();
-// }
+//   Future<Uint8List> getBytesFromAsset(String path, int width) async {
+//     ByteData data = await rootBundle.load(path);
+//     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+//     ui.FrameInfo fi = await codec.getNextFrame();
+//     return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+//   }
 //
-// class _HomePageState extends State<HomePage> {
-//   String _text = 'Hello';
-//   String _selectedLanguage = 'fr'; // Default language code for French
+//   Future<String> getAddress(double? lat, double? lang) async {
+//     try {
+//       if (lat == null || lang == null) {
+//         throw Exception('Latitude or longitude is null');
+//       }
 //
-//   Future<void> _translateText() async {
-//     final String apiKey = 'AIzaSyAFj2efLrrgZ0wB83uV6ZVPPaf_JXpyPcE'; // Replace with your API Key
-//     final String apiUrl =
-//         'https://translation.googleapis.com/language/translate/v2?key=$apiKey';
+//       List<Placemark> value = await placemarkFromCoordinates(lat, lang);
+//       return '${value.first.name}, ${value.first.subLocality}, ${value.first.locality}, ${value.first.administrativeArea}-${value.first.postalCode}';
+//     } catch (e) {
+//       return 'Error: Failed to get address. Please try again later.';
+//     }
+//   }
 //
-//     final response = await http.post(Uri.parse(apiUrl), body: {
-//       'q': _text,
-//       'target': _selectedLanguage,
-//     });
-//     print(response.body);
+//   addMarker(LatLng position) async {
+//     final markerIcon = await getBytesFromAsset('assets/map_marker.png', 150);
+//     finalLatLng = position;
+//     Marker newMarker = Marker(
+//       icon: BitmapDescriptor.fromBytes(markerIcon),
+//       markerId: const MarkerId('id'),
+//       position: LatLng(position.latitude, position.longitude),
+//     );
+//     mark.add(newMarker);
+//     setState(() {});
+//   }
 //
-//     if (response.statusCode == 200) {
-//       final Map<String, dynamic> data = json.decode(response.body);
+//   _getUserLocation() async {
+//     try {
+//       bool serviceEnabled;
+//       LocationPermission permission;
+//
+//       serviceEnabled = await Geolocator.isLocationServiceEnabled();
+//       if (!serviceEnabled) {
+//         throw Exception('Location services are disabled.');
+//       }
+//
+//       permission = await Geolocator.checkPermission();
+//       if (permission == LocationPermission.deniedForever) {
+//         throw Exception('Location permissions are permanently denied.');
+//       }
+//
+//       if (permission == LocationPermission.denied) {
+//         permission = await Geolocator.requestPermission();
+//         if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
+//           throw Exception('Location permissions are denied.');
+//         }
+//       }
+//
+//       _currentPosition = await Geolocator.getCurrentPosition();
 //       setState(() {
-//         _text = data['data']['translations'][0]['translatedText'];
+//         finalLatLng = LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
+//         addMarker(finalLatLng!);
 //       });
-//     } else {
-//       throw Exception('Failed to load translation');
+//
+//       final GoogleMapController mapController = await controller1.future;
+//       mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+//         target: finalLatLng!,
+//         zoom: 14.0,
+//       )));
+//     } catch (e) {
+//       // If location is not available, fall back to IP-based location
+//       _getIpBasedLocation();
+//     }
+//   }
+//
+//   Future<void> _getIpBasedLocation() async {
+//     try {
+//       final response = await http.get(Uri.parse('http://ip-api.com/json'));
+//       if (response.statusCode == 200) {
+//         final data = jsonDecode(response.body);
+//         final double lat = data['lat'];
+//         final double lon = data['lon'];
+//
+//         setState(() {
+//           finalLatLng = LatLng(lat, lon);
+//           addMarker(finalLatLng!);
+//         });
+//
+//         final GoogleMapController mapController = await controller1.future;
+//         mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+//           target: finalLatLng!,
+//           zoom: 14.0,
+//         )));
+//       } else {
+//         throw Exception('Failed to get location from IP.');
+//       }
+//     } catch (e) {
+//       print('Error getting IP-based location: $e');
+//     }
+//   }
+//
+//   void autoCompleteSearch(String value) async {
+//     var result = await googlePlace.autocomplete.get(value);
+//
+//     if (result != null && result.predictions != null && mounted) {
+//       setState(() {
+//         predictions = result.predictions!;
+//       });
 //     }
 //   }
 //
@@ -56,173 +151,144 @@
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: Text('Translate App'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Text(_text),
-//             DropdownButton<String>(
-//               value: _selectedLanguage,
-//               onChanged: (String? newValue) {
-//                 setState(() {
-//                   _selectedLanguage = newValue!;
-//                 });
-//               },
-//               items: <String>['fr', 'es', 'de'] // Language codes
-//                   .map<DropdownMenuItem<String>>((String value) {
-//                 return DropdownMenuItem<String>(
-//                   value: value,
-//                   child: Text(value),
-//                 );
-//               }).toList(),
-//             ),
-//             ElevatedButton(
-//               onPressed: _translateText,
-//               child: Text('Translate'),
-//             ),
-//           ],
+//         elevation: 0,
+//         leading: const BackButton(color: Colors.black),
+//         backgroundColor: Colors.white,
+//         title: const Text(
+//           'Your Location',
+//           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
 //         ),
+//       ),
+//       body: Stack(
+//         children: <Widget>[
+//           GoogleMap(
+//             onMapCreated: (con) => controller1.complete(con),
+//             initialCameraPosition: CameraPosition(
+//               target: finalLatLng ?? LatLng(0, 0), // Default to (0,0) if no location is available
+//               zoom: 14.0,
+//             ),
+//             zoomControlsEnabled: false,
+//             markers: mark.toSet(),
+//             onTap: (argument) {
+//               addMarker(argument);
+//               getAddress(argument.latitude, argument.longitude).then((value) {
+//                 _startSearchFieldController.text = value;
+//               });
+//             },
+//           ),
+//           Card(
+//             margin: const EdgeInsets.only(right: 15, left: 15, top: 15),
+//             child: Container(
+//               decoration: BoxDecoration(
+//                 color: Colors.white,
+//                 borderRadius: BorderRadius.circular(5),
+//               ),
+//               padding: const EdgeInsets.all(5),
+//               child: SingleChildScrollView(
+//                 child: Column(
+//                   mainAxisSize: MainAxisSize.min,
+//                   children: [
+//                     TextField(
+//                       controller: _startSearchFieldController,
+//                       autofocus: true,
+//                       focusNode: startFocusNode,
+//                       keyboardType: TextInputType.text,
+//                       decoration: const InputDecoration(
+//                           filled: true,
+//                           fillColor: Colors.white,
+//                           border: InputBorder.none,
+//                           hintText: 'Select your location'),
+//                       onChanged: (value) {
+//                         if (_debounce?.isActive ?? false) _debounce!.cancel();
+//                         _debounce = Timer(const Duration(milliseconds: 1000), () {
+//                           if (value.isNotEmpty) {
+//                             autoCompleteSearch('$value India');
+//                           } else {
+//                             setState(() {
+//                               predictions = [];
+//                             });
+//                           }
+//                         });
+//                       },
+//                     ),
+//                     ListView.builder(
+//                       shrinkWrap: true,
+//                       itemCount: predictions.length,
+//                       itemBuilder: (context, index) {
+//                         return ListTile(
+//                           leading: const CircleAvatar(
+//                             child: Icon(
+//                               Icons.pin_drop,
+//                               color: Colors.white,
+//                             ),
+//                           ),
+//                           title: Text(predictions[index].description.toString()),
+//                           onTap: () async {
+//                             FocusManager.instance.primaryFocus?.unfocus();
+//                             _startSearchFieldController.text = predictions[index].description.toString();
+//                             final placeId = predictions[index].placeId!;
+//                             final details = await googlePlace.details.get(placeId);
+//
+//                             if (details != null && details.result != null && mounted) {
+//                               setState(() {
+//                                 finalLatLng = LatLng(
+//                                     details.result!.geometry!.location!.lat!,
+//                                     details.result!.geometry!.location!.lng!);
+//                                 predictions = [];
+//                               });
+//                               addMarker(finalLatLng!);
+//                               final GoogleMapController mapController = await controller1.future;
+//                               mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+//                                 target: finalLatLng!,
+//                                 zoom: 14.0,
+//                               )));
+//                             }
+//                           },
+//                         );
+//                       },
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//       floatingActionButton: Column(
+//         mainAxisSize: MainAxisSize.min,
+//         crossAxisAlignment: CrossAxisAlignment.end,
+//         children: [
+//           FloatingActionButton(
+//             backgroundColor: Colors.blue,
+//             onPressed: () {
+//               _getUserLocation();
+//             },
+//             child: const Icon(Icons.gps_fixed),
+//           ),
+//           const SizedBox(
+//             height: 20,
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.only(left: 30),
+//             child: SizedBox(
+//               height: 50,
+//               width: double.infinity,
+//               child: ElevatedButton(
+//                 style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+//                 onPressed: () {
+//                   Navigator.pop(
+//                     context,
+//                     [finalLatLng, _startSearchFieldController.text],
+//                   );
+//                 },
+//                 child: const Text(
+//                   "OK",
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ],
 //       ),
 //     );
 //   }
 // }
-
-
-
-
-
-// import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
-//
-import 'dart:convert';
-
-import 'package:businessgym/Utils/ApiUrl.dart';
-import 'package:businessgym/model/SearchListModel.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:speech_to_text/speech_to_text.dart' as stt;
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Voice Search with Translation',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  stt.SpeechToText? _speech;
-  bool _isListening = false;
-  String _text = "Press the button and start speaking";
-  double _confidence = 1.0;
-  List<Serchlistmodeldata> searchlist = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _speech = stt.SpeechToText();
-  }
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Speech to Text'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Confidence: ${(_confidence * 100.0).toStringAsFixed(1)}%',
-            ),
-            Text(
-              _isListening ? 'Listening...' : 'Not Listening',
-            ),
-            Text(
-              _text,
-            ),
-            Expanded(child: ListView.builder(
-                itemCount: searchlist.length,
-                shrinkWrap: true,
-                itemBuilder: (context,position){
-                  return Text(searchlist[position].name);
-                }),),
-            ElevatedButton(
-              onPressed: !_isListening ? _initializeSpeechRecognition : _stopListening,
-              child: Text(_isListening ? 'Stop Listening' : 'Start Listening'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-  void _initializeSpeechRecognition() async {
-    bool available = await _speech!.initialize(
-      onStatus: (val) => print('onStatus: $val'),
-      onError: (val) => print('onError: $val'),
-    );
-    if (available) {
-      setState(() => _isListening = true);
-      _startListening();
-    }
-  }
-
-  void _startListening() {
-    _speech?.listen(
-      onResult: (val) => setState(() {
-        _text = val.recognizedWords;
-
-        if (val.hasConfidenceRating && val.confidence > 0) {
-          _confidence = val.confidence;
-        }
-        searchWithFilter(_text);
-      }),
-    );
-  }
-
-  void _stopListening() {
-    _speech!.stop();
-    setState(() => _isListening = false);
-  }
-
-  searchWithFilter(String value) async {
-    searchlist = [];
-    try {
-      final request = http.MultipartRequest(
-        'POST',
-        Uri.parse(ApiUrl.searchFilterUrl),
-      );
-      request.fields['text'] = value;
-      final response = await request.send();
-      final data = await http.Response.fromStream(response);
-      print(data.body);
-      print(data.body.length);
-      print(data.statusCode);
-      if (response.statusCode == 200) {
-        Serchlistmodel vehicalTypeModel =
-        Serchlistmodel.fromJson(jsonDecode(data.body));
-        searchlist = vehicalTypeModel.data;
-        setState(() {});
-      } else {}
-    } catch (e) {
-      print(e);
-    }
-  }
-}
-
-
-

@@ -10,6 +10,7 @@ import 'package:businessgym/values/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:google_translator/google_translator.dart';
 import 'package:http/http.dart' as http;
 import '../../../Utils/common_route.dart';
 import '../../../values/Colors.dart';
@@ -78,7 +79,7 @@ class ProviderServiceScreenState extends State<ProviderServiceScreen> {
                 child:  Text(
                   'Add Service',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-                )),
+                ).translate()),
           ),
         )
 
@@ -114,7 +115,7 @@ class ProviderServiceScreenState extends State<ProviderServiceScreen> {
               shrinkWrap: true,
               itemCount: list.subCategory.length,
               itemBuilder: (context,position){
-                print(list.subCategory.length.toString());
+
                 return GestureDetector(
                   onTap: (){
                     Get.to(editproviderservicepcreen(title: 'Service',list:list,list1: list.subCategory[position],));

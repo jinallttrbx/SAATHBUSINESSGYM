@@ -1,15 +1,15 @@
 // ignore_for_file: non_constant_identifier_names
 
 class ProviderModel {
-  List<Data>? data;
+  List<ProviderData>? data;
 
   ProviderModel({this.data});
 
   ProviderModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <ProviderData>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(ProviderData.fromJson(v));
       });
     }
   }
@@ -23,20 +23,20 @@ class ProviderModel {
   }
 }
 
-class Data {
-  int? serviceId;
-  String? serviceName;
-  int? providerId;
-  var rating;
-  int? user_id;
-  String? displayName;
-  String? contactNumber;
+class ProviderData {
+  dynamic serviceId;
+  dynamic serviceName;
+  dynamic providerId;
+  dynamic rating;
+  dynamic user_id;
+  dynamic displayName;
+  dynamic contactNumber;
   dynamic companyName;
   dynamic socialImage;
-  String? profile_pic;
-  String? service_attachment;
+  dynamic profile_pic;
+  dynamic service_attachment;
 
-  Data(
+  ProviderData(
       {this.serviceId,
       this.serviceName,
       this.providerId,
@@ -49,7 +49,7 @@ class Data {
       this.service_attachment,
       this.socialImage});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  ProviderData.fromJson(Map<String, dynamic> json) {
     serviceId = json['service_id'];
     serviceName = json['service_name'];
     providerId = json['provider_id'];

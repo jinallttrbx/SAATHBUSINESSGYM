@@ -15,6 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:google_translator/google_translator.dart';
 import 'package:http/http.dart' as http;
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -114,7 +115,7 @@ class RegisterAccountConformScreenState extends State<RegisterAccountConformScre
                     fontWeight: FontWeight.w400,
                     fontSize: 16,
                   ),
-                ),
+                ).translate(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -192,7 +193,7 @@ class RegisterAccountConformScreenState extends State<RegisterAccountConformScre
                               fontWeight: FontWeight.w500,
                               color: Color(0xffA6A6A6),
                             ),
-                          ),
+                          ).translate(),
                         ] else ...[
                           TextButton(
                             style: TextButton.styleFrom(
@@ -218,7 +219,7 @@ class RegisterAccountConformScreenState extends State<RegisterAccountConformScre
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xffA6A6A6),
                               ),
-                            ),
+                            ).translate(),
                           )
                         ],
                       ],
@@ -247,7 +248,7 @@ class RegisterAccountConformScreenState extends State<RegisterAccountConformScre
               child: const Text(
                 'Verify',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-              ),
+              ).translate(),
             ),
           ),
         ),

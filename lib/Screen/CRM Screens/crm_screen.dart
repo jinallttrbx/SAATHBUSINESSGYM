@@ -221,6 +221,7 @@ class _CRMScreensState extends State<CRMScreen> {
                                     left: 16, right: 16, bottom: 10),
                                 child: Column(
                                   children: [
+
                                     Row(
                                       children: [
                                         Stack(
@@ -365,7 +366,7 @@ class _CRMScreensState extends State<CRMScreen> {
                                                 child: boldtext(
                                                   AppColors.black,
                                                   12,
-                                                  "Rate Now",
+                                                  leaddata![index].rating==0.0?"Rate Now":"Edit Rating",
                                                 ))),
                                         const SizedBox(
                                           width: 10,
@@ -520,7 +521,7 @@ class _CRMScreensState extends State<CRMScreen> {
                                                 child: boldtext(
                                                   AppColors.black,
                                                   12,
-                                                  "Rate Now",
+                                                  leaddata![index].rating==0.0?"Rate Now":"Edit Rating",
                                                 ))),
                                         const SizedBox(
                                           width: 10,
@@ -882,7 +883,7 @@ class _CRMScreensState extends State<CRMScreen> {
                                                 child: boldtext(
                                                   AppColors.black,
                                                   12,
-                                                   "Rate Now",
+                                                  clientdata![index].rating==0?  "Rate Now":"Edit Rating",
                                                 ))),
                                         const SizedBox(
                                           width: 10,
@@ -1060,7 +1061,7 @@ class _CRMScreensState extends State<CRMScreen> {
                                                 child: boldtext(
                                                   AppColors.black,
                                                   12,
-                                                   "Rate Now",
+                                                  clientdata![index].rating==0?  "Rate Now":"Edit Rating",
                                                 ))),
                                         const SizedBox(
                                           width: 10,
@@ -1191,19 +1192,20 @@ class _CRMScreensState extends State<CRMScreen> {
                           if(typeuser=="1"){
                             print(typeuser);
                             print(ApiUrl.addleadrating);
+                            print(USERTOKKEN);
                             final response = await http.post(
                                 Uri.parse(ApiUrl.addleadrating),
                                 headers: {"Authorization": "$USERTOKKEN"},
                                 body:
                                 // rating==0.0?
                                 {
-                                  "id": calllogid,
+                                 // "id": calllogid,
                                   "type": type,
                                   "type_id": typeid,
                                   "call_log_id": calllogid,
                                   "rating": addrating.toString(),
                                   "review": description.text,
-                                  "user_id":userid
+                                 // "user_id":userid
                                 }
                               //:
                               // {
@@ -1383,35 +1385,36 @@ class _CRMScreensState extends State<CRMScreen> {
                           if(typeuser=="1"){
                             print(typeuser);
                             print(ApiUrl.addleadrating);
+                            print(USERTOKKEN);
+                            print("PRINT CALL LOG RATING ID $calllogratingid");
 
                             final response = await http.post(
                                 Uri.parse(ApiUrl.addleadrating),
                                 headers: {"Authorization": "$USERTOKKEN"},
                                 body:
-                                // rating==0.0?
+                                 rating==0.0?
                                 {
-                                  "id": calllogid,
+                                  "id": calllogratingid,
                                   "type": type,
                                   "type_id": typeid,
                                   "call_log_id": calllogid,
                                   "rating": addrating.toString(),
                                   "review": description.text,
-                                  "user_id":userid
+                                  //"user_id":userid
                                 }
-                              //:
-                              // {
-                              //   "id":"33",
-                              //   "type": type,
-                              //   "type_id": typeid,
-                              //   "call_log_id": calllogid,
-                              //   "rating": addrating.toString(),
-                              //   "review": description.text,
-                              //   "user_id":userid
-                              // },
+
+                              :
+                               {
+                                 "id":calllogratingid,
+                                 "type": type,
+                                 "type_id": typeid,
+                                 "call_log_id": calllogid,
+                                 "rating": addrating.toString(),
+                                 "review": description.text,
+                               //  "user_id":userid
+                               },
                             );
-                            print("${type}${typeid}${calllogid}${addrating}${description.text}${userid}");
-
-
+                            print("${type}${typeid}${calllogratingid}${addrating}${description.text}${userid}");
                             print(response.body);
                             if (response.statusCode == 200) {
                               ScaffoldMessenger.of(context).showSnackBar( SnackBar(
@@ -1439,7 +1442,6 @@ class _CRMScreensState extends State<CRMScreen> {
                               Uri.parse(ApiUrl.adduserrating),
                               headers: {"Authorization": "$USERTOKKEN"},
                               body: {
-
                                 "type": type,
                                 "type_id": typeid,
                                 "call_log_id": calllogid,
@@ -1461,7 +1463,6 @@ class _CRMScreensState extends State<CRMScreen> {
                               //  alltransactionmodel = myfinancelist(userid!);
                               if (kDebugMode) {
                                 print(response.statusCode);
-
                               }
                             } else {
                               if (kDebugMode) {
@@ -1470,7 +1471,6 @@ class _CRMScreensState extends State<CRMScreen> {
                               }
                             }
                           }
-
                         },
                         child: boldtext(AppColors.white, 14, rating==0.0?"Rate Now":"Update"),
                       ),

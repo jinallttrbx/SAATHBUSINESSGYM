@@ -8,6 +8,7 @@ import 'package:businessgym/conts/global_values.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_translator/google_translator.dart';
 import 'package:http/http.dart' as http;
 import 'package:sms_autofill/sms_autofill.dart';
 
@@ -96,18 +97,18 @@ class RegisterAccountEmailState extends State<RegisterAccountEmailScreen> {
                           fontWeight: FontWeight.w700,
                           color: AppColors.primary,
                           fontFamily: "OpenSans"),
-                    ),
+                    ).translate(),
                     const Text(
                       "Provide Details To Create A New Account.",
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           fontFamily: "OpenSans"),
-                    ),
+                    ).translate(),
 
                     vertical(20),
                     DropdownButton<String>(
-                      hint: const Text('Select a type'),
+                      hint: const Text('Select a type').translate(),
                       value: _selectedItem,
                       onChanged: (String? newValue) {
                         print(newValue);
@@ -130,7 +131,7 @@ class RegisterAccountEmailState extends State<RegisterAccountEmailScreen> {
                                   width: 30,
                                 ),
                               ),
-                              Text(item['type']),
+                              Text(item['type']).translate(),
                             ],
                           ),
                         );
@@ -199,7 +200,7 @@ class RegisterAccountEmailState extends State<RegisterAccountEmailScreen> {
                           ),
 
                           vertical(10),
-                          const Align(
+                           Align(
                             alignment: Alignment.topLeft,
                             child: Padding(
                               padding: EdgeInsets.only(left: 16),
@@ -209,7 +210,7 @@ class RegisterAccountEmailState extends State<RegisterAccountEmailScreen> {
                                     fontFamily: "OpenSans",
                                     fontWeight: FontWeight.w600,
                                     fontSize: 14),
-                              ),
+                              ).translate(),
                             ),
                           ),
                           Padding(
@@ -256,7 +257,7 @@ class RegisterAccountEmailState extends State<RegisterAccountEmailScreen> {
                                               color: gender == "male"
                                                   ? AppColors.primary
                                                   : Colors.grey),
-                                        )
+                                        ).translate()
                                       ],
                                     )),
                                 const SizedBox(
@@ -302,7 +303,7 @@ class RegisterAccountEmailState extends State<RegisterAccountEmailScreen> {
                                               color: gender == "female"
                                                   ? AppColors.primary
                                                   : Colors.grey),
-                                        )
+                                        ).translate()
                                       ],
                                     ))
                               ],
@@ -410,7 +411,7 @@ class RegisterAccountEmailState extends State<RegisterAccountEmailScreen> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.white),
-                            )),
+                            ).translate()),
                       ),
                     ),
 
@@ -475,7 +476,7 @@ class RegisterAccountEmailState extends State<RegisterAccountEmailScreen> {
       print(response.statusCode);
       print(response.body);
       Map<String, dynamic> map = json.decode(response.body);
-      if (response.statusCode == 200) {
+      if (map['status'] == true) {
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -490,13 +491,13 @@ class RegisterAccountEmailState extends State<RegisterAccountEmailScreen> {
           ),
         );
 
-      } else if (response.statusCode == 400) {
-        if (map['status'] == true) {
-          //showInSnackBar("Already Register", color: Colors.red);
-          hideLoader();
-        } else {
-          hideLoader();
-        }
+      } else{
+        hideLoader();
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(map['message']),
+              duration: const Duration(seconds: 2),
+            ));
       }
     } catch (e) {
       hideLoader();

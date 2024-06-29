@@ -33,10 +33,10 @@ class AllDocumentList {
 }
 
 class AllDocumentListdata {
-  int id;
-  String catName;
+  dynamic id;
+  dynamic catName;
   List<Document> documents;
-  String image;
+  dynamic image;
 
   AllDocumentListdata({
     required this.id,
@@ -61,19 +61,19 @@ class AllDocumentListdata {
 }
 
 class Document {
-  int id;
-  int categoryId;
-  String name;
-  String supportNumber;
-  String usefullLink;
-  int status;
-  int isRequired;
+  dynamic id;
+  dynamic categoryId;
+  dynamic name;
+  dynamic supportNumber;
+  dynamic usefullLink;
+  dynamic status;
+  dynamic isRequired;
   dynamic deletedAt;
-  DateTime createdAt;
-  DateTime updatedAt;
-  String documentImage;
-  String ifUpload;
-  String providerDocument;
+  dynamic createdAt;
+  dynamic updatedAt;
+  dynamic documentImage;
+  dynamic ifUpload;
+  dynamic providerDocument;
 
   Document({
     required this.id,

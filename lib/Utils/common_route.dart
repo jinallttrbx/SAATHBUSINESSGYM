@@ -29,13 +29,13 @@ showLoader(context) {
     barrierDismissible: true,
     builder: (BuildContext context) {
       c = context;
-      print("context" + c.toString());
+
       return LoaderPage();
     },
   );
 }
 
 hideLoader() {
-  print("context1" + c.toString());
+
   Get.back();
 }

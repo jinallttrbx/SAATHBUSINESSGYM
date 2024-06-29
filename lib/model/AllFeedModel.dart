@@ -65,7 +65,7 @@ class AllFeedModeldata {
   String? pollsQuestion;
   List<Percentage>? percentage;
   List<Option>? option;
-  String? title;
+  dynamic title;
   String? link;
 
   AllFeedModeldata({

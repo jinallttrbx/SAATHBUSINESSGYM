@@ -9,6 +9,7 @@ import 'package:businessgym/Screen/CRM%20Screens/crm_screen.dart';
 import 'package:businessgym/Screen/FeedScreen/Video_screen.dart';
 import 'package:businessgym/Controller/workprofileController.dart';
 import 'package:businessgym/Screen/ProfileScreen/profile.dart';
+import 'package:businessgym/Screen/extra.dart';
 import 'package:businessgym/values/assets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
   bool logintypeprovider = false;
   static final List<Widget> _widgetOptions = <Widget>[
      HomeView(),
-   FeedScreen(),
+    FeedScreen(),
     CRMScreen(),
     ProfileScreen(),
   ];

@@ -1,8 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
 import 'dart:io';
 import 'package:businessgym/Controller/userprofilecontroller.dart';
 import 'package:businessgym/Screen/HomeScreen/DashBoardScreen.dart';
+import 'package:businessgym/model/UpdateProfile.dart';
 import 'package:businessgym/model/WorkProfileList.dart';
 import 'package:dio/dio.dart' as d;
 import 'package:businessgym/Controller/profileController.dart';
@@ -49,6 +51,7 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
   String? imageUrl;
   String gender = '';
   SharedPreference sharedPreference = SharedPreference();
+  bool isLoading=false;
 
   @override
   void initState() {
@@ -58,13 +61,17 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
     emailController.text=widget.email;
     phoneController.text = widget.mobile;
     gender=widget.gender;
-    print(widget.fname);
-    print(widget.gender);
+
     setState(() {});
     super.initState();
   }
 
+
   updateProfile() async {
+    setState(() {
+      showLoader(context);
+    });
+
     final userId = await sharedPreference.isUsetId();
     final userToken = await sharedPreference.isToken();
     var uri = Uri.parse(ApiUrl.updateProfile);
@@ -80,12 +87,23 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
         await http.MultipartFile.fromPath('profile_image', _image!.path),
       );
     }
+
     final response = await request.send();
     if (response.statusCode == 200) {
-      print("UPDATE PROFILE RESPONSE OF API ${response.request}");
-      await Methods1.orderSuccessAlert(context, " Profile Updated Successfully");
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>DashBoardScreen()));
-    } else {
+      setState(() {
+        hideLoader();
+      });
+      await Methods1.orderSuccessAlert(context, "Profile Updated Successfully");
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => DashBoardScreen()));
+    } else if(response.statusCode==403){
+      await Methods1.orderunSuccessAlert(context, "User Email Already Exist");
+      setState(() {
+        hideLoader();
+      });
+      print(response.statusCode);
+    }
+    else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Fail to update'),

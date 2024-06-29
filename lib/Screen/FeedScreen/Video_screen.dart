@@ -1,19 +1,9 @@
-import 'dart:convert';
-
-import 'package:businessgym/Screen/FeedScreen/PollScreen.dart';
-
 import 'package:businessgym/Screen/FeedScreen/NewsScreen.dart';
+import 'package:businessgym/Screen/FeedScreen/PollScreen.dart';
 import 'package:businessgym/Screen/FeedScreen/QuizScreen.dart';
-
-
-import 'package:businessgym/Screen/HomeScreen/JoinScreen.dart';
-
-
-import 'package:businessgym/Screen/FeedScreen/VideosDetailsScreen.dart';
-import 'package:businessgym/Utils/ApiUrl.dart';
+import 'package:businessgym/Screen/FeedScreen/feedmain.dart';
+import 'package:businessgym/Screen/FeedScreen/videoscreen.dart';
 import 'package:businessgym/Utils/SharedPreferences.dart';
-import 'package:businessgym/Utils/common_route.dart';
-import 'package:businessgym/model/GetVideosModel.dart';
 import 'package:businessgym/model/ViewNewsModel.dart';
 import 'package:businessgym/model/ViewpollsModel.dart';
 import 'package:businessgym/model/ViewquizModel.dart';
@@ -21,16 +11,8 @@ import 'package:businessgym/model/all_videos_model.dart';
 import 'package:businessgym/values/Colors.dart';
 import 'package:businessgym/values/assets.dart';
 import 'package:businessgym/values/const_text.dart';
-import 'package:businessgym/values/spacer.dart';
-import 'package:businessgym/Screen/FeedScreen/feedmain.dart';
-import 'package:businessgym/Screen/FeedScreen/videoscreen.dart';
-import 'package:buttons_tabbar/buttons_tabbar.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class FeedScreen extends StatefulWidget {
   @override
@@ -38,7 +20,6 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-  TextEditingController search = TextEditingController();
   String selectedTop = "All";
   List<AllVideosModal> searchlist = [];
   final SharedPreference _sharedPreference = SharedPreference();
@@ -57,15 +38,15 @@ class _FeedScreenState extends State<FeedScreen> {
     return SafeArea(
         child: Scaffold(
             body: SingleChildScrollView(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
-                  textAreasearchfield(search, "Search"),
-                  Container(
-                    height: 100,
+                  // textAreasearchfield(search, "Search"),
+                  SizedBox(
+                    height: 70,
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Row(
@@ -77,7 +58,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               });
                             }, selectedTop == "All" ? true : false),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Expanded(
@@ -87,7 +68,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               });
                             }, selectedTop == "Videos" ? true : false),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Expanded(
@@ -97,7 +78,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               });
                             }, selectedTop == "News" ? true : false),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Expanded(
@@ -107,7 +88,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               });
                             }, selectedTop == "Poll" ? true : false),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Expanded(
@@ -129,17 +110,12 @@ class _FeedScreenState extends State<FeedScreen> {
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height,
-                    margin: EdgeInsets.only(
-                      top: 0,
-                    ),
-                    decoration: BoxDecoration(
+                    margin: const EdgeInsets.only(top: 0),
+                    decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(16))),
-
-                    // alignment: Alignment.center,
-                    //height: MediaQuery.of(context).size.height * 0.9,
                     width: MediaQuery.of(context).size.width,
                     child: SingleChildScrollView(
-                      padding: EdgeInsets.only(bottom: 300),
+                      padding: const EdgeInsets.only(bottom: 300),
                       child: Column(
                         children: [
                           Wrap(
@@ -147,28 +123,16 @@ class _FeedScreenState extends State<FeedScreen> {
                             spacing: 15,
                             runSpacing: 15,
                             children: [
-                             for (int index = 0; index < 1; index++)
-                               if (selectedTop == "All")
-                                 Container(child: FeedmainScreen()),
                               for (int index = 0; index < 1; index++)
-                                if (selectedTop == "Videos")
-                                  GestureDetector(
-                                      child: Container(child: videoScreen())),
-                              for (int index = 0;
-                              index < 1;
-                              index++)
-                                if (selectedTop == "News")
-                                  Container(
-                                    child: NewsScreen(),
-                                  ),
+                                if (selectedTop == "All") FeedmainScreen(),
                               for (int index = 0; index < 1; index++)
-                                if (selectedTop == "Poll")
-                                  Container(child: PollScreen()),
+                                if (selectedTop == "Videos") videoScreen(),
                               for (int index = 0; index < 1; index++)
-                                if (selectedTop == "Quiz")
-                                  Container(
-                                    child: QuizScreen(),
-                                  )
+                                if (selectedTop == "News") NewsScreen(),
+                              for (int index = 0; index < 1; index++)
+                                if (selectedTop == "Poll") const PollScreen(),
+                              for (int index = 0; index < 1; index++)
+                                if (selectedTop == "Quiz") const QuizScreen()
                             ],
                           ),
                         ],
@@ -184,6 +148,7 @@ class _FeedScreenState extends State<FeedScreen> {
 final SharedPreference _sharedPreference = SharedPreference();
 
 Widget textAreasearchfield(TextEditingController controller, String hint,
+    void Function(String)? onChanged,
     {double? width}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,23 +167,24 @@ Widget textAreasearchfield(TextEditingController controller, String hint,
           maxLines: hint.contains("Description") ? 5 : 1,
           controller: controller,
           keyboardType: TextInputType.text,
+          onChanged: onChanged,
           decoration: InputDecoration(
               prefixIcon: Padding(
-                padding: EdgeInsets.all(20),
-                child: SvgPicture.asset(AppImages.search),
+                padding: const EdgeInsets.all(15),
+                child: SvgPicture.asset(AppImages.search,height: 5,width: 5,),
               ),
-              contentPadding: EdgeInsets.all(10),
+              contentPadding: const EdgeInsets.all(10),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
-                borderSide: const BorderSide(color: Colors.grey, width: 0.25),
-              ),
-              enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20.0),
                 borderSide: const BorderSide(color: Colors.white, width: 0.25),
               ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+                borderSide: const BorderSide(color: Colors.grey, width: 0.25),
+              ),
               filled: true,
               border: InputBorder.none,
-              fillColor: AppColors.grey,
+              fillColor: AppColors.white,
               hintText: hint),
         ),
       ),
@@ -235,7 +201,7 @@ Widget topNavView(String title, VoidCallback ontap, bool view) {
         padding: const EdgeInsets.only(top: 0, bottom: 0, right: 5, left: 5),
         decoration: BoxDecoration(
           color: view ? AppColors.primary : Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
           border: Border.all(
               color: view ? Colors.blue : Colors.transparent, width: 1),
         ),

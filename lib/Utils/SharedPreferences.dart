@@ -95,7 +95,7 @@ class SharedPreference {
     prefs.remove(USERTOKKEN!);
 
     prefs.clear();
-    print("===>  prefs removed");
+
   }
 
   Future<double> isLatituedIn() async {
@@ -114,7 +114,7 @@ class SharedPreference {
   }
 
   Future<bool> setLoggedIn(String value) async {
-    print("==> Saving Login Cache");
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString(_LoggedIn, value);
   }

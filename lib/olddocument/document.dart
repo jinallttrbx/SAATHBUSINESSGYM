@@ -294,11 +294,7 @@
 //       showLoader(context);
 //
 //       // final response = await http.get(Uri.parse(ApiUrl.getSupportSubject),);
-//       print(userid);
-//       print(groupId);
-//       print(discussionId);
-//       print(title);
-//       print(USERTOKKEN);
+//
 //       Map<String, String> requestBody = <String, String>{
 //         'user_id': userid,
 //         'group_id': groupId,
@@ -510,7 +506,7 @@
 //                                                     color: Colors.white),
 //                                               ),
 //                                               onTap: () {
-//                                                 print("$tag selected");
+//
 //                                               },
 //                                             ),
 //                                             const SizedBox(width: 4.0),
@@ -547,7 +543,7 @@
 //                   // titleController.text.toString();
 //                   descriptionController.text.toString();
 //                   //  _controller.getTags.toString();
-//                   //   print("Dixitttttttt=========="+_controller.getTags.toString());
+//
 //
 //                   getcategotyData(
 //                       UserId,

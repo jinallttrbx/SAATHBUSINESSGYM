@@ -55,7 +55,7 @@
 //     final dir = await getApplicationDocumentsDirectory();
 //     final file = File('${dir.path}/$name');
 //     openFile(file);
-//     print("file path === ${dir.path}");
+//
 //     await file.writeAsBytes(await pdf.save());
 //     Map<Permission, PermissionStatus> statuses = await [
 //       Permission.storage,
@@ -65,7 +65,7 @@
 //     //   if (dir1 != null) {
 //     //     String savename1 = "file.pdf";
 //     //     String savePath1 = dir1.path + "/$savename1";
-//     //     print(savePath1);
+//     //
 //     //     try {
 //     //       await Dio().download(file.path, savePath1,
 //     //           onReceiveProgress: (received, total) {

@@ -76,14 +76,13 @@
 // //
 // //     usertoken = await sharedPreference.isToken();
 // //     // ignore: prefer_interpolation_to_compose_strings
-// //     // print("dixit" + usertype);
-// //     // print("dixit id=====" + user_id);
-// //     // print("dixit usertoken" + usertoken!);
+// //
+// //
 // //     AllDocument = getdocument();
 // //   }
 // //
 // //   Future<List<AllDocumentListdata?>?> getdocument() async {
-// //     print(ApiUrl.getDocumentCategories);
+// //
 // //     try {
 // //       showLoader(context);
 // //
@@ -91,8 +90,7 @@
 // //         Uri.parse(ApiUrl.getDocumentCategories),
 // //       );
 // //
-// //       print("response data my booking =================" + response.body);
-// //       Map<String, dynamic> map = json.decode(response.body);
+// //        Map<String, dynamic> map = json.decode(response.body);
 // //
 // //       if (response.statusCode == 200) {
 // //         hideLoader();
@@ -112,14 +110,14 @@
 // //         }
 // //         setState(() {});
 // //
-// //         print("Success");
+// //
 // //
 // //         return Documentlist;
 // //       } else {
-// //         print("Something went wronge");
+// //
 // //       }
 // //     } catch (e) {
-// //       print("data==1=$e");
+// //
 // //     }
 // //   }
 // //
@@ -166,7 +164,7 @@
 // //                           title: boldtext(AppColors.DarkBlue, 14,
 // //                               Documentlist![index].catName ?? ""),
 // //                           onTap: () {
-// //                             print(index);
+// //
 // //                             alert( Documentlist![index], index);
 // //                           },
 // //                           subtitle: boldtext(AppColors.redShade4,
@@ -220,7 +218,7 @@
 // //       context: context,
 // //       barrierDismissible: true,
 // //       builder: (BuildContext context) {
-// //         print("index-inside alert--------------------------$index");
+// //
 // //         return ClassicGeneralDialogWidget(
 // //           // titleText: 'Title',
 // //           actions: [
@@ -268,7 +266,7 @@
 // //                                   data.uploaded_document!.length);
 // //                               String savename = fileNm;
 // //                               String savePath = dir.path + "/$savename";
-// //                               print(savePath);
+// //
 // //                               var response = await Dio().get(
 // //                                   "" + data.uploaded_document!,
 // //                                   options: Options(
@@ -278,16 +276,14 @@
 // //                                   Uint8List.fromList(response.data),
 // //                                   quality: 60,
 // //                                   name: "" + fileNm);
-// //                               print(result);
+// //
 // //                               //output:  /storage/emulated/0/Download/banner.png
 // //                               try {
 // //                                 await Dio().download(
 // //                                     data.uploaded_document!, savePath,
 // //                                     onReceiveProgress: (received, total) {
 // //                                       if (total != -1) {
-// //                                         print((received / total * 100)
-// //                                             .toStringAsFixed(0) +
-// //                                             "%");
+// //
 // //                                         //you can build progressbar feature too
 // //                                       }
 // //                                     });
@@ -295,12 +291,12 @@
 // //                                 showInSnackBar(
 // //                                     "File is saved to download folder.");
 // //                               } on DioError catch (e) {
-// //                                 print(e.message);
+// //
 // //                                 hideLoader();
 // //                               }
 // //                             }
 // //                           } else {
-// //                             print("No permission to read and write.");
+// //
 // //                             hideLoader();
 // //                           }
 // //                         },
@@ -324,7 +320,7 @@
 // //                           _showPicker(context, index.toString(),
 // //                               data.id.toString(),
 // //                               update: true);
-// //                           // print(data.id.toString());
+// //
 // //                         },
 // //                         text: "Update Image ",
 // //                         width: 0.7,
@@ -426,7 +422,7 @@
 // //     showModalBottomSheet(
 // //         context: context,
 // //         builder: (BuildContext bc) {
-// //           print("index-----------------------------------  $id");
+// //
 // //           return SafeArea(
 // //             child: Container(
 // //               child: Wrap(
@@ -480,15 +476,15 @@
 // //   }
 // //
 // //   _imgFromGallery(String id, String documentId, {bool? update}) async {
-// //     print(id);
+// //
 // //     try {
-// //       print(id);
+// //
 // //       pickedImage =
 // //       await picker.getImage(source: ImageSource.gallery, imageQuality: 50);
 // //       File image = File(pickedImage!.path);
-// //       print("update status =========" + update.toString());
+// //
 // //       if (update == true) {
-// //         print("update state =======");
+// //
 // //         await updateimg(image, id);
 // //       } else {
 // //         setState(() {
@@ -527,21 +523,19 @@
 // //           await http.MultipartFile.fromPath("provider_document", image.path));
 // //       final response = await request.send();
 // //       final data = await http.Response.fromStream(response);
-// //       print("update image check ========" +
-// //           data.statusCode.toString() +
-// //           data.body);
+// //
 // //
 // //       // .then((value)
 // //       //  async {
 // //       //   String result = await value.stream.bytesToString();
-// //       // print("result  $result");
+// //
 // //       // showInSnackBar("Updated Successfully");
 // //
 // //       hideLoader();
 // //       Navigator.of(context).pop();
 // //       // });
 // //     } catch (e) {
-// //       print(e.toString());
+// //
 // //     }
 // //   }
 // //
@@ -550,8 +544,8 @@
 // //     setState(() {
 // //       isLoading = true;
 // //     });
-// //     print(documentUploadModelListi![0].image!);
-// //     print("document id" + documentUploadModelListi[0].id.toString());
+// //
+// //
 // //     String url = ApiUrl.provider_document_save;
 // //     try {
 // //       d.FormData formData = d.FormData();
@@ -624,10 +618,10 @@
 // //       formData.fields.add(MapEntry('business_name', mybusinessnameController.text.toString()));*/
 // //
 // //       d.Response response;
-// //       print(url);
+// //
 // //       d.Dio dio = d.Dio();
-// //       print(formData);
-// //       print(USERTOKKEN);
+// //
+// //
 // //       dio.options.headers
 // //           .addAll({"Authorization": USERTOKKEN.toString(), "accept": ""});
 // //       response = await dio.post(url, data: formData);
@@ -636,9 +630,8 @@
 // //       //     body: formData);
 // //       //hideLoader();
 // //
-// //       print('Response request: ${response.requestOptions}');
-// //       print('Response status: ${response.statusCode}');
-// //       print('Response body: ${response.data}');
+// //
+// //
 // //       if (response.statusCode == 200 || response.statusCode == 201) {
 // //         if (response.statusCode == 200) {
 // //          // documentUploadModelList!.clear();
@@ -665,7 +658,7 @@
 // //       } else {}
 // //       return response;
 // //     } catch (e) {
-// //       print("exception" + e.toString());
+// //
 // //       // hideLoader();
 // //       // pd.close();
 // //       return d.Response(requestOptions: RequestOptions(path: url));
@@ -867,13 +860,12 @@
 //     setState(() {});
 //   }
 //   Future<List<GetProductCategorydata>?>? getproductcategory() async {
-//     print(ApiUrl.getsupplierproductlist);
+//
 //     try {
 //       showLoader(context);
 //       final response =await http.get(Uri.parse(ApiUrl.getsupplierproductlist),
 //           headers: {"Authorization": USERTOKKEN.toString()} );
-//       print(response.body);
-//       print(response.statusCode);
+//
 //       if (response.statusCode == 200) {
 //         hideLoader();
 //         GetProductCategory? allServiceModel =
@@ -900,10 +892,10 @@
 //         return allServiceModel.data;
 //       } else {
 //         hideLoader();
-//         print("Something went worange");
+//
 //       }
 //     } catch (e) {
-//       print("data===1 error  $e");
+//
 //     }
 //     return null;
 //   }

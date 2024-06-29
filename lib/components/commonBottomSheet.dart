@@ -89,11 +89,9 @@ class _CommonBottomSheetState extends State<CommonBottomSheet> {
     String? usertype = await _sharedPreference.isUserType();
     UserId = await _sharedPreference.isUsetId();
     // ignore: prefer_interpolation_to_compose_strings
-    print("Ashish" + UserId);
+
     setState(() {
       getuserdata(widget.userid);
-      print(UserId);
-      print(widget.userid);
       addprofile(widget.userid);
       // UserId == widget.userid
       //     ? print("same user id")

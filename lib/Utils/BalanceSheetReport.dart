@@ -63,6 +63,7 @@ class BalanceSheetReport {
           name: 'Payment Recipt${DateTime.now()}.pdf',
           pdf: pdf,
           context: context);
+      Methods1.orderSuccessAlert(context, "PDF Download Successfully");
       print("inside save----------------------------");
     } else if (what == 'share') {
       //share pdf
@@ -70,6 +71,8 @@ class BalanceSheetReport {
         bytes: await pdf.save(),
         filename: 'vendor report.pdf',
       );
+
+
     }
     //view pdf
     return true;
@@ -201,7 +204,7 @@ class BalanceSheetReport {
               pw.Text("Description : -",
                   style: pw.TextStyle(
                       font: font, fontSize: 20, color: PdfColor.fromHex('000000'))),
-              pw.Text(description.toString(),
+              pw.Text(description==null?"-":description,
                   style: pw.TextStyle(
                       font: font, fontSize: 20, color: PdfColor.fromHex('000000'))),
             ]),
@@ -217,7 +220,7 @@ class BalanceSheetReport {
               pw.Text("Mobile Number : -",
                   style: pw.TextStyle(
                       font: font, fontSize: 20, color: PdfColor.fromHex('000000'))),
-              pw.Text(transMobile.toString(),
+              pw.Text(transMobile==null?"-":transMobile.toString(),
                   style: pw.TextStyle(
                       font: font, fontSize: 20, color: PdfColor.fromHex('000000'))),
             ]),

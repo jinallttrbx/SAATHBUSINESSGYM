@@ -23,7 +23,6 @@ class WorkProfileController extends GetxController {
   bool isLoading = false;
 
   viewworkProfile({bool? loader, String? id}) async {
-    print(ApiUrl.workProfileListsURL);
     viewWorkprofilelist.value = [];
     isLoading = true;
     USERTOKKEN = await _sharedPreference.isToken();
@@ -62,7 +61,7 @@ class WorkProfileController extends GetxController {
 
       viewworkProfile(loader: true);
     } catch (e) {
-      print(e.toString());
+
     }
   }
 

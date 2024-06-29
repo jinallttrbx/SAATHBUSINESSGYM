@@ -80,14 +80,14 @@ class OTPConformState extends State<OTPConformScreen> {
             onPressed:
             () => Navigator.of(context).pop(),
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.BGColor,
           title: regulartext(AppColors.black, 18, "OTP Verification"),
           centerTitle: true,
         ),
         resizeToAvoidBottomInset: false,
         body: Container(
           color: AppColors.BGColor,
-          margin: const EdgeInsets.only(top: 20),
+          margin: const EdgeInsets.only(top: 00),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: SingleChildScrollView(

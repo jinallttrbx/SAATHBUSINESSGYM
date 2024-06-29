@@ -68,7 +68,7 @@ class UserProfileController extends GetxController {
 
       viewprofile(loader: true);
     } catch (e) {
-      print(e.toString());
+
     }
   }
 

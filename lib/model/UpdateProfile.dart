@@ -1,42 +1,49 @@
 // To parse this JSON data, do
 //
-//     final getRecommendedService = getRecommendedServiceFromJson(jsonString);
+//     final updateprofile = updateprofileFromJson(jsonString);
 
 import 'dart:convert';
 
-GetRecommendedService getRecommendedServiceFromJson(String str) => GetRecommendedService.fromJson(json.decode(str));
+Updateprofile updateprofileFromJson(String str) => Updateprofile.fromJson(json.decode(str));
 
-String getRecommendedServiceToJson(GetRecommendedService data) => json.encode(data.toJson());
+String updateprofileToJson(Updateprofile data) => json.encode(data.toJson());
 
-class GetRecommendedService {
-  List<GetRecommendedServicedata> data;
+class Updateprofile {
+  bool status;
+  Data data;
+  String message;
 
-  GetRecommendedService({
+  Updateprofile({
+    required this.status,
     required this.data,
+    required this.message,
   });
 
-  factory GetRecommendedService.fromJson(Map<String, dynamic> json) => GetRecommendedService(
-    data: List<GetRecommendedServicedata>.from(json["data"].map((x) => GetRecommendedServicedata.fromJson(x))),
+  factory Updateprofile.fromJson(Map<String, dynamic> json) => Updateprofile(
+    status: json["status"],
+    data: Data.fromJson(json["data"]),
+    message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "status": status,
+    "data": data.toJson(),
+    "message": message,
   };
 }
 
-class GetRecommendedServicedata {
-  dynamic id;
-  dynamic username;
-  dynamic displayName;
-  dynamic fullName;
-  dynamic firstName;
+class Data {
+  int id;
+  String username;
+  String displayName;
+  String fullName;
+  String firstName;
   dynamic lastName;
-  dynamic gender;
-  dynamic email;
+  String gender;
+  String email;
   dynamic companyName;
-  dynamic password;
-  dynamic userType;
-  dynamic contactNumber;
+  String userType;
+  String contactNumber;
   dynamic occupationId;
   dynamic countryId;
   dynamic stateId;
@@ -44,27 +51,26 @@ class GetRecommendedServicedata {
   dynamic providerId;
   dynamic address;
   dynamic playerId;
-  dynamic status;
+  int status;
   dynamic providertypeId;
-  dynamic isFeatured;
-  dynamic timeZone;
+  int isFeatured;
+  String timeZone;
   dynamic lastNotificationSeen;
   dynamic emailVerifiedAt;
-  dynamic rememberToken;
   dynamic deletedAt;
-  dynamic createdAt;
-  dynamic updatedAt;
+  DateTime createdAt;
+  DateTime updatedAt;
   dynamic stripeId;
   dynamic pmType;
   dynamic pmLastFour;
   dynamic trialEndsAt;
   dynamic loginType;
   dynamic serviceAddressId;
-  dynamic uid;
+  String uid;
   dynamic handymantypeId;
-  dynamic isSubscribe;
+  int isSubscribe;
   dynamic socialImage;
-  dynamic isAvailable;
+  int isAvailable;
   dynamic designation;
   dynamic lastOnlineTime;
   dynamic modeOfBusiness;
@@ -74,35 +80,18 @@ class GetRecommendedServicedata {
   dynamic licenseNumber;
   dynamic fassaiNumber;
   dynamic occuaptionId;
-  dynamic isAccount;
-  dynamic referralCode;
-  dynamic isSupplier;
-  dynamic organizationsId;
-  dynamic latitude;
-  dynamic longitude;
-  dynamic averageRating;
-  dynamic totalRating;
-  dynamic userId;
-  dynamic name;
-  dynamic categoryId;
-  dynamic price;
-  dynamic minPrice;
-  dynamic maxPrice;
-  dynamic serviceType;
-  dynamic discount;
-  dynamic description;
-  dynamic addedBy;
-  dynamic subcategoryId;
-  dynamic workProfileId;
-  dynamic city;
-  dynamic mapLink;
-  dynamic mobile;
-  dynamic type;
-  dynamic duration;
-  dynamic serviceImage;
-  dynamic tag;
+  int isAccount;
+  String referralCode;
+  int isSupplier;
+  int organizationsId;
+  double latitude;
+  double longitude;
+  int averageRating;
+  int totalRating;
+  String profileImage;
+  List<String> userRole;
 
-  GetRecommendedServicedata({
+  Data({
     required this.id,
     required this.username,
     required this.displayName,
@@ -112,7 +101,6 @@ class GetRecommendedServicedata {
     required this.gender,
     required this.email,
     required this.companyName,
-    required this.password,
     required this.userType,
     required this.contactNumber,
     required this.occupationId,
@@ -128,7 +116,6 @@ class GetRecommendedServicedata {
     required this.timeZone,
     required this.lastNotificationSeen,
     required this.emailVerifiedAt,
-    required this.rememberToken,
     required this.deletedAt,
     required this.createdAt,
     required this.updatedAt,
@@ -160,28 +147,11 @@ class GetRecommendedServicedata {
     required this.longitude,
     required this.averageRating,
     required this.totalRating,
-    required this.userId,
-    required this.name,
-    required this.categoryId,
-    required this.price,
-    required this.minPrice,
-    required this.maxPrice,
-    required this.serviceType,
-    required this.discount,
-    required this.description,
-    required this.addedBy,
-    required this.subcategoryId,
-    required this.workProfileId,
-    required this.city,
-    required this.mapLink,
-    required this.mobile,
-    required this.type,
-    required this.duration,
-    required this.serviceImage,
-    required this.tag,
+    required this.profileImage,
+    required this.userRole,
   });
 
-  factory GetRecommendedServicedata.fromJson(Map<String, dynamic> json) => GetRecommendedServicedata(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
     id: json["id"],
     username: json["username"],
     displayName: json["display_name"],
@@ -191,7 +161,6 @@ class GetRecommendedServicedata {
     gender: json["gender"],
     email: json["email"],
     companyName: json["company_name"],
-    password: json["password"],
     userType: json["user_type"],
     contactNumber: json["contact_number"],
     occupationId: json["occupation_id"],
@@ -207,7 +176,6 @@ class GetRecommendedServicedata {
     timeZone: json["time_zone"],
     lastNotificationSeen: json["last_notification_seen"],
     emailVerifiedAt: json["email_verified_at"],
-    rememberToken: json["remember_token"],
     deletedAt: json["deleted_at"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
@@ -237,27 +205,10 @@ class GetRecommendedServicedata {
     organizationsId: json["organizations_id"],
     latitude: json["latitude"]?.toDouble(),
     longitude: json["longitude"]?.toDouble(),
-    averageRating: json["average_rating"]?.toDouble(),
+    averageRating: json["average_rating"],
     totalRating: json["total_rating"],
-    userId: json["user_id"],
-    name: json["name"],
-    categoryId: json["category_id"],
-    price: json["price"],
-    minPrice: json["min_price"],
-    maxPrice: json["max_price"],
-    serviceType: json["service_type"],
-    discount: json["discount"],
-    description: json["description"],
-    addedBy: json["added_by"],
-    subcategoryId: json["subcategory_id"],
-    workProfileId: json["work_profile_id"],
-    city: json["city"],
-    mapLink: json["map_link"],
-    mobile: json["mobile"],
-    type: json["type"],
-    duration: json["duration"],
-    serviceImage: json["service_image"],
-    tag: json["tag"],
+    profileImage: json["profile_image"],
+    userRole: List<String>.from(json["user_role"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -270,7 +221,6 @@ class GetRecommendedServicedata {
     "gender": gender,
     "email": email,
     "company_name": companyName,
-    "password": password,
     "user_type": userType,
     "contact_number": contactNumber,
     "occupation_id": occupationId,
@@ -286,7 +236,6 @@ class GetRecommendedServicedata {
     "time_zone": timeZone,
     "last_notification_seen": lastNotificationSeen,
     "email_verified_at": emailVerifiedAt,
-    "remember_token": rememberToken,
     "deleted_at": deletedAt,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
@@ -318,24 +267,7 @@ class GetRecommendedServicedata {
     "longitude": longitude,
     "average_rating": averageRating,
     "total_rating": totalRating,
-    "user_id": userId,
-    "name": name,
-    "category_id": categoryId,
-    "price": price,
-    "min_price": minPrice,
-    "max_price": maxPrice,
-    "service_type": serviceType,
-    "discount": discount,
-    "description": description,
-    "added_by": addedBy,
-    "subcategory_id": subcategoryId,
-    "work_profile_id": workProfileId,
-    "city": city,
-    "map_link": mapLink,
-    "mobile": mobile,
-    "type": type,
-    "duration": duration,
-    "service_image": serviceImage,
-    "tag": tag,
+    "profile_image": profileImage,
+    "user_role": List<dynamic>.from(userRole.map((x) => x)),
   };
 }

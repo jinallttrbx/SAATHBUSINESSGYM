@@ -352,13 +352,13 @@ class _FilterScreenState extends State<filterscreen> {
                   title:  boldtext(AppColors.black,16,"Rating"),
                   children: [
                     RadioListTile(
-                      value: '4',
-                      groupValue: startrating,
-                      onChanged: (value) {
-                        startrating = value;
-                        setState(() {});
-                      },
-                      title:  regulartext(AppColors.black,16,("4+ Rating"),)
+                        value: '4',
+                        groupValue: startrating,
+                        onChanged: (value) {
+                          startrating = value;
+                          setState(() {});
+                        },
+                        title:  regulartext(AppColors.black,16,("4+ Rating"),)
                     ),
                     RadioListTile(
                       value: '3',
@@ -517,7 +517,7 @@ class _FilterScreenState extends State<filterscreen> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                       Padding(
+                                      Padding(
                                         padding: EdgeInsets.only(left: 16),
                                         child: regulartext(AppColors.black,16,
                                           "Open at",
@@ -565,7 +565,7 @@ class _FilterScreenState extends State<filterscreen> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                       Padding(
+                                      Padding(
                                         padding: EdgeInsets.only(left: 16),
                                         child: regulartext(AppColors.black,16,
                                           "Close at",
@@ -658,14 +658,14 @@ class _FilterScreenState extends State<filterscreen> {
                 context,
                 {
                   "type": categoryType,
-                  "category_id": selectedServices,
-                  "rating": startrating,
-                  "lat": lat.toString(),
-                  "lng": lng.toString(),
-                  "open_at": dropdownvalue1,
-                  "close_at": dropdownvalue2,
-                  "min_price": _values.start.toString(),
-                  "max_price": _values.end.toString(),
+                  "category_id": selectedServices==null?"":selectedServices,
+                  "rating": startrating==null?"":startrating,
+                  "lat": lat==null?"":lat.toString(),
+                  "lng": lng==null?"":lng.toString(),
+                  "open_at": dropdownvalue1==null?"":dropdownvalue1,
+                  "close_at": dropdownvalue2==null?"":dropdownvalue2,
+                  "min_price": _values.start==null?"":_values.start.toString(),
+                  "max_price": _values.end==null?"":_values.end.toString(),
                 },
               );
             },

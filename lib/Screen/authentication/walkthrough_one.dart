@@ -8,6 +8,7 @@ import 'package:businessgym/values/const_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_translator/google_translator.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../main.dart';
@@ -85,27 +86,11 @@ class _walkthrough_oneState extends State<walkthrough_one>{
             ),
             Container(
               height: 50,
-
               color: Colors.white,
               child: Row(
                 children: [
                Image.asset(AppImages.APP_LOGO),
                   Image.asset(AppImages.namelogo),
-                Expanded(child:  SizedBox(),),
-                  GestureDetector(
-                    onTap: (){
-                      languagedialog(context);
-
-                    },
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(AppImages.language),
-                        SizedBox(width: 5,),
-                        regulartext(AppColors.black,14,"Language"),
-                        SizedBox(width: 5,),
-                      ],
-                    ),
-                  )
 
                 ],
               ),
@@ -169,7 +154,7 @@ class _walkthrough_oneState extends State<walkthrough_one>{
                   child: const Text(
                     'Next',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-                  )),
+                  ).translate()),
             ),
           ),
         )
@@ -219,7 +204,6 @@ class _walkthrough_oneState extends State<walkthrough_one>{
                         itemBuilder: (context,index){
                           return Container(
                               margin:EdgeInsets.only(left: 16,right: 16,top: 10),
-
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -325,7 +309,6 @@ class Pages extends StatelessWidget {
               child:
               Stack(
                 children:  [
-
                   Positioned(
                     left:  0,
                     child:
@@ -335,7 +318,6 @@ class Pages extends StatelessWidget {
                       child:
                       Stack(
                         children:  [
-
                           Positioned(
                             left:  0,
                             top:  0,
@@ -347,7 +329,8 @@ class Pages extends StatelessWidget {
                                 child:
                                 Image.asset(
                                   image,
-                                  fit:  BoxFit.cover,
+                                  fit:  BoxFit.fitHeight,
+                                  height: MediaQuery.of(context).size.height,
                                 ),
                               ),
                             ),
@@ -360,7 +343,7 @@ class Pages extends StatelessWidget {
                               child:
                               SizedBox(
                                 width:  MediaQuery.of(context).size.width,
-                                height:  200,
+                                height:   MediaQuery.of(context).size.height/4.3,
                                 child:
                                 Container(
                                     decoration:  BoxDecoration (
@@ -383,7 +366,7 @@ class Pages extends StatelessWidget {
                                           height: 1.5,
                                           color:  AppColors.black,
                                         ),
-                                      ),
+                                      ).translate(),
                                     )
                                 ),
                               ),

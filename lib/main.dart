@@ -4,22 +4,20 @@ import 'dart:async';
 
 import 'package:businessgym/Controller/adresscontroller.dart';
 import 'package:businessgym/Screen/HomeScreen/DashBoardScreen.dart';
+import 'package:businessgym/Screen/authentication/ChangelanguageScreen.dart';
 import 'package:businessgym/Screen/authentication/walkthrough_one.dart';
 import 'package:businessgym/conts/global_values.dart';
-
 import 'package:businessgym/values/assets.dart';
 import 'package:businessgym/values/const_text.dart';
 import 'package:businessgym/values/translator.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-
+import 'package:google_translator/google_translator.dart';
 
 import 'Utils/SharedPreferences.dart';
 import 'values/Colors.dart';
-import 'package:google_translator/google_translator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,11 +42,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
- // final apiKey = 'AIzaSyBLlDB37YPbULTRu7ms76TvaqthIlvYj54';
+  // final apiKey = 'AIzaSyBLlDB37YPbULTRu7ms76TvaqthIlvYj54';
 
-   final apiKey = Global.Google_Api_Key;
+  final apiKey = Global.Google_Api_Key;
 
-  Locale? _locale;
+  Locale _locale = Locale('en');
 
   setLocale(Locale locale) {
     setState(() {
@@ -75,6 +73,7 @@ class _MyAppState extends State<MyApp> {
       translateFrom: const Locale('en'),
       translateTo: _locale ?? const Locale('gu'),
       builder: () => GetMaterialApp(
+        locale: _locale,
         title: 'Business Gym',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -101,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     trans.onInit();
-   // getNotification();
+    // getNotification();
     Timer(const Duration(seconds: 5), () => getScreen());
   }
 
@@ -119,7 +118,6 @@ class _MyHomePageState extends State<MyHomePage> {
   // }
 
   getScreen() async {
-
     String? login = await sharedPreference.isLoggedIn();
     if (login == "true") {
       controller.onInit();
@@ -129,48 +127,48 @@ class _MyHomePageState extends State<MyHomePage> {
           MaterialPageRoute(builder: (context) => const DashBoardScreen()));
     } else {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => walkthrough_one()));
+          context, MaterialPageRoute(builder: (context) => ChangeLanguageScreen()));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          body: Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.only(top: 50),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Image.asset(
-                    AppImages.APP_TEXTLOGO,
-                    height: 120,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          AppImages.APP_SMALLTLOGO,
-                          height: 200,
-                        ),
-                        Column(
-                          children: [
-                            boldtext(AppColors.DarkBlue, 14, "Supported by"),
-                            boldtext(AppColors.DarkBlue, 18, "Saath Janvikas"),
-                            boldtext(
-                                AppColors.DarkBlue, 18, "Multipurpose Cooperative")
-                          ],
-                        ),
-                      ],
-                    ),
+    return Scaffold(
+        body:  Container(
+            height:  MediaQuery.of(context).size.height,
+            child: Center(
+                child: SingleChildScrollView(
+                  physics: NeverScrollableScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height/12,),
+                      Image.asset(
+                        AppImages.APP_SMALLTLOGO,
+                        height: 200,
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height/9,),
+                      Image.asset(
+                        AppImages.APP_TEXTLOGO,
+                        height: 120,
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height/4,),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          boldtext(AppColors.DarkBlue, 14, "Supported by"),
+                          boldtext(AppColors.DarkBlue, 18, "Saath Janvikas"),
+                          boldtext(
+                              AppColors.DarkBlue, 18, "Multipurpose Cooperative"),
+                        ],
+                      ),
+
+
+                    ],
                   ),
                 )
-              ],
-            ),
-          )),
-    );
+            )
+        ));
   }
 }

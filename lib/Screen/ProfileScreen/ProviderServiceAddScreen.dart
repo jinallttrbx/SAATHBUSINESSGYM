@@ -18,6 +18,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:translator/translator.dart';
 import '../../../Utils/ApiUrl.dart';
 import '../../../Utils/SharedPreferences.dart';
 import '../../../Utils/common_route.dart';
@@ -169,7 +170,7 @@ class ProviderServiceAddScreenState extends State<ProviderServiceAddScreen> {
         hideLoader();
       }
     } catch (e) {
-      print(e);
+
     }
   }
 
@@ -191,7 +192,7 @@ class ProviderServiceAddScreenState extends State<ProviderServiceAddScreen> {
         hideLoader();
       }
     } catch (e) {
-      print(e);
+
     }
   }
 
@@ -211,7 +212,7 @@ class ProviderServiceAddScreenState extends State<ProviderServiceAddScreen> {
         hideLoader();
       }
     } catch (e) {
-      print(e);
+
     }
   }
 
@@ -232,7 +233,7 @@ class ProviderServiceAddScreenState extends State<ProviderServiceAddScreen> {
         hideLoader();
       }
     } catch (e) {
-      print(e);
+
     }
   }
 
@@ -310,12 +311,12 @@ class ProviderServiceAddScreenState extends State<ProviderServiceAddScreen> {
                                                   const BorderRadius.all(
                                                       Radius.circular(9))),
                                           child: countries?.type != "supplier"
-                                              ? boldtext(
+                                              ? boldtext1(
                                                   AppColors.Green,
                                                   10,
                                                   "ME",
                                                 )
-                                              : boldtext(
+                                              : boldtext1(
                                                   AppColors.primary,
                                                   10,
                                                   "Supplier",
@@ -326,7 +327,7 @@ class ProviderServiceAddScreenState extends State<ProviderServiceAddScreen> {
                               }).toList() ??
                               [],
                           onChanged: (val) async {
-                            print(val);
+
                             setState(() {
                               subServiceValue = null;
                               subcategotyid = null;
@@ -399,12 +400,12 @@ class ProviderServiceAddScreenState extends State<ProviderServiceAddScreen> {
                                                       Radius.circular(9))),
                                           child:
                                               countries?.type.name != "SUPPLIER"
-                                                  ? boldtext(
+                                                  ? boldtext1(
                                                       AppColors.Green,
                                                       10,
                                                       "ME",
                                                     )
-                                                  : boldtext(
+                                                  : boldtext1(
                                                       AppColors.primary,
                                                       10,
                                                       "Supplier",
@@ -637,7 +638,7 @@ class ProviderServiceAddScreenState extends State<ProviderServiceAddScreen> {
                           }).toList(),
                           onChanged: (val) {
                             occupationid = val!.workProfileId.toString();
-                            print(occupationid);
+
                           },
                         ),
                       ],
@@ -794,12 +795,12 @@ class ProviderServiceAddScreenState extends State<ProviderServiceAddScreen> {
       String description,
       String workprofileId,
       String userid) async {
-    print("subcatid $subcatId");
-    print(categorype);
+
+
     String url =
         widget.title == "Product" ? ApiUrl.productAdd : ApiUrl.serviceAdd;
     showLoader(context);
-    print(url);
+
     try {
       var request = http.MultipartRequest("POST", Uri.parse(url));
       request.headers["Authorization"] = usertoken.toString();
@@ -819,10 +820,8 @@ class ProviderServiceAddScreenState extends State<ProviderServiceAddScreen> {
           (_image!.path)));
       await request.send().then((value) async {
         String result = await value.stream.bytesToString();
-        print("result  $result");
-        print(
-            "$catid,$subcatId,$userid,$usertype,$occupationid,$name,$minprice,$maxprice,$description,${_image!.path}");
-        hideLoader();
+         hideLoader();
+         print(request.fields);
         widget.title == "Product" ?  await Methods1.orderSuccessAlert(context, "Product Added Successfully") :  await Methods1.orderSuccessAlert(context, "Service Added Successfully");
         await service.viewsericeprofile();
         await product.viewproductprofile();
@@ -831,17 +830,18 @@ class ProviderServiceAddScreenState extends State<ProviderServiceAddScreen> {
         hideLoader();
       });
     } catch (e) {
-      print("exception" + e.toString());
+
       hideLoader();
       //  showInSnackBar("Http Error Try Again Later $e");
       // hideLoader();
     }
   }
 
+
   Widget textArea(TextEditingController controller, String hint) {
     return Container(
-      margin: const EdgeInsets.only(top: 5, left: 20, right: 20),
-      child: TextField(
+      margin:  EdgeInsets.only(top: 5, left: 20, right: 20),
+      child: TextFormField(
         // inputFormatters: [
         //   FilteringTextInputFormatter.allow(RegExp("[a-z A-Z ]"))
         // ],
@@ -857,7 +857,7 @@ class ProviderServiceAddScreenState extends State<ProviderServiceAddScreen> {
         readOnly: hint.contains("Mobile") ? true : false,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.all(10),
-          hintText: hint,
+          hintText: hint.capitalizeFirst,
           counterText: "",
           hintStyle: hintstyle,
           fillColor: AppColors.BGColor,

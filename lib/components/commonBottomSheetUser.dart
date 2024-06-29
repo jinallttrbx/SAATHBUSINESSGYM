@@ -79,20 +79,18 @@ class _CommonBottomSheetUserState extends State<CommonBottomSheetUser> {
 
   Future<void> userid() async {
     // usertype = await _sharedPreference.isUserType();
-    // print("Ashish" + usertype!);
+
     UserId = await _sharedPreference.isUsetId();
-    // print("Ashish" + UserId!);
+
   }
 
   void getuserType() async {
     String? usertype = await _sharedPreference.isUserType();
     UserId = await _sharedPreference.isUsetId();
     // ignore: prefer_interpolation_to_compose_strings
-    print("Ashish" + UserId);
+
     setState(() {
       getuserdata(widget.userid);
-      print(UserId);
-      print(widget.userid);
       addprofile(widget.userid);
       // UserId == widget.userid
       //     ? print("same user id")

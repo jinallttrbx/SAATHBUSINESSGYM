@@ -7,6 +7,7 @@ import 'package:businessgym/Screen/authentication/LoginVerificationScreen.dart';
 import 'package:businessgym/Screen/authentication/selectorRegistration.dart';
 import 'package:businessgym/values/Colors.dart';
 import 'package:flutter/material.dart';
+import 'package:google_translator/google_translator.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import '../../Utils/ApiUrl.dart';
@@ -276,33 +277,33 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(
                       height: 30,
                     ),
-                    const Center(
+                     Center(
                       child: Text(
                         'Welcome',
                         style: TextStyle(
                           fontFamily: 'OpenSans',
-                          fontSize: 20,
+                          fontSize: 30,
                           fontWeight: FontWeight.w700,
                           height: 1.3625,
                           color: AppColors.primary,
                         ),
-                      ),
+                      ).translate(),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    const Center(
-                      child: Text(
-                        'Enter Phone Number To Login',
-                        style: TextStyle(
-                          fontFamily: 'OpenSans',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          height: 1.3625,
-                          color: Color(0xff262627),
-                        ),
-                      ),
-                    ),
+                    // const Center(
+                    //   child: Text(
+                    //     'Enter Phone Number To Login',
+                    //     style: TextStyle(
+                    //       fontFamily: 'OpenSans',
+                    //       fontSize: 16,
+                    //       fontWeight: FontWeight.w400,
+                    //       height: 1.3625,
+                    //       color: Color(0xff262627),
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -318,10 +319,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         // textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           counterText: '',
-                          contentPadding: const EdgeInsets.symmetric(
+                          contentPadding:  EdgeInsets.symmetric(
                               vertical: 5, horizontal: 15),
                           fillColor: AppColors.green,
-                          hintText: 'Phone no.',
+                          hintText: 'Enter Phone Number',
+                          hintStyle: TextStyle(fontSize: 14,fontWeight: FontWeight.w600),
                           border: InputBorder.none,
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
@@ -363,37 +365,37 @@ class _SignInScreenState extends State<SignInScreen> {
                               GetLogin();
                             },
                             child: const Text(
-                              'Continue',
+                              'Login',
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w400),
-                            )),
+                            ).translate(),),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          // line53Z5 (247:17887)
-                          margin: const EdgeInsets.fromLTRB(0, 3, 9, 0),
-                          width: 75,
-                          height: 1,
-                          decoration: const BoxDecoration(
-                            color: Color(0xffa6a6a6),
-                          ),
-                        ),
-                        const Text("OR"),
-                        Container(
-                          // line53Z5 (247:17887)
-                          margin: const EdgeInsets.fromLTRB(0, 3, 9, 0),
-                          width: 75,
-                          height: 1,
-                          decoration: const BoxDecoration(
-                            color: Color(0xffa6a6a6),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   crossAxisAlignment: CrossAxisAlignment.center,
+                    //   children: [
+                    //     Container(
+                    //       // line53Z5 (247:17887)
+                    //       margin: const EdgeInsets.fromLTRB(0, 3, 9, 0),
+                    //       width: 75,
+                    //       height: 1,
+                    //       decoration: const BoxDecoration(
+                    //         color: Color(0xffa6a6a6),
+                    //       ),
+                    //     ),
+                    //     const Text("OR"),
+                    //     Container(
+                    //       // line53Z5 (247:17887)
+                    //       margin: const EdgeInsets.fromLTRB(0, 3, 9, 0),
+                    //       width: 75,
+                    //       height: 1,
+                    //       decoration: const BoxDecoration(
+                    //         color: Color(0xffa6a6a6),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 30),
@@ -422,7 +424,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.primary),
-                            )),
+                            ).translate()),
                       ),
                     ),
                   ],

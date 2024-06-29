@@ -25,6 +25,7 @@ class ProductController extends GetxController {
     productprofilelist.value = [];
     isLoading = true;
     USERTOKKEN = await _sharedPreference.isToken();
+    print(USERTOKKEN);
     try {
       final response = await http.get(
         Uri.parse(ApiUrl.getproductlist),

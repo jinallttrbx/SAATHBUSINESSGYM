@@ -11,7 +11,7 @@ class addressController extends GetxController {
   var address = 'Search for home service...'.obs;
 
   getlocation() async {
-    print("GET CURRENT LOCATION");
+
     Position position = await _getGeoLocationPosition();
     GetAddressFromLatLong(position);
     lat.value = position.latitude;

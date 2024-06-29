@@ -141,12 +141,12 @@ class RecomandedProductState extends State<RecomandedProductScreen> {
                                   child: Container(
                                       padding: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
                                       decoration: BoxDecoration(
-                                          color: getrecommandedproductdata![i].tag!="Supplier Service"?AppColors.primary.withOpacity(0.05):AppColors.LightGreens,
+                                          color: getrecommandedproductdata![i].tag=="Supplier Service"?AppColors.primary.withOpacity(0.05):AppColors.LightGreens,
                                           borderRadius: BorderRadius.all(Radius.circular(9))
                                       ),
-                                      child:  getrecommandedproductdata![i].tag!="Supplier Service"?boldtext(AppColors.Green,10,
+                                      child:  getrecommandedproductdata![i].tag=="Supplier Service"?boldtext1(AppColors.Green,10,
                                         "ME",
-                                      ):boldtext(AppColors.primary,10,
+                                      ):boldtext1(AppColors.primary,10,
                                         "Supplier",
                                       )
                                   ),),

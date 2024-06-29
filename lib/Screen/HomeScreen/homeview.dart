@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:businessgym/Controller/adresscontroller.dart';
@@ -16,6 +14,7 @@ import 'package:businessgym/Screen/authentication/NotificationScreen.dart';
 import 'package:businessgym/Screen/ProfileScreen/MyEntitlementsScreen.dart';
 import 'package:businessgym/Screen/HomeScreen/FinancePageScreen.dart';
 import 'package:businessgym/Screen/HomeScreen/MyServicesScreensProvider.dart';
+import 'package:businessgym/Screen/extra.dart';
 import 'package:businessgym/components/commonBottomSheet.dart';
 import 'package:businessgym/conts/global_values.dart';
 import 'package:businessgym/Screen/HomeScreen/ClubScreen.dart';
@@ -34,7 +33,6 @@ import 'package:businessgym/model/getservicebyuserid.dart';
 import 'package:businessgym/model/notification_response_model.dart';
 import 'package:businessgym/Screen/ProfileScreen/profile.dart';
 import 'package:businessgym/Screen/HomeScreen/serviceprovider_screen.dart';
-import 'package:businessgym/updatelocation.dart';
 import 'package:businessgym/values/Colors.dart';
 import 'package:businessgym/values/assets.dart';
 import 'package:businessgym/values/const_text.dart';
@@ -47,10 +45,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:google_translator/google_translator.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:translator/translator.dart';
 
 
 class HomeView extends StatefulWidget {
@@ -177,7 +177,7 @@ class _HomeViewState extends State<HomeView> {
           children: [
             Container(
               padding: const EdgeInsets.only(
-                  left: 16, right: 16, top: 70, bottom: 16),
+                  left: 16, right: 16, top: 50, bottom: 16),
               color: AppColors.primary,
               child: Row(
                 children: [
@@ -229,14 +229,14 @@ class _HomeViewState extends State<HomeView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        const Text(
+                         Text(
                           "Welcome",
                           style: TextStyle(
                               fontFamily: "OpenSans",
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                               color: Colors.white),
-                        ),
+                        ).translate(),
                         Text(
                           profilecontroller.firstname.value??"",
                           style: const TextStyle(
@@ -244,7 +244,7 @@ class _HomeViewState extends State<HomeView> {
                               fontWeight: FontWeight.w700,
                               fontSize: 18,
                               color: Colors.white),
-                        )
+                        ).translate(),
                       ],
                     ),
                   ),
@@ -332,19 +332,19 @@ class _HomeViewState extends State<HomeView> {
                                         onTap: (){
                                           changeTab(3);
                                           Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileScreen()));
-                                          print("GOR TO PROFILE ");
                                         },
                                         child:   Row(
                                           children: [
                                             boldtext(AppColors.black, 12,
                                                 "Complete your profile"),
                                             SvgPicture.asset(
-                                                AppImages.roundaltarroe)
+                                                AppImages.roundaltarroe,height: 20,)
                                           ],
                                         ),
                                       )
                                       ],
                                     ),
+
                                     Container(
                                       decoration: const BoxDecoration(
                                           borderRadius: BorderRadius.all(
@@ -366,6 +366,10 @@ class _HomeViewState extends State<HomeView> {
                                         progressColor: const Color(0xffF59E20),
                                         backgroundColor: Colors.grey[300],
                                       ),
+                                    ),
+                                    textAreasearch(
+                                      search,
+                                      'Search Service Provider/Product Seller'
                                     ),
                                     CarouselSlider(
                                         items: transactionData1.map((i) {
@@ -440,7 +444,7 @@ class _HomeViewState extends State<HomeView> {
                                                                                 Text(
                                                                               i.title!,
                                                                               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, fontFamily: "OpenSans"),
-                                                                            ),
+                                                                            ).translate(),
                                                                           ),
                                                                           GestureDetector(
                                                                             onTap:
@@ -474,7 +478,7 @@ class _HomeViewState extends State<HomeView> {
                                           padEnds: false,
                                           autoPlay: true,
                                           autoPlayInterval:
-                                              const Duration(seconds: 3),
+                                              const Duration(seconds: 6),
                                           // autoPlayAnimationDuration:
                                           // const Duration(milliseconds: 800),
                                           // autoPlayCurve: Curves.fastOutSlowIn,
@@ -487,159 +491,155 @@ class _HomeViewState extends State<HomeView> {
                                           },
                                           scrollDirection: Axis.horizontal,
                                         )),
+                                    SizedBox(height: 10,),
                                     DotsIndicator(
                                       dotsCount: transactionData1.isNotEmpty
                                           ? transactionData1.length
                                           : 2,
                                       position: currentIndex,
                                     ),
-                                    vertical(20),
-                                    textAreasearch(
-                                      search,
-                                      'Search for provider and seller',
-                                    ),
-                                    vertical(20),
+                                    SizedBox(height: 20,),
                                     Row(
                                       children: [
                                         Expanded(
                                             child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>serviceproviderScreen("Service Provider")));
-                                           // Get.to(serviceproviderScreen());
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.all(10),
-                                            decoration: const BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(16))),
-                                            height: 80,
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  height: 40,
-                                                  width: MediaQuery.of(context).size.width/8,
-                                                  decoration:
+                                              onTap: () {
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>serviceproviderScreen("Service Provider")));
+                                                // Get.to(serviceproviderScreen());
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.all(10),
+                                                decoration: const BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(16))),
+                                                height: 80,
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      height: 40,
+                                                      width: MediaQuery.of(context).size.width/8,
+                                                      decoration:
                                                       const BoxDecoration(
                                                           color:
-                                                              Color(0xffF9F9F9),
+                                                          Color(0xffF9F9F9),
                                                           borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          16))),
-                                                  child: Center(
-                                                    child: SvgPicture.asset(
-                                                        AppImages.Case),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Column(
-                                                  mainAxisAlignment:
+                                                          BorderRadius.all(
+                                                              Radius
+                                                                  .circular(
+                                                                  16))),
+                                                      child: Center(
+                                                        child: SvgPicture.asset(
+                                                            AppImages.Case),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Column(
+                                                      mainAxisAlignment:
                                                       MainAxisAlignment.center,
-                                                  crossAxisAlignment:
+                                                      crossAxisAlignment:
                                                       CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      snapshot
-                                                          .data!.serviceCount
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                          fontFamily:
+                                                      children: [
+                                                        Text(
+                                                          snapshot
+                                                              .data!.serviceCount
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              fontFamily:
                                                               "OpenSans",
-                                                          fontWeight:
+                                                              fontWeight:
                                                               FontWeight.w700,
-                                                          fontSize: 14),
-                                                    ),
-                                                    const Text(
-                                                      "Service Provider",
-                                                      style: TextStyle(
-                                                          fontFamily:
+                                                              fontSize: 14),
+                                                        ).translate(),
+                                                        const Text(
+                                                          "Service Provider",
+                                                          style: TextStyle(
+                                                              fontFamily:
                                                               "OpenSans",
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 12),
-                                                    ),
+                                                              fontWeight:
+                                                              FontWeight.w700,
+                                                              fontSize: 12),
+                                                        ).translate(),
+                                                      ],
+                                                    )
                                                   ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        )),
+                                                ),
+                                              ),
+                                            )),
                                         const SizedBox(
                                           width: 10,
                                         ),
                                         Expanded(
                                             child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>serviceproviderScreen("Product Seller")));
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.all(10),
-                                            decoration: const BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(16))),
-                                            height: 80,
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  height: 40,
-                                                  width: MediaQuery.of(context).size.width/8,
-                                                  decoration:
+                                              onTap: () {
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>serviceproviderScreen("Product Seller")));
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.all(10),
+                                                decoration: const BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(16))),
+                                                height: 80,
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      height: 40,
+                                                      width: MediaQuery.of(context).size.width/8,
+                                                      decoration:
                                                       const BoxDecoration(
                                                           color:
-                                                              Color(0xffF9F9F9),
+                                                          Color(0xffF9F9F9),
                                                           borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          16))),
-                                                  child: Center(
-                                                    child: SvgPicture.asset(
-                                                        AppImages.shop),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Column(
-                                                  mainAxisAlignment:
+                                                          BorderRadius.all(
+                                                              Radius
+                                                                  .circular(
+                                                                  16))),
+                                                      child: Center(
+                                                        child: SvgPicture.asset(
+                                                            AppImages.shop),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Column(
+                                                      mainAxisAlignment:
                                                       MainAxisAlignment.center,
-                                                  crossAxisAlignment:
+                                                      crossAxisAlignment:
                                                       CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      snapshot
-                                                          .data!.productCount!
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                          fontFamily:
+                                                      children: [
+                                                        Text(
+                                                          snapshot
+                                                              .data!.productCount!
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              fontFamily:
                                                               "OpenSans",
-                                                          fontWeight:
+                                                              fontWeight:
                                                               FontWeight.w700,
-                                                          fontSize: 14),
-                                                    ),
-                                                    const Text(
-                                                      "Product Seller",
-                                                      style: TextStyle(
-                                                          fontFamily:
+                                                              fontSize: 14),
+                                                        ).translate(),
+                                                        const Text(
+                                                          "Product Seller",
+                                                          style: TextStyle(
+                                                              fontFamily:
                                                               "OpenSans",
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 12),
-                                                    ),
+                                                              fontWeight:
+                                                              FontWeight.w700,
+                                                              fontSize: 12),
+                                                        ).translate(),
+                                                      ],
+                                                    )
                                                   ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ))
+                                                ),
+                                              ),
+                                            ))
                                       ],
                                     ),
-                                    vertical(20),
+                                    SizedBox(height: 10,),
                                     Container(
                                       decoration: const BoxDecoration(
                                           color: Colors.white,
@@ -652,43 +652,43 @@ class _HomeViewState extends State<HomeView> {
                                           bottom: 20),
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           Row(
                                             children: [
-                                              const Expanded(
+                                               Expanded(
                                                   child: Column(
-                                                crossAxisAlignment:
+                                                    crossAxisAlignment:
                                                     CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Daily Income & Expenses",
-                                                    style: TextStyle(
-                                                        fontSize: 17,
-                                                        fontWeight:
+                                                    children: [
+                                                      Text(
+                                                        "Recommended Product Seller",
+                                                        style: TextStyle(
+                                                            fontSize: 17,
+                                                            fontWeight:
                                                             FontWeight.w700,
-                                                        fontFamily: "OpenSans"),
-                                                  ),
-                                                  Text(
-                                                    "Manage your money here",
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
+                                                            fontFamily: "OpenSans"),
+                                                      ).translate(),
+                                                      Text(
+                                                        "you might be interested in",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
                                                             FontWeight.w500,
-                                                        fontFamily: "OpenSans",
-                                                        color:
+                                                            fontFamily: "OpenSans",
+                                                            color:
                                                             Color(0xffA6A6A6)),
-                                                  )
-                                                ],
-                                              )),
+                                                      ).translate(),
+                                                    ],
+                                                  )),
                                               GestureDetector(
                                                 onTap: () {
                                                   Get.to(() =>
-                                                       FinancePageScreen( profilecontroller.firstname.value,profilecontroller.address.value,profilecontroller.city.value));
+                                                      RecomandedProductScreen("product"));
                                                 },
                                                 child: SvgPicture.asset(
                                                   AppImages.roundaltarroe,
-                                                  height: 20,
+                                                  height: 30,
                                                 ),
                                               )
                                             ],
@@ -703,261 +703,891 @@ class _HomeViewState extends State<HomeView> {
                                           const SizedBox(
                                             height: 20,
                                           ),
-                                          const Text(
-                                            "This month",
-                                            style: TextStyle(
-                                                fontFamily: "OpenSans",
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 14),
+
+                                          snapshot
+                                              .data!.productList!.isEmpty?Text("No Data Found"): ListView.builder(
+                                            physics:
+                                            const NeverScrollableScrollPhysics(),
+                                            padding: EdgeInsets.zero,
+                                            shrinkWrap: true,
+                                            itemCount: snapshot
+                                                .data!.productList!.length,
+                                            itemBuilder:
+                                                (BuildContext context, int i) {
+                                              return GestureDetector(
+                                                onTap: (){
+                                                  CommonBottomSheet.show(context,snapshot.data!.productList[i].providerId.toString(),snapshot.data!.productList[i].id.toString(),"product","");
+                                                },
+                                                child: Container(
+                                                    margin:
+                                                    const EdgeInsets.all(10),
+                                                    padding:
+                                                    const EdgeInsets.all(10),
+                                                    decoration:
+                                                    const BoxDecoration(
+                                                        color:
+                                                        Color(0xffF9F9F9),
+                                                        borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius
+                                                                .circular(
+                                                                16))),
+                                                    child: Row(
+                                                      children: [
+                                                        CircleAvatar(
+                                                          radius: 30,
+                                                          backgroundImage:
+                                                          NetworkImage(snapshot
+                                                              .data!
+                                                              .productList[i]
+                                                              .profileImage),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Expanded(
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                              children: [
+                                                                Text(
+                                                                  snapshot
+                                                                      .data!
+                                                                      .productList![i]
+                                                                      .username!,
+                                                                  style: const TextStyle(
+                                                                      fontSize: 14,
+                                                                      fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                      fontFamily:
+                                                                      "OpenSans"),
+                                                                ).translate(),
+                                                                Row(
+                                                                  children: [
+                                                                    Expanded(child:  regulartext(
+                                                                      AppColors.hint,
+                                                                      14,
+                                                                      snapshot
+                                                                          .data!
+                                                                          .productList![
+                                                                      i]
+                                                                          .name!,
+                                                                    ),),
+                                                                    const SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    Container(
+                                                                        padding: const EdgeInsets
+                                                                            .only(
+                                                                            left: 15,
+                                                                            right: 15,
+                                                                            top: 5,
+                                                                            bottom:
+                                                                            5),
+                                                                        decoration: BoxDecoration(
+                                                                            color: snapshot.data!.productList![i].tag !=
+                                                                                "Supplier Service"
+                                                                                ? AppColors.primary.withOpacity(
+                                                                                0.05)
+                                                                                : AppColors
+                                                                                .LightGreens,
+                                                                            borderRadius:
+                                                                            const BorderRadius.all(Radius.circular(
+                                                                                9))),
+                                                                        child: snapshot
+                                                                            .data!
+                                                                            .productList![i]
+                                                                            .tag !=
+                                                                            "Supplier Service"
+                                                                            ? boldtext1(
+                                                                          AppColors
+                                                                              .Green,
+                                                                          10,
+                                                                          "ME",
+                                                                        )
+                                                                            : boldtext1(
+                                                                          AppColors
+                                                                              .primary,
+                                                                          10,
+                                                                          "Supplier",
+                                                                        )),
+                                                                  ],
+                                                                ),
+                                                                InkWell(
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                    children: [
+                                                                      RatingBarIndicator(
+                                                                        direction: Axis
+                                                                            .horizontal,
+                                                                        rating:snapshot.data!.productList![i].averageRating.toDouble(),
+                                                                        // double.parse(""),
+                                                                        itemCount: 5,
+                                                                        itemSize: 14,
+                                                                        itemPadding:
+                                                                        const EdgeInsets
+                                                                            .all(2),
+                                                                        unratedColor:
+                                                                        Colors
+                                                                            .grey,
+                                                                        itemBuilder: (context,
+                                                                            _) =>
+                                                                            SvgPicture.asset(
+                                                                                AppImages
+                                                                                    .rating),
+                                                                      ),
+                                                                      snapshot.data!.productList![i].averageRating ==
+                                                                          null
+                                                                          ? const SizedBox
+                                                                          .shrink()
+                                                                          : boldtext(
+                                                                          const Color(
+                                                                              0xff656565),
+                                                                          12,
+                                                                          '${snapshot.data!.productList![i].averageRating.toStringAsFixed(1)!} Rating')
+
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            )),
+                                                        SvgPicture.asset(
+                                                            AppImages.altarroe)
+                                                      ],
+                                                    )),
+                                              );
+                                            },
                                           ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(16))),
+                                      padding: const EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                          top: 20,
+                                          bottom: 20),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                               Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        "Recommended Service Provider",
+                                                        style: TextStyle(
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                            FontWeight.w700,
+                                                            fontFamily: "OpenSans"),
+                                                      ).translate(),
+                                                      Text(
+                                                        "you might be interested in",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                            FontWeight.w500,
+                                                            fontFamily: "OpenSans",
+                                                            color:
+                                                            Color(0xffA6A6A6)),
+                                                      ).translate(),
+                                                    ],
+                                                  )),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Get.to(() =>
+                                                      RecomandedServiceScreen("service"));
+                                                },
+                                                child: SvgPicture.asset(
+                                                  AppImages.roundaltarroe,
+                                                  height: 30,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          const Divider(
+                                            height: 1,
+                                            thickness: 1,
+                                            color: AppColors.primary,
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          snapshot
+                                              .data!.serviceList!.isEmpty?Text("No Data Found"):     ListView.builder(
+                                            padding: EdgeInsets.zero,
+                                            shrinkWrap: true,
+                                            physics:
+                                            const NeverScrollableScrollPhysics(),
+                                            itemCount: snapshot
+                                                .data!.serviceList!.length,
+                                            itemBuilder:
+                                                (BuildContext context, int i) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  CommonBottomSheet.show(context,snapshot.data!.serviceList[i].providerId.toString(),snapshot.data!.serviceList[i].id.toString(),"service","");
+                                                },
+                                                child: Container(
+                                                    margin:
+                                                    const EdgeInsets.all(
+                                                        10),
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        10),
+                                                    decoration: const BoxDecoration(
+                                                        color:
+                                                        Color(0xffF9F9F9),
+                                                        borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                16))),
+                                                    child: Row(
+                                                      children: [
+                                                        CircleAvatar(
+                                                          radius: 30,
+                                                          backgroundImage:
+                                                          NetworkImage(snapshot
+                                                              .data!
+                                                              .serviceList![
+                                                          i]
+                                                              .profileImage),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Expanded(
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                              children: [
+                                                                Text(
+                                                                  snapshot
+                                                                      .data!
+                                                                      .serviceList![
+                                                                  i]
+                                                                      .username!,
+                                                                  style: const TextStyle(
+                                                                      fontSize: 14,
+                                                                      fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                      fontFamily:
+                                                                      "OpenSans"),
+                                                                ).translate(),
+                                                                Row(
+                                                                  children: [
+                                                                    Expanded(child:  regulartext(
+                                                                      AppColors.hint,
+                                                                      14,
+                                                                      snapshot
+                                                                          .data!
+                                                                          .serviceList![
+                                                                      i]
+                                                                          .name!,
+                                                                    ),),
+                                                                    const SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    Container(
+                                                                        padding: const EdgeInsets
+                                                                            .only(
+                                                                            left:
+                                                                            15,
+                                                                            right:
+                                                                            15,
+                                                                            top: 5,
+                                                                            bottom:
+                                                                            5),
+                                                                        decoration: BoxDecoration(
+                                                                            color: snapshot.data!.serviceList![i].tag !=
+                                                                                "Supplier Service"
+                                                                                ? AppColors.primary.withOpacity(
+                                                                                0.05)
+                                                                                : AppColors
+                                                                                .LightGreens,
+                                                                            borderRadius:
+                                                                            const BorderRadius.all(Radius.circular(
+                                                                                9))),
+                                                                        child: snapshot.data!.serviceList![i].tag !=
+                                                                            "Supplier Service"
+                                                                            ? boldtext1(
+                                                                          AppColors.Green,
+                                                                          8,
+                                                                          "ME",
+                                                                        )
+                                                                            : boldtext1(
+                                                                          AppColors.primary,
+                                                                          8,
+                                                                          "Supplier",
+                                                                        )),
+                                                                  ],
+                                                                ),
+                                                                InkWell(
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                    children: [
+                                                                      RatingBarIndicator(
+                                                                        direction: Axis
+                                                                            .horizontal,
+                                                                        rating: snapshot.data!.serviceList![i].averageRating.toDouble(),
+                                                                        // double.parse("${4}"),
+                                                                        itemCount:
+                                                                        5,
+                                                                        itemSize:
+                                                                        14,
+                                                                        itemPadding:
+                                                                        const EdgeInsets
+                                                                            .all(2),
+                                                                        unratedColor:
+                                                                        Colors
+                                                                            .grey,
+                                                                        itemBuilder: (context,
+                                                                            _) =>
+                                                                            SvgPicture.asset(
+                                                                                AppImages.rating),
+                                                                      ),
+                                                                      snapshot.data!.serviceList![i].averageRating ==
+                                                                          null
+                                                                          ? const SizedBox
+                                                                          .shrink()
+                                                                          : boldtext(
+                                                                          const Color(
+                                                                              0xff656565),
+                                                                          12,
+                                                                          '${snapshot.data!.serviceList![i].averageRating!.toStringAsFixed(1)} Rating')
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            )),
+                                                        SvgPicture.asset(
+                                                            AppImages.altarroe)
+                                                      ],
+                                                    )),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(16))),
+                                      padding: const EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                          top: 20,
+                                          bottom: 20),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                           Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        "My Statistics",
+                                                        style: TextStyle(
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                            FontWeight.w700,
+                                                            fontFamily: "OpenSans"),
+                                                      ).translate(),
+                                                      Text(
+                                                        "",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                            FontWeight.w500,
+                                                            fontFamily: "OpenSans",
+                                                            color:
+                                                            Color(0xffA6A6A6)),
+                                                      )
+                                                    ],
+                                                  )),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          const Divider(
+                                            height: 1,
+                                            thickness: 1,
+                                            color: AppColors.primary,
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+
+                                            children: [
+                                              SizedBox(width: 5),
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        SvgPicture.asset(AppImages.rating),
+                                                        SizedBox(width: 5,),
+                                                        Text(
+                                                          "${snapshot.data!.avrageRating}/5",
+                                                          style: const TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                              FontWeight.w600,
+                                                              fontFamily:
+                                                              "OpenSans"),
+                                                        ).translate(),
+                                                      ],
+                                                    ),
+                                                    Padding(padding: EdgeInsets.only(left: 5),child: Text(
+                                                      "Average \nRating",
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          "OpenSans",
+                                                          color: Color(
+                                                              0xff656565)),).translate(),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(width: 50),
+                                              Expanded(
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                      children: [
+                                                        SvgPicture.asset(AppImages.activeprofile),
+                                                        SizedBox(width: 5,),
+                                                        Text(
+                                                          snapshot.data!
+                                                              .profilecompleted
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                              FontWeight.w600,
+                                                              fontFamily:
+                                                              "OpenSans"),
+                                                        ).translate(),
+                                                      ],
+                                                    ),
+
+                                                    Padding(padding: EdgeInsets.only(left: 5),child: Text(
+                                                      "Profile \nCompleted",
+                                                      style: TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          "OpenSans",
+                                                          color: Color(
+                                                              0xff656565)),
+                                                    ).translate(),)
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(width: 50),
+                                              Expanded(
+                                                  child: Column(
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment:
+                                                        CrossAxisAlignment.center,
+                                                        children: [
+                                                          SvgPicture.asset(AppImages.homemfi),
+                                                          SizedBox(width: 5,),
+                                                          Text(
+                                                            snapshot
+                                                                .data!.overallMfiScore
+                                                                .toString(),
+                                                            style: const TextStyle(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                FontWeight.w600,
+                                                                fontFamily: "OpenSans"),
+                                                          ).translate(),
+                                                        ],
+                                                      ),
+
+                                                      const Text(
+                                                        "Overall MFI\nScore",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                            FontWeight.w500,
+                                                            fontFamily: "OpenSans",
+                                                            color:
+                                                            Color(0xff656565)),
+                                                      ).translate(),
+                                                    ],
+                                                  )),
+                                              SizedBox(width: 5,),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    vertical(10),
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(16))),
+                                      padding: const EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                          top: 20,
+                                          bottom: 20),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                               Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        "Income & Expenses",
+                                                        style: TextStyle(
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                            FontWeight.w700,
+                                                            fontFamily: "OpenSans"),
+                                                      ).translate(),
+                                                      Text(
+                                                        "Finance Manager",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                            FontWeight.w500,
+                                                            fontFamily: "OpenSans",
+                                                            color:
+                                                            Color(0xffA6A6A6)),
+                                                      ).translate(),
+                                                    ],
+                                                  )),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Get.to(() =>
+                                                      FinancePageScreen( profilecontroller.firstname.value,profilecontroller.address.value,profilecontroller.city.value));
+                                                },
+                                                child: SvgPicture.asset(
+                                                  AppImages.roundaltarroe,
+                                                  height: 30,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          const Divider(
+                                              height: 1,
+                                              thickness: 1,
+                                              color: AppColors.primary),
+                                          // const SizedBox(
+                                          //   height: 20,
+                                          // ),
+                                          // const Text(
+                                          //   "This month",
+                                          //   style: TextStyle(
+                                          //       fontFamily: "OpenSans",
+                                          //       fontWeight: FontWeight.w500,
+                                          //       fontSize: 14),
+                                          // ),
                                           Container(
                                             padding: const EdgeInsets.only(
                                                 left: 5, right: 5),
                                             child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Expanded(
                                                     child: Container(
-                                                  padding:
+                                                      padding:
                                                       const EdgeInsets.all(0),
-                                                  decoration:
+                                                      decoration:
                                                       const BoxDecoration(
                                                           color: Colors.white,
                                                           borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          16))),
-                                                  height: 80,
-                                                  child: Row(
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                          AppImages.wallet2),
-                                                      const SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Column(
-                                                        mainAxisAlignment:
+                                                          BorderRadius.all(
+                                                              Radius
+                                                                  .circular(
+                                                                  16))),
+                                                      height: 80,
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              AppImages.wallet2),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Column(
+                                                            mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .center,
-                                                        crossAxisAlignment:
+                                                            crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .start,
-                                                        children: [
-                                                          const Text(
-                                                            "Cash In",
-                                                            style: TextStyle(
-                                                                fontFamily:
+                                                            children: [
+                                                              const Text(
+                                                                "Cash In",
+                                                                style: TextStyle(
+                                                                    fontFamily:
                                                                     "OpenSans",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                fontSize: 12),
-                                                          ),
-                                                          Text(
-                                                            "₹$totalcashin",
-                                                            style: const TextStyle(
-                                                                fontFamily:
-                                                                    "OpenSans",
-                                                                fontWeight:
+                                                                    fontWeight:
                                                                     FontWeight
                                                                         .w700,
-                                                                fontSize: 14),
-                                                          ),
+                                                                    fontSize: 12),
+                                                              ).translate(),
+                                                              Text(
+                                                                "₹ $totalcashin",
+                                                                style: const TextStyle(
+                                                                    fontFamily:
+                                                                    "OpenSans",
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                    fontSize: 14),
+                                                              ).translate(),
+                                                            ],
+                                                          )
                                                         ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                )),
+                                                      ),
+                                                    )),
                                                 // const SizedBox(
                                                 //   width: 10,
                                                 // ),
                                                 Expanded(
                                                     child: Container(
-                                                  padding:
+                                                      padding:
                                                       const EdgeInsets.all(10),
-                                                  decoration:
+                                                      decoration:
                                                       const BoxDecoration(
                                                           color: Colors.white,
                                                           borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          16))),
-                                                  height: 80,
-                                                  child: Row(
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                          AppImages.wallet1),
-                                                      const SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Column(
-                                                        mainAxisAlignment:
+                                                          BorderRadius.all(
+                                                              Radius
+                                                                  .circular(
+                                                                  16))),
+                                                      height: 80,
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              AppImages.wallet1),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Column(
+                                                            mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .center,
-                                                        crossAxisAlignment:
+                                                            crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .start,
-                                                        children: [
-                                                          const Text(
-                                                            "Cash Out",
-                                                            style: TextStyle(
-                                                                fontFamily:
+                                                            children: [
+                                                              const Text(
+                                                                "Cash Out",
+                                                                style: TextStyle(
+                                                                    fontFamily:
                                                                     "OpenSans",
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                fontSize: 12),
-                                                          ),
-                                                          Text(
-                                                            "₹$totalcashout",
-                                                            style: const TextStyle(
-                                                                fontFamily:
-                                                                    "OpenSans",
-                                                                fontWeight:
+                                                                    fontWeight:
                                                                     FontWeight
                                                                         .w700,
-                                                                fontSize: 14),
-                                                          ),
+                                                                    fontSize: 12),
+                                                              ).translate(),
+                                                              Text(
+                                                                "₹ $totalcashout",
+                                                                style: const TextStyle(
+                                                                    fontFamily:
+                                                                    "OpenSans",
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                    fontSize: 14),
+                                                              ).translate(),
+                                                            ],
+                                                          )
                                                         ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                ))
+                                                      ),
+                                                    ))
                                               ],
                                             ),
                                           ),
                                           Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.spaceEvenly,
                                             children: [
                                               Expanded(
                                                   child: SizedBox(
-                                                height: 50,
-                                                child: ElevatedButton.icon(
-                                                    style: ElevatedButton.styleFrom(
-                                                        shape: const RoundedRectangleBorder(
-                                                            borderRadius:
+                                                    height: 50,
+                                                    child: ElevatedButton.icon(
+                                                        style: ElevatedButton.styleFrom(
+                                                            shape: const RoundedRectangleBorder(
+                                                                borderRadius:
                                                                 BorderRadius
                                                                     .all(Radius
-                                                                        .circular(
-                                                                            15))),
-                                                        backgroundColor:
+                                                                    .circular(
+                                                                    15))),
+                                                            backgroundColor:
                                                             const Color(
                                                                 0xff25D366)),
-                                                    onPressed: () async {
-                                                      _addincome(context,
-                                                          "Add Income");
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.add,
-                                                    ),
-                                                    label: const Text(
-                                                      "Income",
-                                                      style: TextStyle(
-                                                          fontFamily:
+                                                        onPressed: () async {
+                                                          _addincome(context,
+                                                              "Add Income");
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.add,
+                                                        ),
+                                                        label: const Text(
+                                                          "Income",
+                                                          style: TextStyle(
+                                                              fontFamily:
                                                               "OpenSans",
-                                                          fontWeight:
+                                                              fontWeight:
                                                               FontWeight.w600,
-                                                          fontSize: 12,
-                                                          color: Colors.white),
-                                                    )),
-                                              )),
+                                                              fontSize: 12,
+                                                              color: Colors.white),
+                                                        ).translate(),),
+                                                  )),
                                               const SizedBox(
                                                 width: 10,
                                               ),
                                               Expanded(
                                                   child: SizedBox(
-                                                height: 50,
-                                                child: ElevatedButton.icon(
-                                                    icon: const Icon(
-                                                      Icons.add,
-                                                    ),
-                                                    style: ElevatedButton.styleFrom(
-                                                        shape: const RoundedRectangleBorder(
-                                                            borderRadius:
+                                                    height: 50,
+                                                    child: ElevatedButton.icon(
+                                                        icon: const Icon(
+                                                          Icons.add,
+                                                        ),
+                                                        style: ElevatedButton.styleFrom(
+                                                            shape: const RoundedRectangleBorder(
+                                                                borderRadius:
                                                                 BorderRadius
                                                                     .all(Radius
-                                                                        .circular(
-                                                                            15))),
-                                                        backgroundColor:
+                                                                    .circular(
+                                                                    15))),
+                                                            backgroundColor:
                                                             const Color(
                                                                 0xffF59E20)),
-                                                    onPressed: () {
-                                                      _addincome(context,
-                                                          "Add Expenses");
-                                                    },
-                                                    label: const Text(
-                                                      "Expenses",
-                                                      style: TextStyle(
-                                                          fontFamily:
+                                                        onPressed: () {
+                                                          _addincome(context,
+                                                              "Add Expenses");
+                                                        },
+                                                        label: const Text(
+                                                          "Expenses",
+                                                          style: TextStyle(
+                                                              fontFamily:
                                                               "OpenSans",
-                                                          fontWeight:
+                                                              fontWeight:
                                                               FontWeight.w600,
-                                                          fontSize: 12,
-                                                          color: Colors.white),
-                                                    )),
-                                              ))
+                                                              fontSize: 12,
+                                                              color: Colors.white),
+                                                        ).translate(),),
+                                                  ))
                                             ],
                                           ),
                                         ],
                                       ),
                                     ),
-                                    vertical(20),
 
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
+
+
+                                    vertical(10),
                                     snapshot.data!.loanCount == null ||snapshot.data!.loanCount==0
                                         ? Container(
-                                            decoration: const BoxDecoration(
-                                                color: AppColors.white,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(16))),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 16,
-                                                      vertical: 10),
-                                              child: SizedBox(
-                                                  height: 50,
-                                                  width: double.infinity,
-                                                  child: Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: boldtext(
-                                                            AppColors.black,
-                                                            14,
-                                                            "Do you want to get a loan?"),
+                                      decoration: const BoxDecoration(
+                                          color: AppColors.white,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(16))),
+                                      child: Padding(
+                                        padding:
+                                        const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                            vertical: 10),
+                                        child: SizedBox(
+                                            height: 50,
+                                            width: double.infinity,
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: boldtext(
+                                                      AppColors.black,
+                                                      14,
+                                                      "Do you want to get a loan?"),
+                                                ),
+                                                ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      shape:
+                                                      RoundedRectangleBorder(
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                            12.0),
                                                       ),
-                                                      ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          12.0),
-                                                            ),
-                                                            backgroundColor:
-                                                                AppColors
-                                                                    .lightblue,
-                                                          ),
-                                                          onPressed: () {
-                                                            Navigator.push(context,MaterialPageRoute(builder: (context)=>MfiScreen()));
-                                                          },
-                                                          child: boldtext(
-                                                            AppColors.primary,
-                                                            12,
-                                                            'Apply',
-                                                          )),
-                                                    ],
-                                                  )),
-                                            ),
-                                          )
+                                                      backgroundColor:
+                                                      AppColors
+                                                          .lightblue,
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.push(context,MaterialPageRoute(builder: (context)=>MfiScreen()));
+                                                    },
+                                                    child: boldtext(
+                                                      AppColors.primary,
+                                                      12,
+                                                      'Apply',
+                                                    )),
+                                              ],
+                                            )),
+                                      ),
+                                    )
                                         :  Container(
                                       padding: const EdgeInsets.only(
                                           left: 10,
@@ -972,7 +1602,7 @@ class _HomeViewState extends State<HomeView> {
                                         children: [
                                           Row(
                                             children: [
-                                              const Expanded(
+                                               Expanded(
                                                   child: Column(
                                                     crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -984,7 +1614,7 @@ class _HomeViewState extends State<HomeView> {
                                                             fontWeight:
                                                             FontWeight.w700,
                                                             fontFamily: "OpenSans"),
-                                                      ),
+                                                      ).translate(),
                                                       Text(
                                                         "your loan details",
                                                         style: TextStyle(
@@ -994,7 +1624,7 @@ class _HomeViewState extends State<HomeView> {
                                                             fontFamily: "OpenSans",
                                                             color:
                                                             Color(0xffA6A6A6)),
-                                                      )
+                                                      ).translate(),
                                                     ],
                                                   )),
                                               GestureDetector(
@@ -1004,7 +1634,7 @@ class _HomeViewState extends State<HomeView> {
                                                 },
                                                 child: SvgPicture.asset(
                                                   AppImages.roundaltarroe,
-                                                  height: 20,
+                                                  height: 30,
                                                 ),
                                               )
                                             ],
@@ -1083,7 +1713,7 @@ class _HomeViewState extends State<HomeView> {
                                                                         const SizedBox(
                                                                           width: 10,
                                                                         ),
-                                                                       Expanded(child:  Text(loanList[position].mfiName!),)
+                                                                        Expanded(child:  Text(loanList[position].mfiName!).translate(),)
                                                                       ],
                                                                     ),
                                                                     const SizedBox(
@@ -1262,8 +1892,9 @@ class _HomeViewState extends State<HomeView> {
                                         ],
                                       ),
                                     ),
+
                                     const SizedBox(
-                                      height: 20,
+                                      height: 10,
                                     ),
                                     Container(
                                       decoration: const BoxDecoration(
@@ -1276,623 +1907,104 @@ class _HomeViewState extends State<HomeView> {
                                           top: 20,
                                           bottom: 20),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              const Expanded(
-                                                  child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Recommended Product Seller",
-                                                    style: TextStyle(
-                                                        fontSize: 17,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        fontFamily: "OpenSans"),
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                 Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          "Documents",
+                                                          style: TextStyle(
+                                                              fontSize: 17,
+                                                              fontWeight:
+                                                              FontWeight.w700,
+                                                              fontFamily:
+                                                              "OpenSans"),
+                                                        ).translate(),
+                                                        Text(
+                                                          "View your uploaded documents",
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                              FontWeight.w500,
+                                                              fontFamily:
+                                                              "OpenSans",
+                                                              color: Color(
+                                                                  0xffA6A6A6)),
+                                                        ).translate(),
+                                                      ],
+                                                    )),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Get.to(() =>
+                                                        MyEntitlementsScreen());
+                                                  },
+                                                  child: SvgPicture.asset(
+                                                    AppImages.roundaltarroe,
+                                                    height: 30,
                                                   ),
-                                                  Text(
-                                                    "you might be interested in",
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontFamily: "OpenSans",
-                                                        color:
-                                                            Color(0xffA6A6A6)),
-                                                  )
-                                                ],
-                                              )),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Get.to(() =>
-                                                      RecomandedProductScreen("product"));
-                                                },
-                                                child: SvgPicture.asset(
-                                                  AppImages.roundaltarroe,
-                                                  height: 20,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          const Divider(
+                                                )
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            const Divider(
                                               height: 1,
                                               thickness: 1,
-                                              color: AppColors.primary),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-
-                                          snapshot
-                                              .data!.productList!.isEmpty?Text("No Data Found"): ListView.builder(
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            padding: EdgeInsets.zero,
-                                            shrinkWrap: true,
-                                            itemCount: snapshot
-                                                .data!.productList!.length,
-                                            itemBuilder:
-                                                (BuildContext context, int i) {
-                                              return GestureDetector(
-                                                onTap: (){
-                                                  CommonBottomSheet.show(context,snapshot.data!.productList[i].providerId.toString(),snapshot.data!.productList[i].id.toString(),"product","");
-                                                },
-                                                child: Container(
-                                                    margin:
-                                                    const EdgeInsets.all(10),
-                                                    padding:
-                                                    const EdgeInsets.all(10),
-                                                    decoration:
-                                                    const BoxDecoration(
-                                                        color:
-                                                        Color(0xffF9F9F9),
-                                                        borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius
-                                                                .circular(
-                                                                16))),
-                                                    child: Row(
-                                                      children: [
-                                                        CircleAvatar(
-                                                          radius: 30,
-                                                          backgroundImage:
-                                                          NetworkImage(snapshot
-                                                              .data!
-                                                              .productList[i]
-                                                              .profileImage),
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                              children: [
-                                                                Text(
-                                                                  snapshot
-                                                                      .data!
-                                                                      .productList![i]
-                                                                      .username!,
-                                                                  style: const TextStyle(
-                                                                      fontSize: 14,
-                                                                      fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                      fontFamily:
-                                                                      "OpenSans"),
-                                                                ),
-                                                                Row(
-                                                                  children: [
-                                                                    regulartext(
-                                                                      AppColors.hint,
-                                                                      14,
-                                                                      snapshot
-                                                                          .data!
-                                                                          .productList![
-                                                                      i]
-                                                                          .name!,
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      width: 10,
-                                                                    ),
-                                                                    Container(
-                                                                        padding: const EdgeInsets
-                                                                            .only(
-                                                                            left: 15,
-                                                                            right: 15,
-                                                                            top: 5,
-                                                                            bottom:
-                                                                            5),
-                                                                        decoration: BoxDecoration(
-                                                                            color: snapshot.data!.productList![i].tag !=
-                                                                                "Supplier Service"
-                                                                                ? AppColors.primary.withOpacity(
-                                                                                0.05)
-                                                                                : AppColors
-                                                                                .LightGreens,
-                                                                            borderRadius:
-                                                                            const BorderRadius.all(Radius.circular(
-                                                                                9))),
-                                                                        child: snapshot
-                                                                            .data!
-                                                                            .productList![i]
-                                                                            .tag !=
-                                                                            "Supplier Service"
-                                                                            ? boldtext(
-                                                                          AppColors
-                                                                              .Green,
-                                                                          10,
-                                                                          "ME",
-                                                                        )
-                                                                            : boldtext(
-                                                                          AppColors
-                                                                              .primary,
-                                                                          10,
-                                                                          "Supplier",
-                                                                        )),
-                                                                  ],
-                                                                ),
-                                                                InkWell(
-                                                                  child: Row(
-                                                                    mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                    children: [
-                                                                      RatingBarIndicator(
-                                                                        direction: Axis
-                                                                            .horizontal,
-                                                                        rating:snapshot.data!.productList![i].averageRating.toDouble(),
-                                                                        // double.parse(""),
-                                                                        itemCount: 5,
-                                                                        itemSize: 14,
-                                                                        itemPadding:
-                                                                        const EdgeInsets
-                                                                            .all(2),
-                                                                        unratedColor:
-                                                                        Colors
-                                                                            .grey,
-                                                                        itemBuilder: (context,
-                                                                            _) =>
-                                                                            SvgPicture.asset(
-                                                                                AppImages
-                                                                                    .rating),
-                                                                      ),
-                                                                      snapshot.data!.productList![i].averageRating ==
-                                                                          null
-                                                                          ? const SizedBox
-                                                                          .shrink()
-                                                                          : boldtext(
-                                                                          const Color(
-                                                                              0xff656565),
-                                                                          12,
-                                                                          '${snapshot.data!.productList![i].averageRating.toStringAsFixed(1)!} Rating')
-
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            )),
-                                                        SvgPicture.asset(
-                                                            AppImages.altarroe)
-                                                      ],
-                                                    )),
-                                              );
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(16))),
-                                      padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                          top: 20,
-                                          bottom: 20),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              const Expanded(
-                                                  child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Recommended Service provider",
-                                                    style: TextStyle(
-                                                        fontSize: 17,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        fontFamily: "OpenSans"),
-                                                  ),
-                                                  Text(
-                                                    "you might be interested in",
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontFamily: "OpenSans",
-                                                        color:
-                                                            Color(0xffA6A6A6)),
-                                                  )
-                                                ],
-                                              )),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Get.to(() =>
-                                                      RecomandedServiceScreen("service"));
-                                                },
-                                                child: SvgPicture.asset(
-                                                  AppImages.roundaltarroe,
-                                                  height: 20,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          const Divider(
-                                            height: 1,
-                                            thickness: 1,
-                                            color: AppColors.primary,
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          snapshot
-                                              .data!.serviceList!.isEmpty?Text("No Data Found"):     ListView.builder(
-                                            padding: EdgeInsets.zero,
-                                            shrinkWrap: true,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemCount: snapshot
-                                                .data!.serviceList!.length,
-                                            itemBuilder:
-                                                (BuildContext context, int i) {
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  CommonBottomSheet.show(context,snapshot.data!.serviceList[i].providerId.toString(),snapshot.data!.serviceList[i].id.toString(),"service","");
-                                                     },
-                                                child: Container(
-                                                    margin:
-                                                        const EdgeInsets.all(
-                                                            10),
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10),
-                                                    decoration: const BoxDecoration(
-                                                        color:
-                                                            Color(0xffF9F9F9),
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    16))),
-                                                    child: Row(
-                                                      children: [
-                                                        CircleAvatar(
-                                                          radius: 30,
-                                                          backgroundImage:
-                                                              NetworkImage(snapshot
-                                                                  .data!
-                                                                  .serviceList![
-                                                                      i]
-                                                                  .profileImage),
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        Expanded(
-                                                            child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              snapshot
-                                                                  .data!
-                                                                  .serviceList![
-                                                                      i]
-                                                                  .username!,
-                                                              style: const TextStyle(
-                                                                  fontSize: 14,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontFamily:
-                                                                      "OpenSans"),
-                                                            ),
-                                                            Row(
-                                                              children: [
-                                                               Expanded(child:  regulartext(
-                                                                 AppColors.hint,
-                                                                 14,
-                                                                 snapshot
-                                                                     .data!
-                                                                     .serviceList![
-                                                                 i]
-                                                                     .name!,
-                                                               ),),
-                                                                const SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                              Container(
-                                                                   padding: const EdgeInsets
-                                                                       .only(
-                                                                       left:
-                                                                       15,
-                                                                       right:
-                                                                       15,
-                                                                       top: 5,
-                                                                       bottom:
-                                                                       5),
-                                                                   decoration: BoxDecoration(
-                                                                       color: snapshot.data!.serviceList![i].tag !=
-                                                                           "Supplier Service"
-                                                                           ? AppColors.primary.withOpacity(
-                                                                           0.05)
-                                                                           : AppColors
-                                                                           .LightGreens,
-                                                                       borderRadius:
-                                                                       const BorderRadius.all(Radius.circular(
-                                                                           9))),
-                                                                   child: snapshot.data!.serviceList![i].tag !=
-                                                                       "Supplier Service"
-                                                                       ? boldtext(
-                                                                     AppColors.Green,
-                                                                     8,
-                                                                     "ME",
-                                                                   )
-                                                                       : boldtext(
-                                                                     AppColors.primary,
-                                                                     8,
-                                                                     "Supplier",
-                                                                   )),
-                                                              ],
-                                                            ),
-                                                            InkWell(
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  RatingBarIndicator(
-                                                                    direction: Axis
-                                                                        .horizontal,
-                                                                    rating: snapshot.data!.serviceList![i].averageRating.toDouble(),
-                                                                    // double.parse("${4}"),
-                                                                    itemCount:
-                                                                        5,
-                                                                    itemSize:
-                                                                        14,
-                                                                    itemPadding:
-                                                                        const EdgeInsets
-                                                                            .all(2),
-                                                                    unratedColor:
-                                                                        Colors
-                                                                            .grey,
-                                                                    itemBuilder: (context,
-                                                                            _) =>
-                                                                        SvgPicture.asset(
-                                                                            AppImages.rating),
-                                                                  ),
-                                                                  snapshot.data!.serviceList![i].averageRating ==
-                                                                          null
-                                                                      ? const SizedBox
-                                                                          .shrink()
-                                                                      : boldtext(
-                                                                          const Color(
-                                                                              0xff656565),
-                                                                          12,
-                                                                          '${snapshot.data!.serviceList![i].averageRating!.toStringAsFixed(1)} Rating')
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        )),
-                                                        SvgPicture.asset(
-                                                         AppImages.altarroe)
-                                                      ],
-                                                    )),
-                                              );
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(16))),
-                                      padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                          top: 20,
-                                          bottom: 20),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Row(
-                                            children: [
-                                              Expanded(
-                                                  child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "My Statistics",
-                                                    style: TextStyle(
-                                                        fontSize: 17,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        fontFamily: "OpenSans"),
-                                                  ),
-                                                  Text(
-                                                    "",
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontFamily: "OpenSans",
-                                                        color:
-                                                            Color(0xffA6A6A6)),
-                                                  )
-                                                ],
-                                              )),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          const Divider(
-                                            height: 1,
-                                            thickness: 1,
-                                            color: AppColors.primary,
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                      children: [
-                                                        SvgPicture.asset(AppImages.rating),
-                                                        SizedBox(width: 5,),
-                                                        Text(
-                                                          "${snapshot.data!.avrageRating}/5",
-                                                          style: const TextStyle(
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                              FontWeight.w600,
-                                                              fontFamily:
-                                                              "OpenSans"),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                Padding(padding: EdgeInsets.only(left: 5),child: Text(
-                                                      "Average \nRating",
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontFamily:
-                                                              "OpenSans",
-                                                          color: Color(
-                                                              0xff656565)),)
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                      children: [
-                                                        SvgPicture.asset(AppImages.activeprofile),
-                                                        SizedBox(width: 5,),
-                                                       Text(
-                                                          snapshot.data!
-                                                              .profilecompleted
-                                                              .toString(),
-                                                          style: const TextStyle(
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                              FontWeight.w600,
-                                                              fontFamily:
-                                                              "OpenSans"),
-                                                        ),
-                                                      ],
-                                                    ),
-
-                                                    Padding(padding: EdgeInsets.only(left: 5),child: Text(
-                                                      "Profile \nCompleted",
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                          FontWeight.w500,
-                                                          fontFamily:
-                                                          "OpenSans",
-                                                          color: Color(
-                                                              0xff656565)),
-                                                    ),)
-                                                  ],
-                                                ),
-                                              ),
-                                              Expanded(
-                                                  child: Column(
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                    children: [
-                                                      SvgPicture.asset(AppImages.homemfi),
-                                                      SizedBox(width: 5,),
-                                                      Text(
-                                                        snapshot
-                                                            .data!.overallMfiScore
-                                                            .toString(),
-                                                        style: const TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                            FontWeight.w600,
-                                                            fontFamily: "OpenSans"),
+                                              color: AppColors.primary,
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            GridView.count(
+                                              physics: NeverScrollableScrollPhysics(),
+                                                childAspectRatio: 5,
+                                                padding: EdgeInsets.zero,
+                                                shrinkWrap: true,
+                                                crossAxisCount: 2,
+                                                children: List.generate(
+                                                  snapshot.data!.documentList!
+                                                      .length,
+                                                      (index) {
+                                                    return Container(
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              AppImages
+                                                                  .rightarrow),
+                                                          const SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          Text(
+                                                            snapshot
+                                                                .data!
+                                                                .documentList![
+                                                            index]
+                                                                .name!,
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .w500,
+                                                                fontSize: 14,
+                                                                fontFamily:
+                                                                "OpenSans"),
+                                                          ).translate(),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
-
-                                                  const Text(
-                                                    "Overall MFI\nScore",
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontFamily: "OpenSans",
-                                                        color:
-                                                            Color(0xff656565)),
-                                                  ),
-                                                ],
-                                              ))
-                                            ],
-                                          )
-                                        ],
-                                      ),
+                                                    );
+                                                  },
+                                                ))
+                                          ]),
                                     ),
                                     const SizedBox(
                                       height: 10,
                                     ),
-
                                     Container(
                                       decoration: const BoxDecoration(
                                           color: Colors.white,
@@ -1909,7 +2021,7 @@ class _HomeViewState extends State<HomeView> {
                                         children: [
                                           Row(
                                             children: [
-                                              const Expanded(
+                                               Expanded(
                                                   child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -1921,7 +2033,7 @@ class _HomeViewState extends State<HomeView> {
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         fontFamily: "OpenSans"),
-                                                  ),
+                                                  ).translate(),
                                                   Text(
                                                     "My groups",
                                                     style: TextStyle(
@@ -1931,7 +2043,7 @@ class _HomeViewState extends State<HomeView> {
                                                         fontFamily: "OpenSans",
                                                         color:
                                                             Color(0xffA6A6A6)),
-                                                  )
+                                                  ).translate(),
                                                 ],
                                               )),
                                               GestureDetector(
@@ -1941,7 +2053,7 @@ class _HomeViewState extends State<HomeView> {
                                                 },
                                                 child: SvgPicture.asset(
                                                   AppImages.roundaltarroe,
-                                                  height: 20,
+                                                  height: 30,
                                                 ),
                                               )
                                             ],
@@ -2009,7 +2121,7 @@ class _HomeViewState extends State<HomeView> {
                                                                           .w600,
                                                                   fontFamily:
                                                                       "OpenSans"),
-                                                            ),
+                                                            ).translate(),
                                                             Text(
                                                               "${getGroupsModeldata!.length} New Message",
                                                               style: const TextStyle(
@@ -2021,7 +2133,7 @@ class _HomeViewState extends State<HomeView> {
                                                                       "OpenSans",
                                                                   color: AppColors
                                                                       .primary),
-                                                            ),
+                                                            ).translate(),
                                                           ],
                                                         )),
                                                         SvgPicture.asset(
@@ -2034,114 +2146,8 @@ class _HomeViewState extends State<HomeView> {
                                         ],
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(16))),
-                                      padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                          top: 20,
-                                          bottom: 20),
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                const Expanded(
-                                                    child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Documents",
-                                                      style: TextStyle(
-                                                          fontSize: 17,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          fontFamily:
-                                                              "OpenSans"),
-                                                    ),
-                                                    Text(
-                                                      "View your uploaded documents",
-                                                      style: TextStyle(
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontFamily:
-                                                              "OpenSans",
-                                                          color: Color(
-                                                              0xffA6A6A6)),
-                                                    )
-                                                  ],
-                                                )),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    Get.to(() =>
-                                                        MyEntitlementsScreen());
-                                                  },
-                                                  child: SvgPicture.asset(
-                                                    AppImages.roundaltarroe,
-                                                    height: 20,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            const Divider(
-                                              height: 1,
-                                              thickness: 1,
-                                              color: AppColors.primary,
-                                            ),
-                                            const SizedBox(
-                                              height: 20,
-                                            ),
-                                            GridView.count(
-                                                childAspectRatio: 5,
-                                                padding: EdgeInsets.zero,
-                                                shrinkWrap: true,
-                                                crossAxisCount: 2,
-                                                children: List.generate(
-                                                  snapshot.data!.documentList!
-                                                      .length,
-                                                  (index) {
-                                                    return Container(
-                                                      child: Row(
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                              AppImages
-                                                                  .rightarrow),
-                                                          const SizedBox(
-                                                            width: 5,
-                                                          ),
-                                                          Text(
-                                                            snapshot
-                                                                .data!
-                                                                .documentList![
-                                                                    index]
-                                                                .name!,
-                                                            style: const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                fontSize: 14,
-                                                                fontFamily:
-                                                                    "OpenSans"),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    );
-                                                  },
-                                                ))
-                                          ]),
-                                    ),
+
+
                                     const SizedBox(
                                       height: 50,
                                     )
@@ -2450,6 +2456,27 @@ class _HomeViewState extends State<HomeView> {
                                           const Text("UPI"),
                                         ],
                                       ))),
+                              Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        paymentmode = "2";
+                                        paymenttype = "Cheque";
+                                      });
+                                      if (kDebugMode) {
+                                        print(paymentmode);
+                                      }
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.circle_outlined,
+                                            color: paymentmode == "2"
+                                                ? AppColors.primary
+                                                : AppColors.gray),
+                                        const Text("Cheque"),
+                                      ],
+                                    ),
+                                  )),
                             ],
                           ),
                           const SizedBox(
@@ -2457,27 +2484,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           Row(
                             children: [
-                              Expanded(
-                                  child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    paymentmode = "2";
-                                    paymenttype = "Cheque";
-                                  });
-                                  if (kDebugMode) {
-                                    print(paymentmode);
-                                  }
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.circle_outlined,
-                                        color: paymentmode == "2"
-                                            ? AppColors.primary
-                                            : AppColors.gray),
-                                    const Text("Cheque"),
-                                  ],
-                                ),
-                              )),
+
                               // Expanded(
                               //     child: GestureDetector(
                               //   onTap: () {

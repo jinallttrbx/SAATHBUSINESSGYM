@@ -159,7 +159,7 @@ class Help_supportScreenState extends State<Help_supportScreen> {
                                     borderSide: BorderSide(color: Colors.grey)),
                               ),
                               isExpanded: true,
-                              hint: Text("Select Subject"),
+                              hint: boldtext(AppColors.hint,14,"Select Subject"),
                               items: snapshot.data!.map((countries) {
                                 return DropdownMenuItem<SubjectModeldata?>(
                                   value: countries,
@@ -273,8 +273,12 @@ class Help_supportScreenState extends State<Help_supportScreen> {
                             content: Text("Please Enter Subject!"),
                           ));
                         }else if(description.text.isEmpty){
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    content: Text("Please Enter Description!"),
+    ));
+    }else if(_image==null){
                           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text("Please Enter Description!"),
+                            content: Text("Please Upload Picture!"),
                           ));
                         }else{
                           sendhelpsupport(

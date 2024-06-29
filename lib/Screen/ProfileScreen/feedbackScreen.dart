@@ -152,7 +152,7 @@ class FeedbackScreenState extends State<FeedbackScreen> {
                             scheme:
                             'tel',
                             path:
-                            '+91${"+9107947813177".substring(3, 13)}');
+                            '${"+9107947813177".substring(3, 13)}');
                         launchUrl(
                             data);
                       },

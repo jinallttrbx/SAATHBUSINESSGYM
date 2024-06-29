@@ -36,7 +36,7 @@ class ServiceController extends GetxController {
 
       serviceprofilelist.value = [];
       serviceprofilelist2 = [];
-      print(data['status']);
+
       if (data['status'] == true) {
         final data = Getserviceslistmodel.fromJson(jsonDecode(response.body));
         serviceprofilelist2 = data!.data!;

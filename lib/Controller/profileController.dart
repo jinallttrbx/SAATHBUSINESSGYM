@@ -71,7 +71,7 @@ class ProfileController extends GetxController {
     providerdatalist = addLoanModeloges(UserId!);
 
     getcategotyData();
-    print("User_token  ==>  ${usertoken!}");
+
     // listData1 = getcategotyData();
   }
 
@@ -99,18 +99,17 @@ class ProfileController extends GetxController {
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
         images.value = "";
-        print('ProfielPic Removed');
       } else {
-        print(response.statusCode);
+
       }
     } catch (e) {
-      debugPrint(e.toString());
+
     }
   }
 
   Future<ProfileModelData?> addLoanModeloges(String userId) async {
-    print("userId         ==>   $userId");
-    print(usertoken);
+
+
     try {
       Map<String, String> requestBody = <String, String>{
         'user_id': userId,
@@ -120,16 +119,15 @@ class ProfileController extends GetxController {
         headers: {"Authorization": usertoken!, "Accept": "application/json"},
         body: requestBody,
       );
-      print("response profile ==> ${response.body}");
+
       Map<String, dynamic> map = json.decode(response.body);
       if (response.statusCode == 200) {
         occupation_id.value = map["data"]["occupation_id"].toString();
         profileModel = ProfileModel.fromJson(jsonDecode(response.body));
 
-        print("response profile profileModel ==> ${profileModel}");
+
         userProfile.value = map["data"];
-        print("response profile userProfile.value ==> ${userProfile.value}");
-        //businessPhotos = profileModel!.businessPhotos;
+
         username.value = profileModel!.data!.displayName!;
         profilename.value = profileModel!.data!.username!;
         images.value = profileModel!.data!.profileImage!;
@@ -161,8 +159,6 @@ class ProfileController extends GetxController {
         return profileModel!.data;
       }
     } catch (e) {
-      print(
-          "profile error -----------------------------------------------------------------$e");
       isLoading.value = false;
     }
   }
@@ -197,9 +193,9 @@ class ProfileController extends GetxController {
         getoccupation();
         return viewoccuaptionsModelData;
       }
-      print(response.statusCode);
+
     } catch (e) {
-      print("sdfok$e");
+
     }
   }
   // Future<List<ViewoccuaptionsModelData>?> getcategotyData() async {
@@ -230,12 +226,12 @@ class ProfileController extends GetxController {
   //       // mycategory = categorydata[0].subjectTital
   //       // categorydata = catrgortModel.data;
 
-  //       print("Response Body:===>    ${response.body}");
+  //
   //       return viewoccuaptionsModelData;
   //     }
-  //     print(response.statusCode);
+  //
   //   } catch (e) {
-  //     print("sdfok" + e.toString());
+  //
   //   }
   // }
 
@@ -249,9 +245,7 @@ class ProfileController extends GetxController {
         // ignore: prefer_interpolation_to_compose_strings
         body: {"provider_id": "" + UserId},
       );
-      print("response my service req  =================${response.body}");
-      print("response my service req  =================${response.statusCode}");
-      //  Map<String, dynamic> map = json.decode(response.body);
+
 
       if (response.statusCode == 200) {
         List<LeadDataModel>? uniqueList = [];
@@ -269,12 +263,12 @@ class ProfileController extends GetxController {
         // hideLoader();
         cutomerCount.value =
         uniqueList.isEmpty ? "0" : uniqueList.length.toString();
-        print("Success");
+
       } else {
-        print("get service list Something went wronge");
+
       }
     } catch (e) {
-      print("get service list data==1=$e");
+
     }
   }
 
@@ -306,13 +300,13 @@ class ProfileController1 extends GetxController {
       Map<String, dynamic> jsondata = jsonDecode(response.body);
 
       statusCode.value = response.statusCode;
-      print(jsondata);
+
       if (response.statusCode == 200) {
         if (jsondata["status"] == true) {
           ProfileModelData getproject =
           ProfileModelData.fromJson(jsonDecode(response.body));
           profileData = getproject;
-          //  print(profileData!.data!.name);
+
         } else {
           isLoading.value = false;
         }
@@ -323,8 +317,7 @@ class ProfileController1 extends GetxController {
 
       isLoading.value = false;
     } catch (e) {
-      print("Error Occured inside propert Leads");
-     // showInSnackBar("Error Occured", color: Colors.red);
+
       print(e.toString());
       isLoading.value = false;
     }

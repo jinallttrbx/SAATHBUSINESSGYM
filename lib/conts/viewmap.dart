@@ -54,7 +54,7 @@ class _ViewMapState extends State<ViewMap> {
     String request =
         "$baseURL?input=$input&key=${Global.Google_Api_Key}&sessiontoken=$_sessiontoken";
     var response = await http.get(Uri.parse(request));
-    // print(response.body.toString());
+
     if (response.statusCode == 200) {
       _placesList = jsonDecode(response.body.toString())['predictions'];
       setState(() {
@@ -133,10 +133,9 @@ class _ViewMapState extends State<ViewMap> {
                                             viewMap = true;
                                             search.clear();
                                           });
-                                          print(locations[0]);
-                                          print(_placesList[index]);
+
                                         } catch (e) {
-                                          print(e.toString());
+
                                         }
                                       },
                                     );

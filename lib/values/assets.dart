@@ -136,5 +136,6 @@ class AppImages {
   static String send="assets/images/icons/send.svg";
   static String nofound="assets/images/icons/nodatafound.svg";
   static String notification= "assets/images/icons/notification.svg";
+  static String changelanguage= "assets/images/icons/changelanguage.png";
 }
 

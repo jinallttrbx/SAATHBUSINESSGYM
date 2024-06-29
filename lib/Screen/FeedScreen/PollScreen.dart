@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print, prefer_interpolation_to_compose_strings, file_names, non_constant_identifier_names, body_might_complete_normally_nullable, unused_local_variable, deprecated_member_use
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:businessgym/model/ViewpollsModel.dart';
@@ -14,7 +15,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import '../../Utils/ApiUrl.dart';
 import '../../Utils/SharedPreferences.dart';
 import '../../Utils/common_route.dart';
-
+import 'Video_screen.dart';
 
 class PollScreen extends StatefulWidget {
   const PollScreen({super.key});
@@ -25,6 +26,7 @@ class PollScreen extends StatefulWidget {
 
 class PollScreenState extends State<PollScreen> {
   List<ViewpollsModelData>? viewpollsModelData = [];
+  List<ViewpollsModelData>? searchList = [];
 
   String UserId = "";
   String categotyid = "";
@@ -75,7 +77,7 @@ class PollScreenState extends State<PollScreen> {
       if (response.statusCode == 200) {
         hideLoader();
         ViewpollsModel catrgortModel =
-            ViewpollsModel.fromJson(jsonDecode(response.body));
+        ViewpollsModel.fromJson(jsonDecode(response.body));
         viewpollsModelData = catrgortModel.data;
         setState(() {});
         return viewpollsModelData;
@@ -89,7 +91,8 @@ class PollScreenState extends State<PollScreen> {
     }
   }
 
-  Future<bool?> getansAdd(String userid, String question_id, String correct_ans) async {
+  Future<bool?> getansAdd(
+      String userid, String question_id, String correct_ans) async {
     try {
       showLoader(context);
 
@@ -127,18 +130,69 @@ class PollScreenState extends State<PollScreen> {
   }
 
   List sendOption = ["A", "B", "C", "D", "E", "F", "G"];
+
+  searchFromList(String value) async {
+    searchList = [];
+    if (value.isNotEmpty) {
+      for (var element in viewpollsModelData!) {
+        if (element.question.toLowerCase().contains(value.toLowerCase())) {
+          searchList?.add(element);
+        }
+      }
+      setState(() {});
+    } else {
+      searchList = [];
+      setState(() {});
+    }
+  }
+
+  Timer? debounce;
+
+  @override
+  void dispose() {
+    debounce?.cancel();
+    super.dispose();
+  }
+
+  TextEditingController search = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListView.builder(
-          padding: EdgeInsets.zero,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: textAreasearchfield(
+            search,
+            "Search",
+                (value) {
+              if (debounce?.isActive ?? false) debounce?.cancel();
+              debounce = Timer(const Duration(milliseconds: 500), () {
+                searchFromList(value);
+              });
+            },
+          ),
+        ),
+        search.text.isNotEmpty
+            ? searchList?.isEmpty ?? false
+            ? const Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 100),
+              child: Center(
+                child: Text("No data found"),
+              ),
+            ),
+          ],
+        )
+            : ListView.builder(
+            padding: EdgeInsets.zero,
             shrinkWrap: true,
-            itemCount: viewpollsModelData!.length,
+            itemCount: searchList!.length,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
               return Container(
-                margin: const EdgeInsets.only(left: 15,right: 15,bottom: 5),
+                margin: const EdgeInsets.only(
+                    left: 15, right: 15, bottom: 5),
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
@@ -155,13 +209,148 @@ class PollScreenState extends State<PollScreen> {
                           margin: const EdgeInsets.only(top: 6),
                           width: Get.width * 0.7,
                           child: boldtext(AppColors.black, 16,
-                              viewpollsModelData![index].question!),
+                              searchList![index].question),
                         ),
                         vertical(10),
                         ListView.builder(
                           shrinkWrap: true,
                           controller: ScrollController(),
-                          itemCount: viewpollsModelData![index].option!.length,
+                          itemCount: searchList![index].option.length,
+                          itemBuilder:
+                              (BuildContext context, int inner) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 5),
+                              child: Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      getansAdd(
+                                          UserId,
+                                          searchList![index]
+                                              .id
+                                              .toString(),
+                                          sendOption[inner]);
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          searchList![index]
+                                              .option[inner]
+                                              .option ==
+                                              searchList![index]
+                                                  .answerValue
+                                              ? Icons.circle
+                                              : Icons.circle_outlined,
+                                          color: AppColors.primary,
+                                          size: 12,
+                                        ),
+                                        horizental(10),
+                                        regulartext(
+                                            AppColors.black,
+                                            14,
+                                            searchList![index]
+                                                .option[inner]
+                                                .option
+                                                .toString())
+                                      ],
+                                    ),
+                                  ),
+                                  searchList![index].answerValue != ""
+                                      ? searchList![index]
+                                      .option
+                                      .length ==
+                                      1
+                                      ? SizedBox.shrink()
+                                      : Container(
+                                    child: Row(
+                                      //mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment
+                                          .center,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment
+                                          .start,
+                                      children: [
+                                        LinearPercentIndicator(
+                                          width: MediaQuery.of(
+                                              context)
+                                              .size
+                                              .width -
+                                              100,
+                                          animation: true,
+                                          lineHeight: 5.0,
+                                          animationDuration:
+                                          2500,
+                                          percent: double.parse(
+                                              "0.${100 == searchList![index].percentage[inner].percetage ? 99 : searchList![index].percentage[inner].percetage}"),
+                                          linearStrokeCap:
+                                          LinearStrokeCap
+                                              .roundAll,
+                                          barRadius:
+                                          const Radius
+                                              .circular(30),
+                                          progressColor:
+                                          AppColors
+                                              .primary,
+                                        ),
+                                        Text(
+                                          "${searchList![index].percentage[inner].percetage}%",
+                                          style:
+                                          const TextStyle(
+                                              fontFamily:
+                                              "bold",
+                                              fontSize:
+                                              14),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                      : const SizedBox.shrink()
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            })
+            : ListView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            itemCount: viewpollsModelData!.length,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                margin:
+                const EdgeInsets.only(left: 15, right: 15, bottom: 5),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    //set border radius more than 50% of height and width to make circle
+                  ),
+                  child: Container(
+                    margin: const EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          margin: const EdgeInsets.only(top: 6),
+                          width: Get.width * 0.7,
+                          child: boldtext(AppColors.black, 16,
+                              viewpollsModelData![index].question),
+                        ),
+                        vertical(10),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          controller: ScrollController(),
+                          itemCount:
+                          viewpollsModelData![index].option.length,
                           itemBuilder: (BuildContext context, int inner) {
                             return Padding(
                               padding:
@@ -171,17 +360,17 @@ class PollScreenState extends State<PollScreen> {
                                   InkWell(
                                     onTap: () {
                                       getansAdd(
-                                      UserId,
-                                      viewpollsModelData![index]
-                                          .id!
-                                          .toString(),
-                                      sendOption[inner]);
+                                          UserId,
+                                          viewpollsModelData![index]
+                                              .id
+                                              .toString(),
+                                          sendOption[inner]);
                                     },
                                     child: Row(
                                       children: [
                                         Icon(
                                           viewpollsModelData![index]
-                                              .option![inner]
+                                              .option[inner]
                                               .option ==
                                               viewpollsModelData![index]
                                                   .answerValue
@@ -195,7 +384,7 @@ class PollScreenState extends State<PollScreen> {
                                             AppColors.black,
                                             14,
                                             viewpollsModelData![index]
-                                                .option![inner]
+                                                .option[inner]
                                                 .option
                                                 .toString())
                                       ],
@@ -203,50 +392,54 @@ class PollScreenState extends State<PollScreen> {
                                   ),
                                   viewpollsModelData![index].answerValue !=
                                       ""
-                                      ? viewpollsModelData![index].option.length==1?SizedBox.shrink():Container(
-                                      child: Row(
+                                      ? viewpollsModelData![index]
+                                      .option
+                                      .length ==
+                                      1
+                                      ? SizedBox.shrink()
+                                      : Container(
+                                    child: Row(
                                       //mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.center,
-                            mainAxisAlignment:
-                            MainAxisAlignment.start,
-                            children: [
-                            LinearPercentIndicator(
-                            width:
-                            MediaQuery.of(context)
-                                .size
-                                .width -
-                            100,
-                            animation: true,
-                            lineHeight: 5.0,
-                            animationDuration: 2500,
-                            percent: double.parse(
-                            "0.${100 == viewpollsModelData![index].percentage![inner].percetage! ? 99 : viewpollsModelData![index].percentage![inner].percetage!}"),
-
-                            linearStrokeCap:
-                            LinearStrokeCap
-                                .roundAll,
-                            barRadius:
-                            const Radius.circular(
-                            30),
-                            progressColor: AppColors.primary,
-                            ),
-                            Text(
-                            "${viewpollsModelData![index].percentage![inner].percetage!}%",
-                            style: const TextStyle(
-                            fontFamily: "bold",
-                            fontSize: 14),
-                            ),
-                            ],
-                            ),
-                            )
+                                      CrossAxisAlignment
+                                          .center,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                      children: [
+                                        LinearPercentIndicator(
+                                          width: MediaQuery.of(
+                                              context)
+                                              .size
+                                              .width -
+                                              100,
+                                          animation: true,
+                                          lineHeight: 5.0,
+                                          animationDuration: 2500,
+                                          percent: double.parse(
+                                              "0.${100 == viewpollsModelData![index].percentage[inner].percetage ? 99 : viewpollsModelData![index].percentage[inner].percetage}"),
+                                          linearStrokeCap:
+                                          LinearStrokeCap
+                                              .roundAll,
+                                          barRadius: const Radius
+                                              .circular(30),
+                                          progressColor:
+                                          AppColors.primary,
+                                        ),
+                                        Text(
+                                          "${viewpollsModelData![index].percentage[inner].percetage}%",
+                                          style: const TextStyle(
+                                              fontFamily: "bold",
+                                              fontSize: 14),
+                                        ),
+                                      ],
+                                    ),
+                                  )
                                       : const SizedBox.shrink()
                                 ],
                               ),
                             );
                           },
                         ),
-
                       ],
                     ),
                   ),

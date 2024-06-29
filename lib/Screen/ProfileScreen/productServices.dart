@@ -12,6 +12,7 @@ import 'package:businessgym/values/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:google_translator/google_translator.dart';
 import 'package:http/http.dart' as http;
 import '../../Utils/common_route.dart';
 import '../../values/Colors.dart';
@@ -79,10 +80,9 @@ class ProviderServiceScreenState extends State<ProductServices> {
                 child:  Text(
                   'Add Product',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-                )),
+                ).translate()),
           ),
         )
-
     );
   }
   Widget _buildListproduct(ProductCategory list) {

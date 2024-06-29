@@ -103,10 +103,11 @@ dependencies:
   sms_autofill:
   flutter_staggered_grid_view: ^0.4.0
   loading_indicator: ^3.1.1
-  flutter_localization:
+#  flutter_localization:
   flutter_file_downloader: ^1.1.2
   flutter_dotenv: ^5.0.2
   speech_to_text: ^5.4.2
+  flutter_easyloading: ^3.0.5
 
 
 
